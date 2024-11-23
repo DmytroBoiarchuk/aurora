@@ -3,7 +3,7 @@ import React from 'react';
 function MastersSettingPage():JSX.Element {
     return (
         <div>
-            Hello World
+            Hello World( TEST )
         </div>
     );
 }
