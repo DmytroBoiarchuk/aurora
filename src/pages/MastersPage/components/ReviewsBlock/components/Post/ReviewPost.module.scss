@@ -1,0 +1,54 @@
+@import '../../../../../../UI/variables';
+@import '../../../../../../../public/fonts/fonts';
+
+.post {
+  margin: 20px 0 0 20px;
+  width: 90%;
+  display: flex;
+}
+.imgContainer {
+    border-radius: 6px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.rightContainer {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  span{
+    font-family: 'PoppinsLightItalic', sans-serif;
+  }
+  h1{
+    display: flex;
+    align-items: center;
+    font-family: 'PoppinsRegular', sans-serif;
+    font-size: 20px;
+    margin:0 0 2px 0;
+
+    span{
+      justify-content: center;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      margin-left: 15px;
+      font-size: 15px;
+      color: $primary-golden;
+    }
+  }
+  section{
+    box-shadow: -2px 2px 5px black;
+    width: 100%;
+    background-color: $background-color-dark;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 0 ;
+    h1{
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+    }
+    p{
+      margin: 0;
+    }
+  }
+}

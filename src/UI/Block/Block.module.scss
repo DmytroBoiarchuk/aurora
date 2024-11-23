@@ -1,0 +1,7 @@
+@import "../variables";
+.blockStyle{
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  border-top: 3px solid $secondary-color;
+}

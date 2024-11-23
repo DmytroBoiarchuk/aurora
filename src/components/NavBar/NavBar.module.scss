@@ -1,0 +1,28 @@
+@import '../../UI/variables';
+@import "public/fonts/fonts";
+.navBarContainer{
+  width: 100%;
+ display: flex;
+  justify-content: space-between;
+}
+.logoContainer {
+  display: flex;
+  margin: 5px 0 5px 85px;
+  h1 {
+    margin: 0 0 0 10px;
+    align-content: center;
+    font-family: 'Poppins', sans-serif;
+    color: $primary-color;
+    user-select: none;
+  }
+}
+.menuContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 100px;
+
+  button{
+    margin: 0 5px 0 5px;
+  }
+}

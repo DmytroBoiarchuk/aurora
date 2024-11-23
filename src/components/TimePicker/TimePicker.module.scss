@@ -1,0 +1,26 @@
+@import '../../UI/variables';
+@import "public/fonts/fonts";
+
+.timePickerContainer{
+  overflow: auto;
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  width: 330px ;
+  height: 419.98px;
+  background-color: $background-color-dark;
+  padding: 10px;
+  border-radius: 6px;
+  @include custom-scrollbar;
+}
+.formSubmitButton{
+  margin-top: 5px;
+  background-color: $background-color-light;
+  &:hover{
+    background-color: #888888;
+  }
+}
+.backButton{
+  width: 100%;
+  margin-bottom: 5px;
+};

@@ -1,0 +1,29 @@
+@import '../../UI/variables';
+
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin-left: 20px;
+  }
+  input {
+    border: 2px solid $primary-color;
+    height: 50px;
+    width: 450px;
+    font-size: 25px;
+    border-radius: 10px;
+    background-color: $background-color;
+    &:focus {
+      background-color: $background-color-light;
+    }
+  }
+  input[type="search"]:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}

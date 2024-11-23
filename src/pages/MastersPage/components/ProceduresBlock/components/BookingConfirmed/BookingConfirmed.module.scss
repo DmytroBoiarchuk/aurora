@@ -1,0 +1,17 @@
+@import '../../../../../../UI/variables';
+@import '../../../../../../../public/fonts/fonts';
+
+.bookingConfirmedContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  box-shadow: -2px 2px 5px black;
+  border-radius: 9px;
+  padding: 10px;
+  width: 500px;
+  h1{
+    text-align: center;
+  }
+}

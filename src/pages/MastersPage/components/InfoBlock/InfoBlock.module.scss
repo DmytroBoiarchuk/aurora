@@ -1,0 +1,50 @@
+@import '../../../../UI/variables';
+.infoBlock {
+  display: flex;
+  align-items: start;
+}
+.imgRatingContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    border-radius: 6px;
+    margin-bottom: 5px;
+    object-fit: contain;
+    max-width: 400px;
+    max-height: 400px;
+    height: auto;
+    width: auto;
+  }
+}
+.description {
+  padding: 10px 0 0 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  h2 {
+    margin: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+    color: black;
+    font-size: 30px;
+  }
+  p {
+    margin: 0;
+    width: 1000px;
+    color: black;
+    font-size: 25px;
+  }
+  ul {
+    margin: 0 0 10px 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+  }
+}

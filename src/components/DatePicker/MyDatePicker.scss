@@ -1,0 +1,34 @@
+@import '../../UI/variables';
+
+.rdp-root {
+  display: flex;
+  flex-direction: column;
+}
+.rdp-months {
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 0;
+}
+.rdp-month {
+  padding: 10px;
+  border-radius: 6px;
+  background-color: $background-color-dark;
+  flex-direction: column;
+}
+.rdp-nav {
+  position: relative;
+}
+
+.rdp-hidden{
+  visibility: visible;
+
+  button{
+
+    visibility: hidden;
+  }
+}
+
+.confirm-date-button{
+  margin-top: 10px;
+}

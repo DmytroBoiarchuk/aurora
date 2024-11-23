@@ -1,0 +1,102 @@
+@import '../../../../../../UI/variables';
+@import '../../../../../../../public/fonts/fonts';
+
+
+.procedureBlock {
+  box-shadow: -2px 2px 5px black;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  margin: 20px 5px 0 5px;
+  width: 250px;
+  height: auto;
+  border-radius: 6px;
+  background-color: $background-color-light;
+  p {
+    margin: 0;
+  }
+  img {
+    border-radius: 6px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
+.options{
+  border-radius: 6px;
+  width: 100px;
+  color: #000;
+  font-family: 'PoppinsLightItalic', sans-serif;
+  text-align: center;
+  background-color: $primary-dark;
+  option{
+    text-align: center;
+    font-family: 'PoppinsLightItalic', sans-serif;
+
+  }
+}
+.moreAboutButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  margin: 0;
+  border: 0;
+  border-radius: 0 0 6px 6px;
+  transition: transform 0.3s ease;
+  background-color: $background-color-light;
+  &:hover {
+  }
+}
+.imgBox {
+  margin: 10px;
+  width: 200px;
+  height: 200px;
+}
+.topLevel {
+  min-height: 385px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  border-radius: 6px;
+  background-color: $background-color-dark;
+  width: 100%;
+  height: 100%;
+  button {
+    margin: 5px 0 5px 0;
+  }
+  p{
+    font-family: 'Yellowtail', sans-serif;
+    font-size: 26px;
+  }
+}
+.lowLevel {
+  box-shadow: -2px 2px 5px black;
+  border-radius: 0 0 6px 6px;
+  background-color: $background-color-light;
+  width: 100%;
+  position: absolute;
+  top: 380px;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  div{
+    overflow: auto;
+    max-height: 160px;
+    @include custom-scrollbar;
+  }
+  p {
+    padding-top: 15px;
+    margin: 0 20px 0 20px;
+
+  }
+}

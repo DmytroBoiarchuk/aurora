@@ -1,0 +1,89 @@
+@import '../../../../../../UI/variables';
+@import '../../../../../../../public/fonts/fonts';
+
+.yourReviewContainer {
+  margin: 20px 0 100px 20px;
+  display: flex;
+  div {
+    img {
+      border-radius: 6px;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+  }
+}
+.reviewForm {
+  background-color: $background-color-light ;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: -2px 2px 5px black;
+  margin-left: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  transition: scale 0.3s ease;
+  textarea{
+    min-height: 300px;
+    height: auto;
+    resize: none;
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border: 2px solid #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track:hover {
+      background-color: #ddd;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+  }
+  &:hover{
+    scale: 1.005 ;
+  }
+  h1 {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+  }
+  button{
+    margin-top: 5px;
+  }
+}
+
+.reviewHeader {
+  display: flex;
+  flex-direction: column;
+
+  input {
+    width: 400px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-family: 'PoppinsRegular', sans-serif;
+  }
+}
+.reviewComment {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  textarea {
+    border-radius: 10px;
+    width: 100%;
+    font-size: 24px;
+    font-family: 'PoppinsRegular', sans-serif;
+    min-height: 300px;
+  }
+}

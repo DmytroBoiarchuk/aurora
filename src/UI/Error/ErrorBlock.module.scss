@@ -1,0 +1,25 @@
+@import '../variables';
+@import '../public/fonts/fonts.scss';
+
+.errorStyle{
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999999;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.errorBlock{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: $background-color-light;
+  padding: 10px;
+  border-radius: 6px;
+}

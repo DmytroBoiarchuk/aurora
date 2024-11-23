@@ -1,0 +1,12 @@
+.proceduresContainer {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 200px;
+}
+.proceduresBlock {
+  flex-direction: row;
+  min-height: 634px;
+  justify-content: center;
+  width: 80%;
+  overflow: hidden;
+}

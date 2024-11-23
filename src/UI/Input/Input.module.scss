@@ -1,0 +1,12 @@
+.inputStyle {
+  display: flex;
+  flex-direction: column;
+  font-family: 'PoppinsRegular', sans-serif;
+  margin-bottom: 30px;
+  input {
+    border-radius: 6px;
+    font-family: 'PoppinsRegular', sans-serif;
+    font-size: 18px;
+    width: 200px;
+  }
+}
