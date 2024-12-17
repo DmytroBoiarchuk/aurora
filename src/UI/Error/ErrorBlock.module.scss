@@ -1,5 +1,5 @@
-@import '../variables';
-@import '../public/fonts/fonts.scss';
+@use '../variables' as *;
+@use '../../assets/fonts/fonts.scss' as *;
 
 .errorStyle{
   position: fixed;

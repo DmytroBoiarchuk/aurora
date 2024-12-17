@@ -1,14 +1,25 @@
 import './App.scss';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import React from 'react';
 import MastersPage from './pages/MastersPage/MastersPage';
-import NavBar from './components/NavBar/NavBar';
+import MastersSettingPage from './pages/MastersSettingPage/MastersSettingPage';
+import RootLayout from './pages/RootLayout/RootLayout';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      { path: '/', element: <MastersPage /> },
+      { path: '/setting', element: <MastersSettingPage /> },
+    ],
+  },
+]);
 
 function App(): JSX.Element {
-  console.log('verion/0.0.1 branch');
+  console.log('MastersSettingPage branch');
   return (
-    <>
-      <NavBar />
-      <MastersPage />
-    </>
+    <RouterProvider router={router} />
   );
 }
 

@@ -5,6 +5,8 @@ $background-color: #FFFBF3;
 $background-color-dark: #e8ded4;
 $background-color-light: #fffefa;
 $primary-golden: #ceaf0f;
+$background-color-dark-low-opacity: rgba(232, 222, 212, 0.2);
+
 
 @mixin custom-scrollbar {
   &::-webkit-scrollbar {

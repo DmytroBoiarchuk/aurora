@@ -1,5 +1,5 @@
-@import '../../UI/variables';
-@import "public/fonts/fonts";
+@use '../../UI/variables' as *;
+@use "../../assets/fonts/fonts" as *;
 
 .timePickerContainer{
   overflow: auto;
