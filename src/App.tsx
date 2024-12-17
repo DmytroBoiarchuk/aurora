@@ -5,6 +5,8 @@ import NavBar from './components/NavBar/NavBar';
 
 function App(): JSX.Element {
   console.log('Main Branch');
+  //test
+
   return (
     <>
       <NavBar />
