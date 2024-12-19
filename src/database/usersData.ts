@@ -1,4 +1,4 @@
-import {TreatmentsProps, ReviewProps, ScheduleInterface} from '../assets/interfaces/interfaces';
+import { TreatmentsProps, ReviewProps, ScheduleInterface } from '../assets/interfaces/interfaces';
 
 interface UsersDataInterface {
   id: number;
@@ -9,7 +9,8 @@ interface UsersDataInterface {
   address: string;
   reviews: ReviewProps[];
   clientsId: number[];
-  workingDates: ScheduleInterface[]
+  workingDates: ScheduleInterface[];
+  currency: string;
 }
 interface LoggedInUserInterface {
   id: number;
@@ -34,7 +35,7 @@ const usersData: UsersDataInterface = {
       id: 1,
       procedureName: 'Lush Lift',
       price: '30£',
-      options:[1]
+      options: [1],
     },
     {
       img: '/brow_lami.jpg',
@@ -43,7 +44,7 @@ const usersData: UsersDataInterface = {
       id: 2,
       procedureName: 'Brow Lami',
       price: '30£',
-      options:[1]
+      options: [1],
     },
     {
       img: '/electrolysis.jpg',
@@ -59,8 +60,7 @@ const usersData: UsersDataInterface = {
       id: 4,
       procedureName: 'Lash + Brow Laminate',
       price: '50£',
-      options:[1]
-
+      options: [1],
     },
   ],
   address: '19 Rosemount Place, AB25 2XA',
@@ -108,7 +108,12 @@ const usersData: UsersDataInterface = {
     },
   ],
   clientsId: [87455122154, 9979446655, 64546546465, 100000000],
-  workingDates: [{day:'2024-11-28', timeFrom: [14,15.5], timeTo: [15,22]},{day:'2024-12-01', timeFrom: [14], timeTo: [22]},{day:'2024-11-29', timeFrom: [9], timeTo: [23.5]}]
+  workingDates: [
+    { day: '2024-12-28', timeFrom: [14, 15.5], timeTo: [15, 22] },
+    { day: '2024-12-01', timeFrom: [14], timeTo: [22] },
+    { day: '2024-12-29', timeFrom: [9], timeTo: [23.5] },
+  ],
+  currency: '£',
 };
 
 export const loggedInUserData: LoggedInUserInterface = {

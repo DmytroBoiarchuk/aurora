@@ -20,7 +20,7 @@ function InfoBlockEdit(): JSX.Element {
     <Block>
       <div className={classes.infoBlock}>
         <div className={classes.imgContainer}>
-          <ImagePicker />
+          <ImagePicker> Pick an Avatar </ImagePicker >
         </div>
         <div className={classes.description}>
           <h2 onClick={(): void => onDescriptionEditHandler(false)} contentEditable>{name}</h2>

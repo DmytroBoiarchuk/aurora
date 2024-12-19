@@ -1,25 +1,36 @@
 import React, { useRef, useState } from 'react';
-import {motion} from "framer-motion";
+import { motion } from 'framer-motion';
 import classes from './ImagePicker.module.scss';
 import usersData from '../../../../database/usersData';
 
-function ImagePicker({ label }: { label?: string | undefined }): JSX.Element {
-  const currentAvatar = usersData.photo;
+function ImagePicker({
+  label,
+  children,
+  isProcedurePhotoPicking = false,
+  setProcedurePickedImage = undefined,
+}: {
+  label?: string | undefined;
+  children: React.ReactNode;
+  isProcedurePhotoPicking?: boolean;
+  setProcedurePickedImage?: React.Dispatch<React.SetStateAction<string>> | undefined;
+}): JSX.Element {
+  const currentAvatar = isProcedurePhotoPicking ? '/no-photo-img.jpg' : usersData.photo;
   const [pickedImage, setPickedImage] = useState<string | null>(null);
   const [inputKey, setInputKey] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  function onClickPickHandler(): void {
+  function onClickPickHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    event.preventDefault();
     inputRef.current?.click();
   }
-  function onConfirmAvatarHandler(isConfirmed): void {
-    if (isConfirmed) {
-      if (pickedImage) usersData.photo = pickedImage;
-      setPickedImage(null);
+  function onConfirmAvatarHandler(event, isConfirmed: boolean): void {
+    event.preventDefault();
+    if (isConfirmed && pickedImage) {
+      usersData.photo = pickedImage;
     }
     if (!isConfirmed) {
-      setInputKey(prevState => prevState+1);
-      setPickedImage(null);
+      setInputKey((prevState) => prevState + 1);
     }
+    setPickedImage(null);
   }
   function changeInputHandler(event: React.ChangeEvent<HTMLInputElement>): void {
     const file = event.target?.files[0];
@@ -27,6 +38,7 @@ function ImagePicker({ label }: { label?: string | undefined }): JSX.Element {
     const fileReader = new FileReader();
     fileReader.onload = (): void => {
       setPickedImage(fileReader.result as string);
+      if(setProcedurePickedImage) setProcedurePickedImage(fileReader.result as string);
     };
     fileReader.readAsDataURL(file);
   }
@@ -37,7 +49,7 @@ function ImagePicker({ label }: { label?: string | undefined }): JSX.Element {
         <img src={pickedImage ?? currentAvatar} alt="Picked avatar" />
       </div>
       <input
-          key={inputKey}
+        key={inputKey}
         ref={inputRef}
         id="avatar"
         name="avatar"
@@ -46,21 +58,18 @@ function ImagePicker({ label }: { label?: string | undefined }): JSX.Element {
         onChange={changeInputHandler}
       />
       <div>
-        <button onClick={onClickPickHandler}>Pick an Avatar</button>
+        <button onClick={(event): void => onClickPickHandler(event)}>{children}</button>
+        {!isProcedurePhotoPicking && (
           <motion.div
-              initial={{ opacity: 0, display: 'none' }}
-            animate={
-              pickedImage
-                ? { opacity: 1, display: 'flex' }
-                : { opacity: 0, display: 'none' }
-            }
+            initial={{ opacity: 0, display: 'none' }}
+            animate={pickedImage ? { opacity: 1, display: 'flex' } : { opacity: 0, display: 'none' }}
             transition={{ duration: 0.5 }}
             className={classes.cancelAndConfirmButtons}
           >
-            <button onClick={(): void => onConfirmAvatarHandler(false)}>Cancel</button>
-            <button onClick={(): void => onConfirmAvatarHandler(true)}>Confirm</button>
+            <button onClick={(event): void => onConfirmAvatarHandler(event, false)}>Cancel</button>
+            <button onClick={(event): void => onConfirmAvatarHandler(event, true)}>Confirm</button>
           </motion.div>
-
+        )}
       </div>
     </div>
   );

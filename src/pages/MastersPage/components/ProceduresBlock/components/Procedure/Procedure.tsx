@@ -2,14 +2,20 @@ import React, { useRef, useState } from 'react';
 import { RiArrowDownWideLine, RiArrowUpWideLine } from 'react-icons/ri';
 import { motion } from 'framer-motion';
 import MediumButton from '../../../../../../UI/M-Button/MediumButton';
-import {BookingProcedureProps, TreatmentsProps} from '../../../../../../assets/interfaces/interfaces';
+import { BookingProcedureProps, TreatmentsProps } from '../../../../../../assets/interfaces/interfaces';
 import classes from './Procedure.module.scss';
-import {useAppDispatch} from "../../../../../../hooks/reduxHooks";
-import {setProcedureDetails} from "../../../../../../store/modules/bookingReducer/reducer";
-import usersData from "../../../../../../database/usersData";
-import {formatDuration} from "../../../../../../assets/functions/functions";
+import { useAppDispatch } from '../../../../../../hooks/reduxHooks';
+import { setProcedureDetails } from '../../../../../../store/modules/bookingReducer/reducer';
+import usersData from '../../../../../../database/usersData';
+import { formatDuration } from '../../../../../../assets/functions/functions';
 
-function Procedure({ procedure: { img, procedureName, description, price, options }, setIsBookingProcess }: {procedure: TreatmentsProps, setIsBookingProcess: React.Dispatch<React.SetStateAction<boolean>>}): JSX.Element {
+function Procedure({
+  procedure: { img, procedureName, description, price, options },
+  setIsBookingProcess,
+}: {
+  procedure: TreatmentsProps;
+  setIsBookingProcess?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+}): JSX.Element {
   const dispatch = useAppDispatch();
   const [isDropped, setIsDropped] = useState<boolean>(false);
   const selectionRef = useRef<HTMLSelectElement | null>(null);
@@ -19,9 +25,12 @@ function Procedure({ procedure: { img, procedureName, description, price, option
   function onBookHandler(): void {
     const procedure: BookingProcedureProps = {
       procedureName,
-      duration: Number(selectionRef.current?.value) || usersData.treatments.find((treatment)=> treatment.procedureName).options[0],
+      duration:
+        Number(selectionRef.current?.value) ||
+        usersData.treatments.find((treatment) => treatment.procedureName)!.options[0],
     };
     dispatch(setProcedureDetails(procedure));
+    if (setIsBookingProcess)
     setIsBookingProcess(true);
   }
 
@@ -37,7 +46,9 @@ function Procedure({ procedure: { img, procedureName, description, price, option
         {options.length > 1 && (
           <select ref={selectionRef} className={classes.options}>
             {options.map((option) => (
-              <option key={option} value={option}>{formatDuration(option)}</option>
+              <option key={option} value={option}>
+                {formatDuration(option)}
+              </option>
             ))}
           </select>
         )}
@@ -46,7 +57,7 @@ function Procedure({ procedure: { img, procedureName, description, price, option
       <div className={classes.lowLevel}>
         <motion.div
           initial={{ opacity: 0, y: -50 }}
-          animate={isDropped ? { opacity: 1, y: 0, height: 210 } : { opacity: 0, y: -200, height: 0}}
+          animate={isDropped ? { opacity: 1, y: 0, height: 210 } : { opacity: 0, y: -200, height: 0 }}
           transition={{ duration: 0.3 }}
         >
           <p>{description}</p>

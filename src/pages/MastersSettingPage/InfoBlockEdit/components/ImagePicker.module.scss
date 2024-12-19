@@ -4,10 +4,10 @@
 .originInput {
   display: flex;
   flex-direction: column;
-  min-width: 400px;
-  min-height: 400px;
+  //min-width: 400px;
+  //min-height: 400px;
   input {
-    visibility: hidden;
+    display: none;
   }
   div{
     display: flex;
@@ -15,6 +15,7 @@
     button {
       margin-right: 10px;
       box-shadow: -2px 2px 5px black;
+      max-width: 200px;
       width: auto;
       height: 25px;
       background-color: $background-color-light;
