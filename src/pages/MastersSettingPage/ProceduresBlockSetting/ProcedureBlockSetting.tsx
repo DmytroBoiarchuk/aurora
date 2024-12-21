@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Block from '../../../UI/Block/Block';
 import usersData from '../../../database/usersData';
 import Procedure from '../../MastersPage/components/ProceduresBlock/components/Procedure/Procedure';
@@ -10,6 +10,8 @@ import CreateProcedureForm from './components/CreateProcedureForm/CreateProcedur
 function ProcedureBlockSetting(): JSX.Element {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [formIsShown, setFormIsShown] = useState<boolean>(false);
+  const [droppedProcedure, setDroppedProcedure] = useState<string>('');
+
   function openFormHandler(): void {
     setFormIsShown(true);
   }
@@ -17,7 +19,13 @@ function ProcedureBlockSetting(): JSX.Element {
     <Block>
       <div className={classes.block}>
         {usersData.treatments.map((treatment) => (
-          <Procedure key={treatment.id} procedure={treatment} />
+          <Procedure
+            droppedProcedure={droppedProcedure}
+            setDroppedProcedure={setDroppedProcedure}
+            key={treatment.id}
+            procedure={treatment}
+            isSettingPage
+          />
         ))}
         <button
           onClick={openFormHandler}
@@ -30,7 +38,7 @@ function ProcedureBlockSetting(): JSX.Element {
           </motion.div>
         </button>
       </div>
-      {formIsShown && <CreateProcedureForm setFormIsShown={setFormIsShown} />}
+      <AnimatePresence>{formIsShown && <CreateProcedureForm setFormIsShown={setFormIsShown} />}</AnimatePresence>
     </Block>
   );
 }

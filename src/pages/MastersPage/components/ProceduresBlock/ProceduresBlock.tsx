@@ -10,16 +10,12 @@ import BookingConfirmed from './components/BookingConfirmed/BookingConfirmed';
 function ProceduresBlock(): JSX.Element {
   const [isBookingProcess, setIsBookingProcess] = useState<boolean>(false);
   const [isBookingConfirmed, setIsBookingConfirmed] = useState<boolean>(false);
+  const [droppedProcedure, setDroppedProcedure] = useState<string>('');
   function getAnimation(): { opacity: number; x: string; visibility: string } {
-    if (isBookingProcess && !isBookingConfirmed) {
-      return { opacity: 1, x: '-25%', visibility: 'visible' };
-    }
-    if (!isBookingProcess && isBookingConfirmed) {
-      return { opacity: 0, x: '-100%', visibility: 'hidden' };
-    }
-    if (!isBookingProcess && !isBookingConfirmed) {
-      return { opacity: 0, x: '100%', visibility: 'hidden' };
-    }
+    if (isBookingProcess && !isBookingConfirmed) return { opacity: 1, x: '-25%', visibility: 'visible'};
+    if (!isBookingProcess && isBookingConfirmed) return { opacity: 0, x: '-100%', visibility: 'hidden' };
+    // if (!isBookingProcess && !isBookingConfirmed)
+    return { opacity: 0, x: '150%', visibility: 'hidden' };
   }
 
   return (
@@ -34,7 +30,13 @@ function ProceduresBlock(): JSX.Element {
         className={classes.proceduresContainer}
       >
         {usersData.treatments.map((treatment) => (
-          <Procedure key={treatment.id} procedure={treatment} setIsBookingProcess={setIsBookingProcess} />
+          <Procedure
+            droppedProcedure={droppedProcedure}
+            setDroppedProcedure={setDroppedProcedure}
+            key={treatment.id}
+            procedure={treatment}
+            setIsBookingProcess={setIsBookingProcess}
+          />
         ))}
       </motion.div>
       <motion.div

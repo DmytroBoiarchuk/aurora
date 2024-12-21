@@ -1,4 +1,4 @@
-@import '../../../UI/variables';
+@use '../../../UI/variables' as *;
 
 .infoBlock {
   display: flex;

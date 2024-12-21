@@ -1,6 +1,6 @@
 
 export interface TreatmentsProps {
-  img: string;
+  img: string ;
   procedureName: string;
   description: string;
   id: number;

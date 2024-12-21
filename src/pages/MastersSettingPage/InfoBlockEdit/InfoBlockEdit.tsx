@@ -8,7 +8,7 @@ import ImagePicker from "./components/ImagePicker";
 
 function InfoBlockEdit(): JSX.Element {
   const [isDescriptionEditing, setIsDescriptionEditing] = useState<boolean>(false);
-  const [isBlurredDescription, setIsBlurredDescription] = useState<boolean>(false)
+  const [isBlurredDescription, setIsBlurredDescription] = useState<boolean>(false);
   const { name, description, treatments } = usersData;
   function onDescriptionEditHandler(isEditing): void {
     setIsDescriptionEditing(isEditing);

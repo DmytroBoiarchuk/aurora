@@ -34,7 +34,7 @@ const usersData: UsersDataInterface = {
         'Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla , Lash bla bla bla bla , bla. Lash bla bla bla bla blaLush bla bla bla bla bla',
       id: 1,
       procedureName: 'Lush Lift',
-      price: '30£',
+      price: '30',
       options: [1],
     },
     {
@@ -43,7 +43,7 @@ const usersData: UsersDataInterface = {
         'Brow bla bla bla bla bla , Brow bla bla bla bla , bla. Brow bla bla bla bla Brow bla bla bla bla bla',
       id: 2,
       procedureName: 'Brow Lami',
-      price: '30£',
+      price: '30',
       options: [1],
     },
     {
@@ -51,7 +51,7 @@ const usersData: UsersDataInterface = {
       description: 'Permanent hair removal',
       id: 3,
       procedureName: 'Electrolysis',
-      price: '50£/h',
+      price: '50',
       options: [0.5, 1, 1.5, 2],
     },
     {
@@ -59,7 +59,15 @@ const usersData: UsersDataInterface = {
       description: 'Two go cheaper',
       id: 4,
       procedureName: 'Lash + Brow Laminate',
-      price: '50£',
+      price: '50',
+      options: [1],
+    },
+    {
+      img: '/lashAndBrow.jpeg',
+      description: 'Two go cheaper',
+      id: 5,
+      procedureName: 'Lash + Brow Laminate2',
+      price: '502',
       options: [1],
     },
   ],

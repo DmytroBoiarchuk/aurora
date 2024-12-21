@@ -1,7 +1,9 @@
 .proceduresContainer {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   margin-bottom: 200px;
+  min-width: 1050px;
 }
 .proceduresBlock {
   flex-direction: row;

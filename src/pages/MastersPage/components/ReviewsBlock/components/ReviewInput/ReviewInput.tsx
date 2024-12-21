@@ -9,9 +9,9 @@ import { useAppSelector } from '../../../../../../hooks/reduxHooks';
 function ReviewInput(): JSX.Element {
   const { id, name, photo } = loggedInUserData;
   const rating = useAppSelector((state) => state.ratingReducer.rating);
-  function handleSubmit(e): void {
-    e.preventDefault(e);
-    const fd = new FormData(e.target);
+  function handleSubmit(e:React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
     const reviewData = Object.fromEntries(fd.entries());
     const time = new Date().toISOString();
     const reviewRequestData: ReviewProps = {

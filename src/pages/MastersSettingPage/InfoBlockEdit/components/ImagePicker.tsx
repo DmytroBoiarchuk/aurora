@@ -8,21 +8,23 @@ function ImagePicker({
   children,
   isProcedurePhotoPicking = false,
   setProcedurePickedImage = undefined,
+  defaultValue = null,
 }: {
   label?: string | undefined;
   children: React.ReactNode;
   isProcedurePhotoPicking?: boolean;
   setProcedurePickedImage?: React.Dispatch<React.SetStateAction<string>> | undefined;
+  defaultValue?: string | null;
 }): JSX.Element {
-  const currentAvatar = isProcedurePhotoPicking ? '/no-photo-img.jpg' : usersData.photo;
-  const [pickedImage, setPickedImage] = useState<string | null>(null);
+  const [pickedImage, setPickedImage] = useState<string | null>(defaultValue);
+  const currentAvatar = isProcedurePhotoPicking ? (pickedImage ?? '/no-photo-img.jpg') : usersData.photo;
   const [inputKey, setInputKey] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   function onClickPickHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
     event.preventDefault();
     inputRef.current?.click();
   }
-  function onConfirmAvatarHandler(event, isConfirmed: boolean): void {
+  function onConfirmAvatarHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, isConfirmed: boolean): void {
     event.preventDefault();
     if (isConfirmed && pickedImage) {
       usersData.photo = pickedImage;
@@ -32,15 +34,17 @@ function ImagePicker({
     }
     setPickedImage(null);
   }
-  function changeInputHandler(event: React.ChangeEvent<HTMLInputElement>): void {
-    const file = event.target?.files[0];
-    if (!file) return;
-    const fileReader = new FileReader();
-    fileReader.onload = (): void => {
-      setPickedImage(fileReader.result as string);
-      if(setProcedurePickedImage) setProcedurePickedImage(fileReader.result as string);
-    };
-    fileReader.readAsDataURL(file);
+  function onSelectPhotoHandler(event: React.ChangeEvent<HTMLInputElement>): void {
+    if(event.target.files) {
+      const file = event.target?.files[0];
+      if (!file) return;
+      const fileReader = new FileReader();
+      fileReader.onload = (): void => {
+        setPickedImage(fileReader.result as string);
+        if (setProcedurePickedImage) setProcedurePickedImage(fileReader.result as string);
+      };
+      fileReader.readAsDataURL(file);
+    }
   }
   return (
     <div className={classes.originInput}>
@@ -55,7 +59,7 @@ function ImagePicker({
         name="avatar"
         accept="image/png, image/jpeg"
         type="file"
-        onChange={changeInputHandler}
+        onChange={onSelectPhotoHandler}
       />
       <div>
         <button onClick={(event): void => onClickPickHandler(event)}>{children}</button>
