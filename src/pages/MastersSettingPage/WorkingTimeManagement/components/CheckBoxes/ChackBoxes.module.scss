@@ -1,0 +1,9 @@
+@use '../../../../../UI/variables' as *;
+@use '../../../../../assets/fonts/fonts' as *;
+
+.checkBoxesContainer {
+  display: flex;
+  label{
+    margin-left: 20px;
+  }
+}

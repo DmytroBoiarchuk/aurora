@@ -8,12 +8,16 @@ import MediumButton from '../../UI/M-Button/MediumButton';
 import SmallButton from '../../UI/S-Button/SmallButton';
 import { setTime } from '../../store/modules/bookingReducer/reducer';
 
-function TimePicker({ setIsDatePicked }: React.Dispatch<React.SetStateAction<number>>): JSX.Element {
+function TimePicker({
+  setIsDatePicked,
+}: {
+  setIsDatePicked: React.Dispatch<React.SetStateAction<boolean>>;
+}): JSX.Element {
   const [active, setActive] = useState<number>(0);
   const dispatch = useAppDispatch();
   const bookingData = useAppSelector((state) => state.bookingReducer);
   function findAvailableTime(): number[] {
-    const availableTime = usersData.workingDates.find((day) => new Date(day.day).toISOString() === bookingData.date);
+    const availableTime = usersData.workingDates.find((day) => day.day === bookingData.date);
     const timesArray: number[] = [];
     if (availableTime)
       for (let i = 0; i < availableTime.timeFrom.length; i++) {
@@ -25,8 +29,7 @@ function TimePicker({ setIsDatePicked }: React.Dispatch<React.SetStateAction<num
       }
     return timesArray;
   }
-  function backToCalendarHandler(e): void {
-    e.preventDefault();
+  function backToCalendarHandler(): void {
     setActive(0);
     setIsDatePicked((prevState) => !prevState);
     dispatch(setTime(''));
@@ -34,7 +37,7 @@ function TimePicker({ setIsDatePicked }: React.Dispatch<React.SetStateAction<num
   return (
     <>
       <span className={classes.backButton}>
-        <SmallButton onClick={backToCalendarHandler}>
+        <SmallButton type='button' onClick={backToCalendarHandler}>
           <MdArrowBackIosNew />
         </SmallButton>
       </span>

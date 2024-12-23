@@ -11,9 +11,8 @@ import TimePicker from '../../../../../../components/TimePicker/TimePicker';
 import usersData from "../../../../../../database/usersData";
 import {formatDuration} from "../../../../../../assets/functions/functions";
 import {setBooking} from "../../../../../../store/modules/bookingReducer/reducer";
-import BookingConfirmed from "../BookingConfirmed/BookingConfirmed";
 
-function Booking({ setIsBookingProcess, setIsBookingConfirmed }: React.Dispatch<React.SetStateAction<boolean>>): JSX.Element {
+function Booking({ setIsBookingProcess, setIsBookingConfirmed }: {setIsBookingProcess :React.Dispatch<React.SetStateAction<boolean>>, setIsBookingConfirmed:React.Dispatch<React.SetStateAction<boolean>> } ): JSX.Element {
   const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
 
   const bookingInfo = useAppSelector((state) => state.bookingReducer);

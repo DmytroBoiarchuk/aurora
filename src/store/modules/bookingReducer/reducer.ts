@@ -9,7 +9,7 @@ const initialState = {
     date:'',
     time:'',
     procedureName:'',
-    duration: undefined
+    duration: 1,
 };
 
 const bookingSlice = createSlice({
