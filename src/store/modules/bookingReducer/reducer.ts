@@ -1,7 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {BookingCustomerDetailsProps, BookingProcedureProps} from "../../../assets/interfaces/interfaces";
+import { BookingReducerInterface } from '../../../assets/interfaces/reduxInterfaces';
 
-const initialState = {
+const initialState: BookingReducerInterface = {
     name:'',
     surname: '',
     telephoneNumber: '',

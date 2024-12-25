@@ -8,15 +8,20 @@ import SmallButton from '../../../../../../UI/S-Button/SmallButton';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/reduxHooks';
 import Input from '../../../../../../UI/Input/Input';
 import TimePicker from '../../../../../../components/TimePicker/TimePicker';
-import usersData from "../../../../../../database/usersData";
-import {formatDuration} from "../../../../../../assets/functions/functions";
-import {setBooking} from "../../../../../../store/modules/bookingReducer/reducer";
+import usersData from '../../../../../../database/usersData';
+import { formatDuration } from '../../../../../../assets/functions/functions';
+import { setBooking } from '../../../../../../store/modules/bookingReducer/reducer';
 
-function Booking({ setIsBookingProcess, setIsBookingConfirmed }: {setIsBookingProcess :React.Dispatch<React.SetStateAction<boolean>>, setIsBookingConfirmed:React.Dispatch<React.SetStateAction<boolean>> } ): JSX.Element {
+interface BookingProps {
+  setIsBookingProcess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsBookingConfirmed: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): JSX.Element {
   const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
 
   const bookingInfo = useAppSelector((state) => state.bookingReducer);
-  const isMultipleOptions = usersData.treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
+  const isMultipleOptions =
+    usersData.treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
   const dispatch = useAppDispatch();
   function backButtonHandler(e): void {
     e.preventDefault();
@@ -33,12 +38,16 @@ function Booking({ setIsBookingProcess, setIsBookingConfirmed }: {setIsBookingPr
   }
   return (
     <div className={classes.bookingContainer}>
-      <form  onSubmit={submitFormHandler}>
+      <form onSubmit={submitFormHandler}>
         <SmallButton classNames={classes.backButtonStyles} onClick={backButtonHandler}>
           <MdArrowBackIosNew />
         </SmallButton>
         <div className={classes.leftSide}>
-          <h1 className={classes.header}>{!isMultipleOptions? bookingInfo.procedureName : `${bookingInfo.procedureName  }(${formatDuration(bookingInfo.duration)})`}</h1>
+          <h1 className={classes.header}>
+            {!isMultipleOptions
+              ? bookingInfo.procedureName
+              : `${bookingInfo.procedureName}(${formatDuration(bookingInfo.duration)})`}
+          </h1>
 
           <div className={classes.nameBlock}>
             <Input required placeholder="Enter your name" id="customerName" type="text" name="name" />
@@ -72,7 +81,6 @@ function Booking({ setIsBookingProcess, setIsBookingConfirmed }: {setIsBookingPr
           }
           transition={{ duration: 0.5 }}
         >
-
           <TimePicker setIsDatePicked={setIsDatePicked} />
         </motion.div>
       </form>

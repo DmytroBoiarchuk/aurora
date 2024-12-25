@@ -4,9 +4,12 @@ import 'react-day-picker/style.css';
 import './MyDatePicker.scss';
 import usersData from '../../database/usersData';
 import MediumButton from '../../UI/M-Button/MediumButton';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setDate } from '../../store/modules/bookingReducer/reducer';
 import { ScheduleInterface } from '../../assets/interfaces/interfaces';
+import { setWorkingDays } from '../../store/modules/workingScheduleReducer/reducer';
+import { StateInterface, WorkingScheduleReducerInterface } from '../../assets/interfaces/reduxInterfaces';
+import log from 'eslint-plugin-react/lib/util/log';
 
 const modes = ['everyDay', 'WorkingDays', 'Weekends', 'custom'];
 function MyDatePicker({
@@ -19,6 +22,9 @@ function MyDatePicker({
   howManyMonthsIsPlaning?: number | undefined;
 }): JSX.Element {
   const { workingDates } = usersData;
+  const customWeekDays = useAppSelector(
+    (state: StateInterface): WorkingScheduleReducerInterface => state.workingScheduleReducer
+  ).customWorkingDaysSchedule;
   const dispatch = useAppDispatch();
   function defineDayPickerMode(): 'multiple' | 'single' {
     if (modes.some((mode) => mode === chosenOption)) {
@@ -26,10 +32,10 @@ function MyDatePicker({
     }
     return 'single';
   }
+
   const [selected, setSelected] = useState<
     typeof chosenOption extends undefined ? Date | undefined : Date[] | undefined
-  >(chosenOption ? [] : undefined);
-
+  >(chosenOption ? [...usersData.workingDates.map((date) => new Date(date.day))] : undefined);
   // prefilled working days
   useEffect(() => {
     if (howManyMonthsIsPlaning) {
@@ -49,7 +55,7 @@ function MyDatePicker({
       if (chosenOption === 'WorkingDays') {
         while (d.getTime() <= to.getTime()) {
           const day = new Date(d);
-          if (day.getDay() >= 0 && day.getDay() < 5) dates.push(day);
+          if (day.getDay() >= 1 && day.getDay() < 6) dates.push(day);
           d.setDate(d.getDate() + 1);
         }
       }
@@ -57,13 +63,22 @@ function MyDatePicker({
       if (chosenOption === 'Weekends') {
         while (d.getTime() <= to.getTime()) {
           const day = new Date(d);
-          if (day.getDay() > 4) dates.push(day);
+          if (day.getDay() === 6 || day.getDay() === 0) dates.push(day);
           d.setDate(d.getDate() + 1);
         }
       }
-      setSelected(dates);
+      if (chosenOption === 'custom') {
+        while (d.getTime() <= to.getTime()) {
+          const day = new Date(d);
+          if (customWeekDays[day.getDay()])
+            dates.push(day);
+          d.setDate(d.getDate() + 1);
+        }
+      }
+      if (dates.length !== 0) setSelected(dates);
     }
-  }, [chosenOption, howManyMonthsIsPlaning]);
+
+  }, [chosenOption, howManyMonthsIsPlaning, customWeekDays]);
 
   // calc disabled dates intervals
   function calcDisabledDaysIntervals(date: Date): boolean {
@@ -84,7 +99,7 @@ function MyDatePicker({
   }
 
   function confirmHandler(): void {
-    // confirm choosing working days
+    //  confirm choosing day for booking treatment
     if (!chosenOption) {
       const summerTimeRefactoring = new Date(
         (selected as unknown as Date).getTime() - (selected as unknown as Date).getTimezoneOffset() * 60000
@@ -93,7 +108,7 @@ function MyDatePicker({
         .split('T')[0];
       dispatch(setDate(summerTimeRefactoring));
 
-      //  confirm choosing day for booking treatment
+      //  confirm choosing working days
     } else {
       const newSchedule = selected?.map(
         (date): ScheduleInterface => ({
@@ -102,12 +117,17 @@ function MyDatePicker({
           timeTo: [15, 22],
         })
       );
+      if (newSchedule) dispatch(setWorkingDays(newSchedule));
+
+      // fetch PUT instead
       usersData.workingDates = newSchedule!;
     }
     if (setIsDatePicked) setIsDatePicked(true);
   }
+
+  console.log(customWeekDays);
   return (
-    <>
+    <div>
       <DayPicker
         mode={defineDayPickerMode() as typeof chosenOption extends undefined ? 'single' : 'multiple'}
         selected={selected}
@@ -118,6 +138,7 @@ function MyDatePicker({
         max={chosenOption ? Infinity : undefined}
         fixedWeeks
         required
+        weekStartsOn={1}
       />
       <MediumButton
         disabled={typeof selected === 'undefined'}
@@ -127,7 +148,7 @@ function MyDatePicker({
       >
         Confirm Date
       </MediumButton>
-    </>
+    </div>
   );
 }
 

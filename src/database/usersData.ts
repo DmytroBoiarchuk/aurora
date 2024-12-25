@@ -118,7 +118,7 @@ const usersData: UsersDataInterface = {
   clientsId: [87455122154, 9979446655, 64546546465, 100000000],
   workingDates: [
     { day: '2024-12-28', timeFrom: [14, 15.5], timeTo: [15, 22] },
-    { day: '2024-12-01', timeFrom: [14], timeTo: [22] },
+    { day: '2025-01-01', timeFrom: [14], timeTo: [22] },
     { day: '2024-12-29', timeFrom: [9], timeTo: [23.5] },
   ],
   currency: '£',

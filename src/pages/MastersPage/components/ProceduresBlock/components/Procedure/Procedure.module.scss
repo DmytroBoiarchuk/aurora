@@ -38,21 +38,11 @@
 
   }
 }
-.moreAboutButton {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.slideDownButton{
   height: 40px;
-  margin: 0;
-  border: 0;
-  border-radius: 0 0 6px 6px;
-  transition: transform 0.3s ease;
   background-color: $background-color-light;
-  &:hover {
-  }
 }
+
 .imgBox {
   margin: 10px;
   width: 200px;

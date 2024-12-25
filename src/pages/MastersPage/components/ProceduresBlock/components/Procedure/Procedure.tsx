@@ -11,6 +11,7 @@ import { formatDuration } from '../../../../../../assets/functions/functions';
 import { MdEdit } from "react-icons/md";
 import CreateProcedureForm
   from '../../../../../MastersSettingPage/ProceduresBlockSetting/components/CreateProcedureForm/CreateProcedureForm';
+import SlideDownButton from '../../../../../../UI/SlideDownButton/SlideDownButton';
 
 function Procedure({
   procedure: { img, procedureName, description, price, options, id },
@@ -87,10 +88,7 @@ function Procedure({
         >
           <p>{description}</p>
         </motion.div>
-        <button className={classes.moreAboutButton} onClick={toggleDropdown}>
-          <span>More about</span>
-          {isDropped ? <RiArrowUpWideLine /> : <RiArrowDownWideLine />}
-        </button>
+        <SlideDownButton classNames={classes.slideDownButton} isDropped={isDropped} toggleDropdown={toggleDropdown} >More about</SlideDownButton>
       </div>
     </div>
       <AnimatePresence>{formIsShown && <CreateProcedureForm isEditing procedure={{ img, procedureName, description, price, options, id }} setFormIsShown={setFormIsShown} />}</AnimatePresence>

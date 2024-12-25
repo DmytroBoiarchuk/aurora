@@ -1,0 +1,21 @@
+@use '../../../../../UI/variables' as *;
+@use '../../../../../assets/fonts/fonts' as *;
+
+
+.choosingMonth{
+  margin: 20px 0 5px 20px;
+  display: flex;
+  flex-direction: row;
+}
+.timePlaningBlock{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 500px;
+  margin: 0 20px 0 20px;
+  height: 356px;
+  border-radius: 6px;
+  padding: 10px 15px 10px 10px;
+  background: $background-color-dark;
+  overflow: auto;
+}

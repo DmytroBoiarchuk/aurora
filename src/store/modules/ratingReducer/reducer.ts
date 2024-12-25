@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { RatingReducerInterface } from '../../../assets/interfaces/reduxInterfaces';
 
-const initialState = {
+const initialState: RatingReducerInterface = {
     rating: 0,
 };
 
