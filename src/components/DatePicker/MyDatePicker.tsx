@@ -9,19 +9,19 @@ import { setDate } from '../../store/modules/bookingReducer/reducer';
 import { ScheduleInterface } from '../../assets/interfaces/interfaces';
 import { setWorkingDays } from '../../store/modules/workingScheduleReducer/reducer';
 import { StateInterface, WorkingScheduleReducerInterface } from '../../assets/interfaces/reduxInterfaces';
-import log from 'eslint-plugin-react/lib/util/log';
 
 const modes = ['everyDay', 'WorkingDays', 'Weekends', 'custom'];
 function MyDatePicker({
   setIsDatePicked = undefined,
   chosenOption = undefined,
   howManyMonthsIsPlaning = undefined,
+  setChosenOption = undefined,
 }: {
   setIsDatePicked?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   chosenOption?: string | undefined;
   howManyMonthsIsPlaning?: number | undefined;
+  setChosenOption? : React.Dispatch<React.SetStateAction<string>> | undefined;
 }): JSX.Element {
-  const { workingDates } = usersData;
   const customWeekDays = useAppSelector(
     (state: StateInterface): WorkingScheduleReducerInterface => state.workingScheduleReducer
   ).customWorkingDaysSchedule;
@@ -33,9 +33,11 @@ function MyDatePicker({
     return 'single';
   }
 
+  // Array of selected dates
   const [selected, setSelected] = useState<
     typeof chosenOption extends undefined ? Date | undefined : Date[] | undefined
   >(chosenOption ? [...usersData.workingDates.map((date) => new Date(date.day))] : undefined);
+
   // prefilled working days
   useEffect(() => {
     if (howManyMonthsIsPlaning) {
@@ -44,45 +46,19 @@ function MyDatePicker({
       const dates: Date[] = [];
       to.setMonth(to.getMonth() + howManyMonthsIsPlaning);
       const d = from;
-      // every day working checkbox
-      if (chosenOption === 'everyDay') {
-        while (d.getTime() <= to.getTime()) {
-          dates.push(new Date(d));
-          d.setDate(d.getDate() + 1);
-        }
+      while (d.getTime() <= to.getTime()) {
+        const day = new Date(d);
+        if (customWeekDays[day.getDay()]) dates.push(day);
+        d.setDate(d.getDate() + 1);
       }
-      // mon - fri working days checkbox
-      if (chosenOption === 'WorkingDays') {
-        while (d.getTime() <= to.getTime()) {
-          const day = new Date(d);
-          if (day.getDay() >= 1 && day.getDay() < 6) dates.push(day);
-          d.setDate(d.getDate() + 1);
-        }
-      }
-      // sut - sun working days checkbox
-      if (chosenOption === 'Weekends') {
-        while (d.getTime() <= to.getTime()) {
-          const day = new Date(d);
-          if (day.getDay() === 6 || day.getDay() === 0) dates.push(day);
-          d.setDate(d.getDate() + 1);
-        }
-      }
-      if (chosenOption === 'custom') {
-        while (d.getTime() <= to.getTime()) {
-          const day = new Date(d);
-          if (customWeekDays[day.getDay()])
-            dates.push(day);
-          d.setDate(d.getDate() + 1);
-        }
-      }
+      if (customWeekDays.every((a) => !a)) setSelected(dates);
       if (dates.length !== 0) setSelected(dates);
     }
-
-  }, [chosenOption, howManyMonthsIsPlaning, customWeekDays]);
+  }, [howManyMonthsIsPlaning, customWeekDays]);
 
   // calc disabled dates intervals
   function calcDisabledDaysIntervals(date: Date): boolean {
-    const availableDates = workingDates.map((workingDate) => new Date(workingDate.day));
+    const availableDates = usersData.workingDates.map((workingDate) => new Date(workingDate.day));
     return !availableDates.some(
       (availableDate) =>
         availableDate.getDate() === date.getDate() &&
@@ -125,13 +101,23 @@ function MyDatePicker({
     if (setIsDatePicked) setIsDatePicked(true);
   }
 
-  console.log(customWeekDays);
+  function onSelectDateHandler(date: Date | Date[] | undefined): void  {
+    if (setChosenOption) setChosenOption('custom');
+    let newDates: Date[] = [];
+    if (Array.isArray(date)) {
+      newDates = date;
+    } else if (date) {
+      newDates = [date];
+    }
+    setSelected((prevState) => [...prevState?.filter(p => p === date) || [], ...newDates]);
+  }
+
   return (
     <div>
       <DayPicker
         mode={defineDayPickerMode() as typeof chosenOption extends undefined ? 'single' : 'multiple'}
         selected={selected}
-        onSelect={setSelected}
+        onSelect={onSelectDateHandler}
         disabled={!chosenOption ? calcDisabledDaysIntervals : disableOutdatedDaysIntervals}
         startMonth={new Date()}
         min={1}

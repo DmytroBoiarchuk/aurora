@@ -6,12 +6,9 @@ import SlideDownButton from '../../../../../UI/SlideDownButton/SlideDownButton';
 import { useAppDispatch } from '../../../../../hooks/reduxHooks';
 import { setCustomWorkingDaysSchedule } from '../../../../../store/modules/workingScheduleReducer/reducer';
 
-interface CheckBoxesProps {
-  chosenOption: string;
-  setChosenOption: React.Dispatch<React.SetStateAction<string>>;
-  setHowManyMonthsIsPlaning: React.Dispatch<React.SetStateAction<number>>;
-}
 const maxMonthsPlaning = 12;
+
+// renders options for selection of how many months in advance you want to plan your schedule
 function getMonthsOptionsArray(): React.JSX.Element[] {
   const array = [];
   for (let i = 0; i < maxMonthsPlaning; i++) {
@@ -23,6 +20,8 @@ function getMonthsOptionsArray(): React.JSX.Element[] {
   }
   return array;
 }
+
+// animation variants
 const listItemVariants = {
   hidden: { opacity: 0, y: -20 },
   visible: (i: number) => ({
@@ -42,12 +41,19 @@ const listItemVariants = {
     },
   }),
 };
+
+interface CheckBoxesProps {
+  chosenOption: string;
+  setChosenOption: React.Dispatch<React.SetStateAction<string>>;
+  setHowManyMonthsIsPlaning: React.Dispatch<React.SetStateAction<number>>;
+}
 function CheckBoxes({ chosenOption, setChosenOption, setHowManyMonthsIsPlaning }: CheckBoxesProps): JSX.Element {
   const [chosenWeekDays, setChosenWeekDays] = useState<boolean[]>(Array(7).fill(false));
   const [isWeekDaysListDropped, setIsWeekDaysListDropped] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  function changeWeekDaysHandler(index: number): void {
-    dispatch(setCustomWorkingDaysSchedule(index));
+  function changeWeekDaysHandler(index: number, state: boolean): void {
+    setChosenOption('custom');
+    dispatch(setCustomWorkingDaysSchedule({i:index, value: state}));
     setChosenWeekDays((prevState) => {
       const newState = [...prevState];
       newState[index] = !newState[index];
@@ -57,6 +63,14 @@ function CheckBoxes({ chosenOption, setChosenOption, setHowManyMonthsIsPlaning }
   function toggleDropDown(): void {
     setIsWeekDaysListDropped((prevState) => !prevState);
   }
+  function setChosenWeekDaysFunction(indexes: number[], word: string): void {
+    weekDays.forEach((_, index: number) =>
+      dispatch(setCustomWorkingDaysSchedule({ i: index, value: indexes.includes(index) }))
+    );
+    setChosenOption(word);
+    setChosenWeekDays((prevState) => [...prevState].map((_, index) => indexes.includes(index)));
+  }
+
   return (
     <>
       <div>
@@ -74,7 +88,7 @@ function CheckBoxes({ chosenOption, setChosenOption, setHowManyMonthsIsPlaning }
         <label>
           <input
             checked={chosenOption === 'everyDay'}
-            onChange={(): void => setChosenOption('everyDay')}
+            onChange={(): void => setChosenWeekDaysFunction([0, 1, 2, 3, 4, 5, 6], 'everyDay')}
             name="everySingleDay"
             type="checkbox"
           />
@@ -83,7 +97,7 @@ function CheckBoxes({ chosenOption, setChosenOption, setHowManyMonthsIsPlaning }
         <label>
           <input
             checked={chosenOption === 'WorkingDays'}
-            onChange={(): void => setChosenOption('WorkingDays')}
+            onChange={(): void => setChosenWeekDaysFunction([1, 2, 3, 4, 5], 'WorkingDays')}
             name="everyWorkingDay"
             type="checkbox"
           />
@@ -92,7 +106,7 @@ function CheckBoxes({ chosenOption, setChosenOption, setHowManyMonthsIsPlaning }
         <label>
           <input
             checked={chosenOption === 'Weekends'}
-            onChange={(): void => setChosenOption('Weekends')}
+            onChange={(): void => setChosenWeekDaysFunction([0, 6], 'Weekends')}
             name="everyWeekend"
             type="checkbox"
           />
@@ -117,14 +131,14 @@ function CheckBoxes({ chosenOption, setChosenOption, setHowManyMonthsIsPlaning }
                   <motion.label
                     initial="hidden"
                     animate="visible"
-                    exit='exit'
+                    exit="exit"
                     variants={listItemVariants}
                     htmlFor={`checkbox-${index}`}
                     custom={index}
                     key={day}
                   >
                     <input
-                      onChange={(): void => changeWeekDaysHandler(index)}
+                      onChange={(): void => changeWeekDaysHandler(index, !chosenWeekDays[index] )}
                       type="checkbox"
                       checked={chosenWeekDays[index]}
                       id={`checkbox-${index}`}

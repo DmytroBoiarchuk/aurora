@@ -16,7 +16,11 @@ function WorkingTimeManagement(): JSX.Element {
         setChosenOption={setChosenOption}
       />
       <div className={classes.blockStyle}>
-        <MyDatePicker howManyMonthsIsPlaning={howManyMonthsIsPlaning} chosenOption={chosenOption} />
+        <MyDatePicker
+          howManyMonthsIsPlaning={howManyMonthsIsPlaning}
+          chosenOption={chosenOption}
+          setChosenOption={setChosenOption}
+        />
         <TimePlaning howManyMonthsIsPlaning={howManyMonthsIsPlaning} />
       </div>
     </Block>

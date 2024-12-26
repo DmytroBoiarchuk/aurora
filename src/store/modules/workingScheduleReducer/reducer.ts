@@ -12,10 +12,10 @@ const workingScheduleSlice = createSlice({
   name: 'workingSchedule',
   initialState,
   reducers:{
-    setCustomWorkingDaysSchedule: (state, action: PayloadAction<number>) => {
+    setCustomWorkingDaysSchedule: (state, action: PayloadAction<{i: number, value: boolean}>) => {
       const newState = {...state};
       newState.customWorkingDaysSchedule = state.customWorkingDaysSchedule.map((value, index) =>
-        index === action.payload ? !value : value
+        index === action.payload.i ? action.payload.value : value
       );
       return newState;
     },
