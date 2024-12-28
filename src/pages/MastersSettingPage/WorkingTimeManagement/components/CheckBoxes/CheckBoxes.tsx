@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import classes from './ChackBoxes.module.scss';
-import { weekDays } from '../TimaPlaning/TimePlaning';
 import SlideDownButton from '../../../../../UI/SlideDownButton/SlideDownButton';
 import { useAppDispatch } from '../../../../../hooks/reduxHooks';
 import { setCustomWorkingDaysSchedule } from '../../../../../store/modules/workingScheduleReducer/reducer';
+import { weekDays } from '../../../../../assets/constants/constants';
 
 const maxMonthsPlaning = 12;
 

@@ -1,0 +1,16 @@
+@use '../../../../../../../../assets/fonts/fonts' as *;
+@use '../../../../../../../../UI/variables' as *;
+
+.customSelect{
+  display: flex;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+  align-items: center;
+  select{
+    height: 20px;
+    font-size: 12px;
+  }
+  button{
+    margin-left: 2px;
+  }
+}

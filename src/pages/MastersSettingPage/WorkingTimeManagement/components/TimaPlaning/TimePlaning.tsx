@@ -5,30 +5,9 @@ import DayIcon from './components/DayIcon/DayIcon';
 import { ScheduleInterface } from '../../../../../assets/interfaces/interfaces';
 import { StateInterface } from '../../../../../assets/interfaces/reduxInterfaces';
 import { formatDate } from '../../../../../assets/functions/functions';
+import { allMonths, weekDays } from '../../../../../assets/constants/constants';
 
-export const weekDays: string[] = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-] as const;
-const allMonths: string[] = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-] as const;
+
 
 // calc which month options must be rendered and in which order
 function calcCurrentSetOfMonth(monthsPlanning: number): string[] {
@@ -51,12 +30,11 @@ function TimePlaning({ howManyMonthsIsPlaning }: TimePlaningProps): JSX.Element 
   );
   const months: string[] = calcCurrentSetOfMonth(howManyMonthsIsPlaning+1);
   const [selectedMonth, setSelectedMonth] = useState<number | undefined>(undefined);
-
   return (
     <div>
       <div className={classes.choosingMonth}>
         <label>Show month</label>
-        <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => setSelectedMonth(e.currentTarget.value? +e.currentTarget.value : undefined)}>
+        <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => setSelectedMonth(e.currentTarget.value !== undefined? +e.currentTarget.value : undefined)}>
           <option>Show All</option>
           {months.map((month) => (
             <option key={month} value={allMonths.indexOf(month)}>
@@ -69,11 +47,11 @@ function TimePlaning({ howManyMonthsIsPlaning }: TimePlaningProps): JSX.Element 
         {[...workingSchedule]
           .sort((a: ScheduleInterface, b: ScheduleInterface): 1 | -1 => (a.day > b.day ? 1 : -1))
           .filter((a: ScheduleInterface): boolean =>
-            selectedMonth ? new Date(a.day).getMonth() === selectedMonth : true
+            selectedMonth !== undefined? new Date(a.day).getMonth() === selectedMonth : true
           )
           .map(
-            (schedule: ScheduleInterface): JSX.Element => (
-              <DayIcon key={schedule.day}>
+            (schedule: ScheduleInterface, index:number): JSX.Element => (
+              <DayIcon key={schedule.day} workingDay={schedule} workingDayIndex={index} >
                 {formatDate(schedule.day)}
                 <br />
                 {`(${weekDays[new Date(schedule.day).getDay()]})`}

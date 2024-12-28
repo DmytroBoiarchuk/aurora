@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ScheduleInterface } from '../../../assets/interfaces/interfaces';
 import usersData from '../../../database/usersData';
 import { WorkingScheduleReducerInterface } from '../../../assets/interfaces/reduxInterfaces';
@@ -11,9 +11,9 @@ const initialState: WorkingScheduleReducerInterface = {
 const workingScheduleSlice = createSlice({
   name: 'workingSchedule',
   initialState,
-  reducers:{
-    setCustomWorkingDaysSchedule: (state, action: PayloadAction<{i: number, value: boolean}>) => {
-      const newState = {...state};
+  reducers: {
+    setCustomWorkingDaysSchedule: (state, action: PayloadAction<{ i: number; value: boolean }>) => {
+      const newState = { ...state };
       newState.customWorkingDaysSchedule = state.customWorkingDaysSchedule.map((value, index) =>
         index === action.payload.i ? action.payload.value : value
       );
@@ -21,9 +21,20 @@ const workingScheduleSlice = createSlice({
     },
     setWorkingDays: (state, action: PayloadAction<ScheduleInterface[]>) => {
       state.chosenDays = action.payload;
-    }
-  }
+    },
+    deleteInterval(state, action: PayloadAction<{ dayIndex: number; intervalIndex: number }>) {
+      state.chosenDays = state.chosenDays.map((day,index) =>
+        index === action.payload.dayIndex
+          ? {
+              day: day.day,
+              timeFrom: day.timeFrom.filter((_, i) => i !== action.payload.intervalIndex),
+              timeTo: day.timeTo.filter((_, i) => i !== action.payload.intervalIndex),
+            }
+          : day
+      );
+    },
+  },
 });
-export const {setWorkingDays,setCustomWorkingDaysSchedule} = workingScheduleSlice.actions;
+export const { setWorkingDays, setCustomWorkingDaysSchedule , deleteInterval} = workingScheduleSlice.actions;
 
 export default workingScheduleSlice.reducer;

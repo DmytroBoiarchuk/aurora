@@ -1,11 +1,21 @@
 @use '../../../../../../../UI/variables' as *;
 @use '../../../../../../../assets/fonts/fonts' as *;
 .dayIcon{
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  width: 150px;
-  height: 50px;
+  width: 200px;
+  height: 110px;
   background-color: $primary-light;
   margin: 2px 2px 2px 2px;
   border-radius: 6px;
   padding: 5px;
+}
+.intervalsWrapper{
+  border: 1px inset;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 120px;
 }

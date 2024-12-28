@@ -7,6 +7,7 @@ import TimeSlot from './components/TimeSlot/TimeSlot';
 import MediumButton from '../../UI/M-Button/MediumButton';
 import SmallButton from '../../UI/S-Button/SmallButton';
 import { setTime } from '../../store/modules/bookingReducer/reducer';
+import { findAvailableTime } from '../../assets/functions/functions';
 
 function TimePicker({
   setIsDatePicked,
@@ -16,19 +17,6 @@ function TimePicker({
   const [active, setActive] = useState<number>(0);
   const dispatch = useAppDispatch();
   const bookingData = useAppSelector((state) => state.bookingReducer);
-  function findAvailableTime(): number[] {
-    const availableTime = usersData.workingDates.find((day) => day.day === bookingData.date);
-    const timesArray: number[] = [];
-    if (availableTime)
-      for (let i = 0; i < availableTime.timeFrom.length; i++) {
-        const windows: number = availableTime.timeTo[i] - availableTime.timeFrom[i];
-        for (let j = 0; j < windows; j += 0.5) {
-          if (!(availableTime.timeFrom[i] + bookingData.duration + j > availableTime.timeTo[i]))
-            timesArray.push(availableTime.timeFrom[i] + j);
-        }
-      }
-    return timesArray;
-  }
   function backToCalendarHandler(): void {
     setActive(0);
     setIsDatePicked((prevState) => !prevState);
@@ -42,7 +30,7 @@ function TimePicker({
         </SmallButton>
       </span>
       <div className={classes.timePickerContainer}>
-        {findAvailableTime().map((slot) => (
+        {findAvailableTime(bookingData, bookingData.date).map((slot) => (
           <TimeSlot key={slot} active={active} setActive={setActive} time={slot} />
         ))}
       </div>
