@@ -1,3 +1,4 @@
 1. add time picker
 2. Fix bug with reducer (add new action)
 3. Migrate database to redux store
+4. Fix time availability when booking ( must be every 15 minutes )

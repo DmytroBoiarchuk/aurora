@@ -24,9 +24,9 @@ function MyDatePicker({
   setChosenOption?: React.Dispatch<React.SetStateAction<string>> | undefined;
 }): JSX.Element {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const customWeekDays = useAppSelector(
+  const workingScheduleState = useAppSelector(
     (state: StateInterface): WorkingScheduleReducerInterface => state.workingScheduleReducer
-  ).customWorkingDaysSchedule;
+  );
   const bookingData = useAppSelector((state) => state.bookingReducer);
 
   const dispatch = useAppDispatch();
@@ -52,13 +52,13 @@ function MyDatePicker({
       const d = from;
       while (d.getTime() <= to.getTime()) {
         const day = new Date(d);
-        if (customWeekDays[day.getDay()]) dates.push(day);
+        if (workingScheduleState.customWorkingDaysSchedule[day.getDay()]) dates.push(day);
         d.setDate(d.getDate() + 1);
       }
-      if (customWeekDays.every((a) => !a)) setSelected(dates);
+      if (workingScheduleState.customWorkingDaysSchedule.every((a) => !a)) setSelected(dates);
       if (dates.length !== 0) setSelected(dates);
     } else setIsFirstRender(false);
-  }, [howManyMonthsIsPlaning, customWeekDays]);
+  }, [howManyMonthsIsPlaning, workingScheduleState.customWorkingDaysSchedule]);
 
   // calc disabled dates intervals
   function calcDisabledDaysIntervals(date: Date): boolean {
@@ -92,13 +92,16 @@ function MyDatePicker({
 
       //  confirm choosing working days
     } else {
-      const newSchedule = selected?.map(
-        (date): ScheduleInterface => ({
+      const newSchedule = selected?.map((date): ScheduleInterface => {
+        const previouslyAddedDays = workingScheduleState.chosenDays.find(
+          (weekDay) => weekDay.day === date.toISOString().split('T')[0]
+        );
+        return {
           day: new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0],
-          timeFrom: [0],
-          timeTo: [0],
-        })
-      );
+          timeFrom: previouslyAddedDays?.timeFrom || [0],
+          timeTo: previouslyAddedDays?.timeTo || [0],
+        };
+      });
       if (newSchedule) dispatch(setWorkingDays(newSchedule));
 
       // fetch PUT instead

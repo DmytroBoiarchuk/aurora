@@ -5,6 +5,7 @@ import classes from './TimeInterval.module.scss';
 import usersData from '../../../../../../../../database/usersData';
 import { useAppDispatch } from '../../../../../../../../hooks/reduxHooks';
 import { deleteInterval } from '../../../../../../../../store/modules/workingScheduleReducer/reducer';
+import { ScheduleInterface } from '../../../../../../../../assets/interfaces/interfaces';
 
 interface TimeIntervalProps {
   from: number;
@@ -26,11 +27,15 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
 
   function onDeleteIntervalHandler(): void {
     dispatch(deleteInterval({ dayIndex: workingDayIndex, intervalIndex: indexOfInterval }));
-    usersData.workingDates[workingDayIndex] = {
+    const sortedData = usersData.workingDates.sort((a: ScheduleInterface, b: ScheduleInterface): 1 | -1 =>
+      a.day > b.day ? 1 : -1
+    );
+    sortedData[workingDayIndex] = {
       day: usersData.workingDates[workingDayIndex].day,
       timeFrom: usersData.workingDates[workingDayIndex].timeFrom.filter((_, index) => index !== workingDayIndex),
       timeTo: usersData.workingDates[workingDayIndex].timeTo.filter((_, index) => index !== workingDayIndex),
     };
+    usersData.workingDates = sortedData;
   }
   function setTimeHandler(
     setFor: 'hours' | 'minutes',
@@ -64,7 +69,7 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           timeFrom: usersData.workingDates[workingDayIndex].timeFrom,
           timeTo: usersData.workingDates[workingDayIndex].timeTo.with(
             indexOfInterval,
-            +e.target.value + +timeFrom.minutes / 60
+            +e.target.value + +timeTo.minutes / 60
           ),
         };
         //
@@ -81,7 +86,7 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           day: usersData.workingDates[workingDayIndex].day,
           timeFrom: usersData.workingDates[workingDayIndex].timeFrom.with(
             indexOfInterval,
-            +e.target.value + +timeFrom.minutes / 60
+            +e.target.value / 60 + +timeFrom.hours
           ),
           timeTo: usersData.workingDates[workingDayIndex].timeTo,
         };
@@ -97,7 +102,7 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           timeFrom: usersData.workingDates[workingDayIndex].timeFrom,
           timeTo: usersData.workingDates[workingDayIndex].timeTo.with(
             indexOfInterval,
-            +e.target.value + +timeFrom.minutes / 60
+            +e.target.value / 60 + +timeTo.hours
           ),
         };
         //

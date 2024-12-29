@@ -31,10 +31,14 @@ const workingScheduleSlice = createSlice({
               timeTo: day.timeTo.filter((_, i) => i !== action.payload.intervalIndex),
             }
           : day
-      );
+      ).sort((a: ScheduleInterface, b: ScheduleInterface): 1 | -1 => (a.day > b.day ? 1 : -1));
     },
+    addInterval(state, action: PayloadAction<{ dayIndex: number}>) {
+      state.chosenDays[action.payload.dayIndex].timeFrom.push(0);
+      state.chosenDays[action.payload.dayIndex].timeTo.push(0);
+    }
   },
 });
-export const { setWorkingDays, setCustomWorkingDaysSchedule , deleteInterval} = workingScheduleSlice.actions;
+export const { setWorkingDays, setCustomWorkingDaysSchedule , deleteInterval, addInterval} = workingScheduleSlice.actions;
 
 export default workingScheduleSlice.reducer;
