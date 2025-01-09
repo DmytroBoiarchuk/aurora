@@ -1,4 +1,4 @@
-import { ScheduleInterface } from './interfaces';
+import { ReviewProps, ScheduleInterface, TreatmentsProps } from './interfaces';
 
 export interface StateInterface {
   ratingReducer: RatingReducerInterface;
@@ -24,4 +24,21 @@ export interface BookingReducerInterface {
 export interface WorkingScheduleReducerInterface {
   customWorkingDaysSchedule: boolean[];
   chosenDays: ScheduleInterface[]
+}
+
+export interface ReviewsReducerInterface {
+  reviews: ReviewProps[]
+}
+
+export interface UserDataReducerInterface {
+  id: number;
+  photo?: string | undefined;
+  name: string;
+  description: string;
+  currency: string;
+  address?: string;
+  clientsId?: number[] | undefined;
+}
+export interface TreatmentsReducerInterface {
+  treatments: TreatmentsProps[];
 }

@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import './MyDatePicker.scss';
-import usersData from '../../database/usersData';
 import MediumButton from '../../UI/M-Button/MediumButton';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setDate } from '../../store/modules/bookingReducer/reducer';
 import { ScheduleInterface } from '../../assets/interfaces/interfaces';
 import { setWorkingDays } from '../../store/modules/workingScheduleReducer/reducer';
-import { StateInterface, WorkingScheduleReducerInterface } from '../../assets/interfaces/reduxInterfaces';
+import { WorkingScheduleReducerInterface } from '../../assets/interfaces/reduxInterfaces';
 import { modes } from '../../assets/constants/constants';
 import { findAvailableTime } from '../../assets/functions/functions';
 
@@ -24,8 +23,8 @@ function MyDatePicker({
   setChosenOption?: React.Dispatch<React.SetStateAction<string>> | undefined;
 }): JSX.Element {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const workingScheduleState = useAppSelector(
-    (state: StateInterface): WorkingScheduleReducerInterface => state.workingScheduleReducer
+  const workingScheduleState: WorkingScheduleReducerInterface = useAppSelector(
+    (state): WorkingScheduleReducerInterface => state.workingScheduleReducer
   );
   const bookingData = useAppSelector((state) => state.bookingReducer);
 
@@ -39,7 +38,7 @@ function MyDatePicker({
 
   // Array of selected dates
   const [selected, setSelected] = useState<Date[] | undefined>(
-    chosenOption ? [...usersData.workingDates.map((date) => new Date(date.day))] : undefined
+    chosenOption ? [...workingScheduleState.chosenDays.map((date) => new Date(date.day))] : undefined
   );
 
   // prefilled working days
@@ -58,12 +57,12 @@ function MyDatePicker({
       if (workingScheduleState.customWorkingDaysSchedule.every((a) => !a)) setSelected(dates);
       if (dates.length !== 0) setSelected(dates);
     } else setIsFirstRender(false);
-  }, [howManyMonthsIsPlaning, workingScheduleState.customWorkingDaysSchedule]);
+  }, [workingScheduleState.customWorkingDaysSchedule]);
 
   // calc disabled dates intervals
   function calcDisabledDaysIntervals(date: Date): boolean {
-    const availableDates = usersData.workingDates.map((workingDate) =>
-      findAvailableTime(bookingData, date.toISOString().split('T')[0]).length !== 0
+    const availableDates = workingScheduleState.chosenDays.map((workingDate) =>
+      findAvailableTime(bookingData, date.toISOString().split('T')[0], workingScheduleState.chosenDays).length !== 0
         ? new Date(workingDate.day)
         : undefined
     );
@@ -104,8 +103,8 @@ function MyDatePicker({
       });
       if (newSchedule) dispatch(setWorkingDays(newSchedule));
 
-      // fetch PUT instead
-      usersData.workingDates = newSchedule!;
+      //+ fetch PUT instead
+      // usersData.workingDates = newSchedule!;
     }
     if (setIsDatePicked) setIsDatePicked(true);
   }
@@ -124,7 +123,6 @@ function MyDatePicker({
       } else if (Array.isArray(date)) setSelected([...date]);
       else setSelected([date]);
   }
-
   return (
     <div>
       <DayPicker

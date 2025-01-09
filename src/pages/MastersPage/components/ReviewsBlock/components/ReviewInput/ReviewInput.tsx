@@ -1,14 +1,16 @@
 import React from 'react';
 import classes from './ReviewInput.module.scss';
-import usersData, { loggedInUserData } from '../../../../../../database/usersData';
+import { loggedInUserData } from '../../../../../../database/usersData';
 import MediumButton from '../../../../../../UI/M-Button/MediumButton';
 import { ReviewProps } from '../../../../../../assets/interfaces/interfaces';
 import Rating from '../../../Rating/Rating';
-import { useAppSelector } from '../../../../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../../../../hooks/reduxHooks';
+import { setNewPost } from '../../../../../../store/modules/reviewsReducer/reducer';
 
 function ReviewInput(): JSX.Element {
   const { id, name, photo } = loggedInUserData;
-  const rating = useAppSelector((state) => state.ratingReducer.rating);
+  const dispatch = useAppDispatch();
+  const rating = useAppSelector((state) => state.reviewingRatingReducer.rating);
   function handleSubmit(e:React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -26,8 +28,8 @@ function ReviewInput(): JSX.Element {
       date: time,
       isVerified: undefined,
     };
-    //temporary (send request instead)
-    usersData.reviews.push(reviewRequestData);
+    //+ send request
+    dispatch(setNewPost(reviewRequestData));
   }
   return (
     <div className={classes.yourReviewContainer}>

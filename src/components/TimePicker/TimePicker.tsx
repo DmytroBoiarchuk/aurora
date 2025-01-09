@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import classes from './TimePicker.module.scss';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import usersData from '../../database/usersData';
 import TimeSlot from './components/TimeSlot/TimeSlot';
 import MediumButton from '../../UI/M-Button/MediumButton';
 import SmallButton from '../../UI/S-Button/SmallButton';
@@ -16,6 +15,7 @@ function TimePicker({
 }): JSX.Element {
   const [active, setActive] = useState<number>(0);
   const dispatch = useAppDispatch();
+  const workingDays = useAppSelector(state => state.workingScheduleReducer.chosenDays);
   const bookingData = useAppSelector((state) => state.bookingReducer);
   function backToCalendarHandler(): void {
     setActive(0);
@@ -30,7 +30,7 @@ function TimePicker({
         </SmallButton>
       </span>
       <div className={classes.timePickerContainer}>
-        {findAvailableTime(bookingData, bookingData.date).map((slot) => (
+        {findAvailableTime(bookingData, bookingData.date, workingDays).map((slot) => (
           <TimeSlot key={slot} active={active} setActive={setActive} time={slot} />
         ))}
       </div>

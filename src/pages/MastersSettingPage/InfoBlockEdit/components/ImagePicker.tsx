@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import classes from './ImagePicker.module.scss';
-import usersData from '../../../../database/usersData';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks';
+import { setPhoto } from '../../../../store/modules/userDataReducer/reducer';
 
 function ImagePicker({
   label,
@@ -16,8 +17,10 @@ function ImagePicker({
   setProcedurePickedImage?: React.Dispatch<React.SetStateAction<string>> | undefined;
   defaultValue?: string | null;
 }): JSX.Element {
+  const dispatch = useAppDispatch();
+  const {photo} = useAppSelector(state => state.userDataReducer);
   const [pickedImage, setPickedImage] = useState<string | null>(defaultValue);
-  const currentAvatar = isProcedurePhotoPicking ? (pickedImage ?? '/no-photo-img.jpg') : usersData.photo;
+  const currentAvatar = isProcedurePhotoPicking ? (pickedImage ?? '/no-photo-img.jpg') : photo;
   const [inputKey, setInputKey] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   function onClickPickHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
@@ -27,7 +30,7 @@ function ImagePicker({
   function onConfirmAvatarHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, isConfirmed: boolean): void {
     event.preventDefault();
     if (isConfirmed && pickedImage) {
-      usersData.photo = pickedImage;
+      dispatch(setPhoto(pickedImage));
     }
     if (!isConfirmed) {
       setInputKey((prevState) => prevState + 1);

@@ -8,7 +8,6 @@ import SmallButton from '../../../../../../UI/S-Button/SmallButton';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/reduxHooks';
 import Input from '../../../../../../UI/Input/Input';
 import TimePicker from '../../../../../../components/TimePicker/TimePicker';
-import usersData from '../../../../../../database/usersData';
 import { formatDuration } from '../../../../../../assets/functions/functions';
 import { setBooking } from '../../../../../../store/modules/bookingReducer/reducer';
 
@@ -18,10 +17,10 @@ interface BookingProps {
 }
 function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): JSX.Element {
   const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
-
+  const treatments = useAppSelector(state => state.treatmentsReducer.treatments);
   const bookingInfo = useAppSelector((state) => state.bookingReducer);
   const isMultipleOptions =
-    usersData.treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
+    treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
   const dispatch = useAppDispatch();
   function backButtonHandler(e): void {
     e.preventDefault();

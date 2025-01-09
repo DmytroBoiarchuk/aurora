@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactStarsRating from 'react-awesome-stars-rating';
 import classes from './Reting.module.scss';
 import { useAppDispatch } from '../../../../hooks/reduxHooks';
-import { setRating } from '../../../../store/modules/ratingReducer/reducer';
+import { setReviewingRating } from '../../../../store/modules/ratingReducer/reducer';
 
 interface RatingProps {
   editable: boolean;
@@ -11,19 +11,20 @@ interface RatingProps {
   size: number;
 }
 function Rating({ editable, rating, showNumbers, size }: RatingProps): JSX.Element {
-  const [currentRating, setCurrentRating] = useState<number | undefined>(rating);
+  const [currentRating, setCurrentRating] = useState<number>(0);
   const dispatch = useAppDispatch();
   function onChangeHandler(e: number): void {
     setCurrentRating(e);
-    dispatch(setRating(e));
+    dispatch(setReviewingRating(e));
   }
+
   return (
     <div className={classes.rating}>
       <ReactStarsRating
         starGap={10}
-        onChange={(e): void => onChangeHandler(e)}
+        onChange={(e: number): void => onChangeHandler(e)}
         isEdit={editable}
-        value={currentRating || 0}
+        value={editable? currentRating : rating }
         size={size}
       />
       {showNumbers && <p>{rating}</p>}

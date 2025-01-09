@@ -1,5 +1,5 @@
-import usersData from '../../database/usersData';
 import { BookingReducerInterface } from '../interfaces/reduxInterfaces';
+import { ScheduleInterface } from '../interfaces/interfaces';
 
 export function formatTime(timeToFormat: number | string): string {
     const hours: number = Math.floor(+timeToFormat);
@@ -23,8 +23,8 @@ export function formatDate (dateString: string): string {
     }).format(date);
 };
 
-export function findAvailableTime(bookingData: BookingReducerInterface, date: string): number[] {
-  const availableTime = usersData.workingDates.find((day) => day.day === date);
+export function findAvailableTime(bookingData: BookingReducerInterface, date: string, workingDates: ScheduleInterface[]): number[] {
+  const availableTime = workingDates.find((day) => day.day === date);
   const timesArray: number[] = [];
   if (availableTime)
     for (let i = 0; i < availableTime.timeFrom.length; i++) {
@@ -35,4 +35,12 @@ export function findAvailableTime(bookingData: BookingReducerInterface, date: st
       }
     }
   return timesArray;
+}
+
+export function debounce<F extends (...args: any[]) => void>(func : F, wait: number): (...args: Parameters<F>) => void  {
+  let timeout : ReturnType<typeof setTimeout>;
+  return (...args: Parameters<F>): void => {
+    clearTimeout(timeout);
+    timeout = setTimeout(()=>func(...args), wait);
+  };
 }

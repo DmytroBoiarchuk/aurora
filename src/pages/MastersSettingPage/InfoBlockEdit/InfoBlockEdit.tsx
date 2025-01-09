@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
-import usersData from '../../../database/usersData';
+import React, { FormEvent, useState } from 'react';
 import Block from '../../../UI/Block/Block';
 import classes from './InfoBlockEdit.module.scss';
 import ProcedurePlate from '../../../UI/procedurePlate/ProcedurePlate';
 import MediumButton from '../../../UI/M-Button/MediumButton';
 import ImagePicker from "./components/ImagePicker";
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { debounce } from '../../../assets/functions/functions';
+import { setName } from '../../../store/modules/userDataReducer/reducer';
+
+
 
 function InfoBlockEdit(): JSX.Element {
   const [isDescriptionEditing, setIsDescriptionEditing] = useState<boolean>(false);
   const [isBlurredDescription, setIsBlurredDescription] = useState<boolean>(false);
-  const { name, description, treatments } = usersData;
-  function onDescriptionEditHandler(isEditing): void {
+  const {  name, description } = useAppSelector((state) => state.userDataReducer);
+  const treatments = useAppSelector(state => state.treatmentsReducer.treatments);
+  const dispatch = useAppDispatch();
+  function onDescriptionEditHandler(isEditing: boolean): void {
     setIsDescriptionEditing(isEditing);
   }
-  function onDescriptionSaveHandler(): void {
-    setIsDescriptionEditing(false);
+  const debouncedUserNameChange = debounce((innerText)=> {
+    dispatch(setName(innerText));
+  }, 3000);
+  function onChangeUserNameHandler(e: FormEvent<HTMLHeadingElement>) : void {
+    debouncedUserNameChange(e.currentTarget.innerText);
   }
   return (
     <Block>
@@ -23,7 +32,7 @@ function InfoBlockEdit(): JSX.Element {
           <ImagePicker> Pick an Avatar </ImagePicker >
         </div>
         <div className={classes.description}>
-          <h2 onClick={(): void => onDescriptionEditHandler(false)} contentEditable>{name}</h2>
+          <h2 onClick={(): void => onDescriptionEditHandler(false)} onInput={onChangeUserNameHandler} contentEditable>{name}</h2>
           <ul>
             {treatments.map((treatment) => (
               <li key={treatment.id}>
@@ -40,7 +49,7 @@ function InfoBlockEdit(): JSX.Element {
             {description}
           </div>
           {isDescriptionEditing && (
-            <MediumButton classNames={classes.saveButton} onClick={onDescriptionSaveHandler}>
+            <MediumButton classNames={classes.saveButton} onClick={():void=> onDescriptionEditHandler(false)}>
               Save
             </MediumButton>
           )}

@@ -19,15 +19,15 @@ interface LoggedInUserInterface {
 }
 
 const usersData: UsersDataInterface = {
-  id: 9999999999,
-  photo: '/valeriia_profile_photo.jpg',
-  name: 'Valeriia Voitenko',
-  description:
+  id: 9999999999, // done
+  photo: '/valeriia_profile_photo.jpg', // done
+  name: 'Valeriia Voitenko', // done
+  description: // done
     'Valeriia is a highly skilled beauty professional specializing in lash and brow lamination, meticulous\n' +
     '            eyebrow shaping, and advanced electrolysis hair removal. With a dedication to precision and an eye for\n' +
     '            detail, Valeriia delivers exceptional, personalized beauty treatments that enhance natural features and\n' +
     '            ensure client satisfaction.',
-  treatments: [
+  treatments: [ // done
     {
       img: '/lash-lift.jpg',
       description:
@@ -71,8 +71,8 @@ const usersData: UsersDataInterface = {
       options: [1],
     },
   ],
-  address: '19 Rosemount Place, AB25 2XA',
-  reviews: [
+  address: '19 Rosemount Place, AB25 2XA', // done
+  reviews: [ // done
     {
       id: 9979446655,
       photo: '/no-photo-img.jpg',
@@ -115,13 +115,13 @@ const usersData: UsersDataInterface = {
       isVerified: true,
     },
   ],
-  clientsId: [87455122154, 9979446655, 64546546465, 100000000],
-  workingDates: [
+  clientsId: [87455122154, 9979446655, 64546546465, 100000000], // done
+  workingDates: [ // done ( fix code in components )
     { day: '2025-01-11', timeFrom: [14], timeTo: [22] },
     { day: '2025-01-28', timeFrom: [14, 15.5, 18, 20], timeTo: [15, 17, 19, 22] },
     { day: '2025-01-29', timeFrom: [9], timeTo: [23.5] },
   ],
-  currency: '£',
+  currency: '£', // done
 };
 
 export const loggedInUserData: LoggedInUserInterface = {

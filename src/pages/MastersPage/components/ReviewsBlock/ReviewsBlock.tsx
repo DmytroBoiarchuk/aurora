@@ -1,14 +1,14 @@
 import React from 'react';
 import Block from '../../../../UI/Block/Block';
 import ReviewPost from './components/Post/ReviewPost';
-import usersData from '../../../../database/usersData';
 import ReviewInput from "./components/ReviewInput/ReviewInput";
+import { useAppSelector } from '../../../../hooks/reduxHooks';
 
 function ReviewsBlock(): JSX.Element {
-    //re render component after new comment
+  const reviewPosts = useAppSelector((state) => state.reviewsReducer.reviews);
   return (
     <Block>
-      {usersData.reviews.map((review) => (
+      {reviewPosts.map((review) => (
         <ReviewPost key={review.id} reviewData={review} />
       ))}
       <ReviewInput />

@@ -2,40 +2,33 @@ import React, { ChangeEvent, useState } from 'react';
 import { TiMinus } from 'react-icons/ti';
 import { availableHours, availableMinutes } from '../../../../../../../../assets/constants/constants';
 import classes from './TimeInterval.module.scss';
-import usersData from '../../../../../../../../database/usersData';
-import { useAppDispatch } from '../../../../../../../../hooks/reduxHooks';
-import { deleteInterval } from '../../../../../../../../store/modules/workingScheduleReducer/reducer';
-import { ScheduleInterface } from '../../../../../../../../assets/interfaces/interfaces';
+import { useAppDispatch, useAppSelector } from '../../../../../../../../hooks/reduxHooks';
+import {
+  deleteInterval,
+  setHoursFrom, setHoursTo,
+  setMinutesFrom, setMinutesTo,
+} from '../../../../../../../../store/modules/workingScheduleReducer/reducer';
 
 interface TimeIntervalProps {
   from: number;
   to: number;
   indexOfInterval: number;
-  workingDayIndex: number;
+  workingDay: string;
 }
 
-function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeIntervalProps): JSX.Element {
+function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [timeFrom, setTimeFrom] = useState<{ hours: string; minutes: string }>({
-    hours: `${from > 10 ? Math.floor(from) : `0${Math.floor(from)}`}`,
+    hours: `${from >= 10 ? Math.floor(from) : `0${Math.floor(from)}`}`,
     minutes: `${(from - Math.floor(from)) * 60}`,
   });
   const [timeTo, setTimeTo] = useState<{ hours: string; minutes: string }>({
-    hours: `${to > 10 ? Math.floor(to) : `0${Math.floor(to)}`}`,
+    hours: `${to >= 10 ? Math.floor(to) : `0${Math.floor(to)}`}`,
     minutes: `${(to - Math.floor(to)) * 60}`,
   });
 
   function onDeleteIntervalHandler(): void {
-    dispatch(deleteInterval({ dayIndex: workingDayIndex, intervalIndex: indexOfInterval }));
-    const sortedData = usersData.workingDates.sort((a: ScheduleInterface, b: ScheduleInterface): 1 | -1 =>
-      a.day > b.day ? 1 : -1
-    );
-    sortedData[workingDayIndex] = {
-      day: usersData.workingDates[workingDayIndex].day,
-      timeFrom: usersData.workingDates[workingDayIndex].timeFrom.filter((_, index) => index !== workingDayIndex),
-      timeTo: usersData.workingDates[workingDayIndex].timeTo.filter((_, index) => index !== workingDayIndex),
-    };
-    usersData.workingDates = sortedData;
+    dispatch(deleteInterval({ day: workingDay, intervalIndex: indexOfInterval }));
   }
   function setTimeHandler(
     setFor: 'hours' | 'minutes',
@@ -49,14 +42,7 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           minutes: prevState.minutes,
         }));
         // temporary - later fetch PUT
-        usersData.workingDates[workingDayIndex] = {
-          day: usersData.workingDates[workingDayIndex].day,
-          timeFrom: usersData.workingDates[workingDayIndex].timeFrom.with(
-            indexOfInterval,
-            +e.target.value + +timeFrom.minutes / 60
-          ),
-          timeTo: usersData.workingDates[workingDayIndex].timeTo,
-        };
+        dispatch(setHoursFrom({intervalIndex: indexOfInterval, day: workingDay, hour: e.target.value}));
         //
       } else {
         setTimeTo((prevState) => ({
@@ -64,14 +50,7 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           minutes: prevState.minutes,
         }));
         // temporary - later fetch PUT
-        usersData.workingDates[workingDayIndex] = {
-          day: usersData.workingDates[workingDayIndex].day,
-          timeFrom: usersData.workingDates[workingDayIndex].timeFrom,
-          timeTo: usersData.workingDates[workingDayIndex].timeTo.with(
-            indexOfInterval,
-            +e.target.value + +timeTo.minutes / 60
-          ),
-        };
+        dispatch(setHoursTo({intervalIndex: indexOfInterval, day: workingDay, hour: e.target.value}));
         //
       }
 
@@ -82,14 +61,7 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           minutes: e.target.value,
         }));
         // temporary - later fetch PUT
-        usersData.workingDates[workingDayIndex] = {
-          day: usersData.workingDates[workingDayIndex].day,
-          timeFrom: usersData.workingDates[workingDayIndex].timeFrom.with(
-            indexOfInterval,
-            +e.target.value / 60 + +timeFrom.hours
-          ),
-          timeTo: usersData.workingDates[workingDayIndex].timeTo,
-        };
+        dispatch(setMinutesFrom({intervalIndex: indexOfInterval, day: workingDay, minutes: e.target.value}));
         //
       } else {
         setTimeTo((prevState: { hours: string; minutes: string }): { hours: string; minutes: string } => ({
@@ -97,14 +69,8 @@ function TimeInterval({ from, to, indexOfInterval, workingDayIndex }: TimeInterv
           minutes: e.target.value,
         }));
         // temporary - later fetch PUT
-        usersData.workingDates[workingDayIndex] = {
-          day: usersData.workingDates[workingDayIndex].day,
-          timeFrom: usersData.workingDates[workingDayIndex].timeFrom,
-          timeTo: usersData.workingDates[workingDayIndex].timeTo.with(
-            indexOfInterval,
-            +e.target.value / 60 + +timeTo.hours
-          ),
-        };
+        dispatch(setMinutesTo({intervalIndex: indexOfInterval, day: workingDay, minutes: e.target.value}));
+
         //
       }
   }

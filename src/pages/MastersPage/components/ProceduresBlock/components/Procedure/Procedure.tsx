@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { RiArrowDownWideLine, RiArrowUpWideLine } from 'react-icons/ri';
 import { AnimatePresence, motion } from 'framer-motion';
+import { MdEdit } from "react-icons/md";
 import MediumButton from '../../../../../../UI/M-Button/MediumButton';
 import { BookingProcedureProps, TreatmentsProps } from '../../../../../../assets/interfaces/interfaces';
 import classes from './Procedure.module.scss';
-import { useAppDispatch } from '../../../../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../../../../hooks/reduxHooks';
 import { setProcedureDetails } from '../../../../../../store/modules/bookingReducer/reducer';
-import usersData from '../../../../../../database/usersData';
 import { formatDuration } from '../../../../../../assets/functions/functions';
-import { MdEdit } from "react-icons/md";
 import CreateProcedureForm
   from '../../../../../MastersSettingPage/ProceduresBlockSetting/components/CreateProcedureForm/CreateProcedureForm';
 import SlideDownButton from '../../../../../../UI/SlideDownButton/SlideDownButton';
@@ -28,6 +26,9 @@ function Procedure({
 }): JSX.Element {
   const blockRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
+  const treatments = useAppSelector(state => state.treatmentsReducer.treatments);
+  const currency = useAppSelector(state => state.userDataReducer.currency);
+
   const [isDropped, setIsDropped] = useState<boolean>(false);
   const [formIsShown, setFormIsShown] = useState<boolean>(false);
   const selectionRef = useRef<HTMLSelectElement | null>(null);
@@ -52,7 +53,7 @@ function Procedure({
       procedureName,
       duration:
         Number(selectionRef.current?.value) ||
-        usersData.treatments.find((treatment) => treatment.procedureName)!.options[0],
+        treatments.find((treatment) => treatment.procedureName)!.options[0],
     };
     dispatch(setProcedureDetails(procedure));
     if (setIsBookingProcess) setIsBookingProcess(true);
@@ -67,7 +68,7 @@ function Procedure({
           <img src={img} alt="lush" />
         </div>
         <p>{procedureName}</p>
-        <p>{price}{usersData.currency}</p>
+        <p>{price}{currency}</p>
         <MediumButton onClick={(): void => onBookHandler()}>Book</MediumButton>
         {options.length > 1 && (
           <select ref={selectionRef} className={classes.options}>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import classes from './CreateProcedureForm.module.scss';
-import usersData from '../../../../../database/usersData';
 import ImagePicker from '../../../InfoBlockEdit/components/ImagePicker';
 import { TreatmentsProps } from '../../../../../assets/interfaces/interfaces';
 import DurationInput from './DurationInput/DurationInput';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/reduxHooks';
+import { createTreatment, editTreatment } from '../../../../../store/modules/treatmentsReducer/reducer';
 
 interface CreateProcedureFormProps {
   setFormIsShown: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,29 +19,27 @@ function CreateProcedureForm({
 }: CreateProcedureFormProps): JSX.Element {
   const [procedurePickedImage, setProcedurePickedImage] = useState<string>(procedure?.img || '');
   const [optionsFields, setOptionsFields] = useState<number[]>(procedure?.options || [0]);
+  const store = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     const fd = new FormData(event.currentTarget);
-    const procedureData = Object.fromEntries(fd.entries());
-    const newProcedure: TreatmentsProps = {
-      id: usersData.treatments.length,
+    const newTreatmentData = Object.fromEntries(fd.entries());
+    const newTreatment: TreatmentsProps = {
+      id: store.treatmentsReducer.treatments.length,
       img: procedurePickedImage,
-      procedureName: procedureData.procedureName.toString(),
-      price: procedureData.procedurePrice.toString(),
-      description: procedureData.procedureDescription.toString(),
+      procedureName: newTreatmentData.procedureName.toString(),
+      price: newTreatmentData.procedurePrice.toString(),
+      description: newTreatmentData.procedureDescription.toString(),
       options: optionsFields.map(
         (option) =>
-          +procedureData[`procedureDurationHours${option}`] + +procedureData[`procedureDurationMinutes${option}`] / 60
+          +newTreatmentData[`procedureDurationHours${option}`] +
+          +newTreatmentData[`procedureDurationMinutes${option}`] / 60
       ),
     };
     //  fetch PUT instead
-    if (isEditing)
-      usersData.treatments = usersData.treatments.map((treatment) => {
-        if (treatment.id === procedure?.id) return newProcedure;
-        return treatment;
-
-      });
-    else usersData.treatments.push(newProcedure);
+    if (isEditing && procedure) dispatch(editTreatment({ id: procedure.id, treatment: newTreatment }));
+    else dispatch(createTreatment(newTreatment));
     setFormIsShown(false);
   }
 
@@ -87,7 +86,7 @@ function CreateProcedureForm({
               max={9999}
               placeholder="ex: 25"
             />
-            <p>{usersData.currency}</p>
+            <p>{store.userDataReducer.currency}</p>
           </div>
         </div>
         <div>
@@ -125,7 +124,7 @@ function CreateProcedureForm({
         <button type="button" onClick={(): void => setFormIsShown(false)}>
           Cancel
         </button>
-        <button type="submit">{isEditing? 'Save' : 'Create'}</button>
+        <button type="submit">{isEditing ? 'Save' : 'Create'}</button>
       </span>
     </motion.form>
   );

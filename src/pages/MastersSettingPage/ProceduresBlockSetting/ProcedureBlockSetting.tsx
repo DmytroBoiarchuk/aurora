@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import { AnimatePresence, motion } from 'framer-motion';
 import Block from '../../../UI/Block/Block';
-import usersData from '../../../database/usersData';
 import Procedure from '../../MastersPage/components/ProceduresBlock/components/Procedure/Procedure';
 import classes from './ProcedureBlockSetting.module.scss';
 import CreateProcedureForm from './components/CreateProcedureForm/CreateProcedureForm';
+import { useAppSelector } from '../../../hooks/reduxHooks';
 
 function ProcedureBlockSetting(): JSX.Element {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [formIsShown, setFormIsShown] = useState<boolean>(false);
   const [droppedProcedure, setDroppedProcedure] = useState<string>('');
-
+  const treatmentsData = useAppSelector(state => state.treatmentsReducer.treatments);
   function openFormHandler(): void {
     setFormIsShown(true);
   }
   return (
     <Block>
       <div className={classes.block}>
-        {usersData.treatments.map((treatment) => (
+        {treatmentsData.map((treatment) => (
           <Procedure
             droppedProcedure={droppedProcedure}
             setDroppedProcedure={setDroppedProcedure}
