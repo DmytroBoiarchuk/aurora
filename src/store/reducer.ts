@@ -5,9 +5,11 @@ import workingScheduleReducer from './modules/workingScheduleReducer/reducer';
 import reviewsReducer from './modules/reviewsReducer/reducer';
 import userDataReducer from './modules/userDataReducer/reducer';
 import treatmentsReducer from './modules/treatmentsReducer/reducer';
+import timeForAllDaysReducer from './modules/setTimeForAllDaysModalReducer/reducer';
 
 export default combineReducers({
   reviewingRatingReducer,
+  timeForAllDaysReducer,
   bookingReducer,
   workingScheduleReducer,
   reviewsReducer,

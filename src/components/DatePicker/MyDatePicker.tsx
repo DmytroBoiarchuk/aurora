@@ -41,9 +41,16 @@ function MyDatePicker({
     chosenOption ? [...workingScheduleState.chosenDays.map((date) => new Date(date.day))] : undefined
   );
 
+  // set selected date on calendar according to redux store
+  useEffect(() => {
+    if (chosenOption) {
+      setSelected([...workingScheduleState.chosenDays.map((date) => new Date(date.day))]);
+    }
+  }, [workingScheduleState.chosenDays]);
   // prefilled working days
   useEffect(() => {
     if (howManyMonthsIsPlaning && !isFirstRender) {
+      console.log('WHAT');
       const from = new Date();
       const to = new Date();
       const dates: Date[] = [];
@@ -54,8 +61,16 @@ function MyDatePicker({
         if (workingScheduleState.customWorkingDaysSchedule[day.getDay()]) dates.push(day);
         d.setDate(d.getDate() + 1);
       }
-      if (workingScheduleState.customWorkingDaysSchedule.every((a) => !a)) setSelected(dates);
-      if (dates.length !== 0) setSelected(dates);
+      if (workingScheduleState.customWorkingDaysSchedule.every((a) => !a)) {
+        dispatch(
+          setWorkingDays(dates.map((date) => ({ day: date.toISOString().split('T')[0], timeTo: [16], timeFrom: [8] })))
+        );
+      }
+      if (dates.length !== 0) {
+        dispatch(
+          setWorkingDays(dates.map((date) => ({ day: date.toISOString().split('T')[0], timeTo: [16], timeFrom: [8] })))
+        );
+      }
     } else setIsFirstRender(false);
   }, [workingScheduleState.customWorkingDaysSchedule]);
 
@@ -78,7 +93,7 @@ function MyDatePicker({
   function disableOutdatedDaysIntervals(date: Date): boolean {
     const today = new Date();
     const dateOfLastDay = today.setMonth(today.getMonth() + howManyMonthsIsPlaning!);
-    return date.getTime() < new Date().getTime() || date.getTime() > dateOfLastDay;
+    return date.getTime() < (new Date().getTime() - 1000 * 60 * 60 * 24) || date.getTime() > dateOfLastDay;
   }
 
   function confirmHandler(): void {
@@ -88,28 +103,13 @@ function MyDatePicker({
         .toISOString()
         .split('T')[0];
       dispatch(setDate(summerTimeRefactoring));
-
-      //  confirm choosing working days
-    } else {
-      const newSchedule = selected?.map((date): ScheduleInterface => {
-        const previouslyAddedDays = workingScheduleState.chosenDays.find(
-          (weekDay) => weekDay.day === date.toISOString().split('T')[0]
-        );
-        return {
-          day: new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0],
-          timeFrom: previouslyAddedDays?.timeFrom || [0],
-          timeTo: previouslyAddedDays?.timeTo || [0],
-        };
-      });
-      if (newSchedule) dispatch(setWorkingDays(newSchedule));
-
-      //+ fetch PUT instead
-      // usersData.workingDates = newSchedule!;
     }
+
     if (setIsDatePicked) setIsDatePicked(true);
   }
 
   function onSelectDateHandler(date: Date | Date[] | undefined): void {
+    let newSelected: Date[] | undefined;
     if (date)
       if (setChosenOption) {
         setChosenOption('custom');
@@ -119,9 +119,25 @@ function MyDatePicker({
         } else if (date) {
           newDates = [date];
         }
-        setSelected((prevState) => [...(prevState?.filter((p) => p === date) || []), ...newDates]);
-      } else if (Array.isArray(date)) setSelected([...date]);
-      else setSelected([date]);
+        newSelected = [...(selected?.filter((p) => p === date) || []), ...newDates];
+      } else if (Array.isArray(date)) newSelected = [...date];
+      else newSelected = [date];
+    setSelected(newSelected);
+
+    //  confirm choosing working days
+    if (chosenOption) {
+      const newSchedule = newSelected?.map((d): ScheduleInterface => {
+        const previouslyAddedDays = workingScheduleState.chosenDays.find(
+          (weekDay) => weekDay.day === d.toISOString().split('T')[0]
+        );
+        return {
+          day: new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0],
+          timeFrom: previouslyAddedDays?.timeFrom || [8],
+          timeTo: previouslyAddedDays?.timeTo || [16],
+        };
+      });
+      if (newSchedule) dispatch(setWorkingDays(newSchedule));
+    }
   }
   return (
     <div>
@@ -137,14 +153,17 @@ function MyDatePicker({
         required
         weekStartsOn={1}
       />
-      <MediumButton
-        disabled={typeof selected === 'undefined'}
-        type="button"
-        classNames="confirm-date-button"
-        onClick={confirmHandler}
-      >
-        Confirm Date
-      </MediumButton>
+
+      {!chosenOption && (
+        <MediumButton
+          disabled={typeof selected === 'undefined'}
+          type="button"
+          classNames="confirm-date-button"
+          onClick={confirmHandler}
+        >
+          Confirm Date
+        </MediumButton>
+      )}
     </div>
   );
 }

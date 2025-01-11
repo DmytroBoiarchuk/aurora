@@ -1,24 +1,13 @@
 import { TreatmentsProps, ReviewProps, ScheduleInterface } from '../assets/interfaces/interfaces';
 
-interface UsersDataInterface {
-  id: number;
-  photo: string;
-  name: string;
-  description: string;
-  treatments: TreatmentsProps[];
-  address: string;
-  reviews: ReviewProps[];
-  clientsId: number[];
-  workingDates: ScheduleInterface[];
-  currency: string;
-}
+
 interface LoggedInUserInterface {
   id: number;
   photo: string;
   name: string;
 }
 
-const usersData: UsersDataInterface = {
+const usersDatats = {
   id: 9999999999, // done
   photo: '/valeriia_profile_photo.jpg', // done
   name: 'Valeriia Voitenko', // done
@@ -129,4 +118,4 @@ export const loggedInUserData: LoggedInUserInterface = {
   name: 'Gnida Ebanaya',
   photo: '/no-photo-img.jpg',
 };
-export default usersData;
+export default usersDatats;

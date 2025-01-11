@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import classes from './Booking.module.scss';
@@ -10,24 +10,27 @@ import Input from '../../../../../../UI/Input/Input';
 import TimePicker from '../../../../../../components/TimePicker/TimePicker';
 import { formatDuration } from '../../../../../../assets/functions/functions';
 import { setBooking } from '../../../../../../store/modules/bookingReducer/reducer';
+import { useQueryClient } from '@tanstack/react-query';
+import { UsersDataInterface } from '../../../../../../assets/interfaces/interfaces';
 
 interface BookingProps {
   setIsBookingProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsBookingConfirmed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): JSX.Element {
+  const queryClient = useQueryClient();
+  const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
   const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
-  const treatments = useAppSelector(state => state.treatmentsReducer.treatments);
   const bookingInfo = useAppSelector((state) => state.bookingReducer);
   const isMultipleOptions =
-    treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
+    mastersData?.treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
   const dispatch = useAppDispatch();
   function backButtonHandler(e): void {
     e.preventDefault();
     setIsBookingProcess(false);
   }
 
-  function submitFormHandler(e): void {
+  function submitFormHandler(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const formObject = Object.fromEntries(formData);

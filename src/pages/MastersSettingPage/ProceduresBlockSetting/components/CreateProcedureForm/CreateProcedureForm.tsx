@@ -44,11 +44,7 @@ function CreateProcedureForm({
   }
 
   return (
-    <motion.form
-      initial={{ opacity: 0, top: '25%' }}
-      animate={{ opacity: 1, top: '50%' }}
-      exit={{ opacity: 0, top: '25%' }}
-      transition={{ duration: 0.5 }}
+    <form
       onSubmit={handleSubmit}
       className={classes.formContainer}
     >
@@ -126,7 +122,7 @@ function CreateProcedureForm({
         </button>
         <button type="submit">{isEditing ? 'Save' : 'Create'}</button>
       </span>
-    </motion.form>
+    </form>
   );
 }
 

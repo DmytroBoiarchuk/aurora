@@ -26,15 +26,19 @@ const workingScheduleSlice = createSlice({
       state.chosenDays = action.payload;
     },
     deleteInterval(state, action: PayloadAction<{ day: string; intervalIndex: number }>) {
-      state.chosenDays = state.chosenDays.map((day) =>
-        day.day === action.payload.day
-          ? {
-              day: day.day,
-              timeFrom: day.timeFrom.filter((_, i) => i !== action.payload.intervalIndex),
-              timeTo: day.timeTo.filter((_, i) => i !== action.payload.intervalIndex),
-            }
-          : day
-      );
+      // if last interval - delete day
+      if (state.chosenDays.find((day) => day.day === action.payload.day)?.timeFrom.length === 1)
+        state.chosenDays = state.chosenDays.filter((day) => day.day !== action.payload.day);
+      else
+        state.chosenDays = state.chosenDays.map((day) =>
+          day.day === action.payload.day
+            ? {
+                day: day.day,
+                timeFrom: day.timeFrom.filter((_, i) => i !== action.payload.intervalIndex),
+                timeTo: day.timeTo.filter((_, i) => i !== action.payload.intervalIndex),
+              }
+            : day
+        );
     },
     addInterval(state, action: PayloadAction<{ day: string }>) {
       const theDay = state.chosenDays.find((day) => day.day === action.payload.day);
@@ -73,13 +77,13 @@ const workingScheduleSlice = createSlice({
       state.chosenDays = state.chosenDays.map((day) =>
         day.day === action.payload.day
           ? {
-            day: day.day,
-            timeFrom: day.timeFrom,
-            timeTo: day.timeTo.with(
-              action.payload.intervalIndex,
-              +action.payload.hour + (day.timeTo[action.payload.intervalIndex] % 1)
-            ),
-          }
+              day: day.day,
+              timeFrom: day.timeFrom,
+              timeTo: day.timeTo.with(
+                action.payload.intervalIndex,
+                +action.payload.hour + (day.timeTo[action.payload.intervalIndex] % 1)
+              ),
+            }
           : day
       );
     },
@@ -87,15 +91,22 @@ const workingScheduleSlice = createSlice({
       state.chosenDays = state.chosenDays.map((day) =>
         day.day === action.payload.day
           ? {
-            day: day.day,
-            timeFrom: day.timeFrom,
-            timeTo: day.timeTo.with(
-              action.payload.intervalIndex,
-              Math.floor(day.timeTo[action.payload.intervalIndex]) + +action.payload.minutes / 60
-            ),
-          }
+              day: day.day,
+              timeFrom: day.timeFrom,
+              timeTo: day.timeTo.with(
+                action.payload.intervalIndex,
+                Math.floor(day.timeTo[action.payload.intervalIndex]) + +action.payload.minutes / 60
+              ),
+            }
           : day
       );
+    },
+    setForAll(state, action: PayloadAction<{ timeFrom: number[]; timeTo: number[] }>) {
+      state.chosenDays = state.chosenDays.map((day) => ({
+        day: day.day,
+        timeFrom: action.payload.timeFrom,
+        timeTo: action.payload.timeTo,
+      }));
     },
   },
 });
@@ -108,6 +119,7 @@ export const {
   setMinutesFrom,
   setHoursTo,
   setMinutesTo,
+  setForAll,
 } = workingScheduleSlice.actions;
 
 export default workingScheduleSlice.reducer;

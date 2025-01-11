@@ -1,8 +1,11 @@
-1. add time picker
-2. fix rating reducer
-3. Migrate database to redux store
-4. Fix time availability when booking ( must be every 15 minutes )
+- day -> date
 
-day -> date
+
+// AFTER BACKEND IS READY
+- get rid of treatmentReducer, userDataReducer, reviewsReducer - use data from ReactQuery instead:
+    - send ReactQuery mutation request while leaving review, creating new treatment or editing old, editing name or description
+- in "working time manager" save changes in session storage(in case of brake connection etc)
+
+
 
 // user can leave review only once (can edit)

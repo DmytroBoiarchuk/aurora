@@ -23,7 +23,7 @@ export interface ReviewProps {
 
 export interface BookingProcedureProps {
   procedureName:string,
-  duration: number
+  duration: number | undefined
 }
 
 export interface BookingCustomerDetailsProps {
@@ -38,3 +38,15 @@ export interface ScheduleInterface{
   timeTo: number[],
 }
 
+export interface UsersDataInterface {
+  id: number;
+  photo: string;
+  name: string;
+  description: string;
+  treatments: TreatmentsProps[];
+  address: string;
+  reviews: ReviewProps[];
+  clientsId: number[];
+  workingDates: ScheduleInterface[];
+  currency: string;
+}

@@ -8,15 +8,20 @@ import {
   setHoursFrom, setHoursTo,
   setMinutesFrom, setMinutesTo,
 } from '../../../../../../../../store/modules/workingScheduleReducer/reducer';
+import {
+  deleteAllDaysNewInterval,
+  setForAllHoursFrom, setForAllHoursTo, setForAllMinutesFrom, setForAllMinutesTo,
+} from '../../../../../../../../store/modules/setTimeForAllDaysModalReducer/reducer';
 
 interface TimeIntervalProps {
   from: number;
   to: number;
   indexOfInterval: number;
   workingDay: string;
+  isModal?: boolean;
 }
 
-function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalProps): JSX.Element {
+function TimeInterval({ from, to, indexOfInterval, workingDay, isModal = false }: TimeIntervalProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [timeFrom, setTimeFrom] = useState<{ hours: string; minutes: string }>({
     hours: `${from >= 10 ? Math.floor(from) : `0${Math.floor(from)}`}`,
@@ -28,7 +33,8 @@ function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalPro
   });
 
   function onDeleteIntervalHandler(): void {
-    dispatch(deleteInterval({ day: workingDay, intervalIndex: indexOfInterval }));
+    if(isModal) dispatch(deleteAllDaysNewInterval(indexOfInterval));
+    else dispatch(deleteInterval({ day: workingDay, intervalIndex: indexOfInterval }));
   }
   function setTimeHandler(
     setFor: 'hours' | 'minutes',
@@ -42,7 +48,8 @@ function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalPro
           minutes: prevState.minutes,
         }));
         // temporary - later fetch PUT
-        dispatch(setHoursFrom({intervalIndex: indexOfInterval, day: workingDay, hour: e.target.value}));
+        if(isModal) dispatch(setForAllHoursFrom({hour: e.target.value, intervalIndex: indexOfInterval}));
+        else dispatch(setHoursFrom({intervalIndex: indexOfInterval, day: workingDay, hour: e.target.value}));
         //
       } else {
         setTimeTo((prevState) => ({
@@ -50,7 +57,8 @@ function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalPro
           minutes: prevState.minutes,
         }));
         // temporary - later fetch PUT
-        dispatch(setHoursTo({intervalIndex: indexOfInterval, day: workingDay, hour: e.target.value}));
+        if(isModal) dispatch(setForAllHoursTo({hour: e.target.value, intervalIndex: indexOfInterval}));
+        else dispatch(setHoursTo({intervalIndex: indexOfInterval, day: workingDay, hour: e.target.value}));
         //
       }
 
@@ -61,7 +69,8 @@ function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalPro
           minutes: e.target.value,
         }));
         // temporary - later fetch PUT
-        dispatch(setMinutesFrom({intervalIndex: indexOfInterval, day: workingDay, minutes: e.target.value}));
+        if(isModal) dispatch(setForAllMinutesFrom({minute: e.target.value, intervalIndex: indexOfInterval}));
+        else dispatch(setMinutesFrom({intervalIndex: indexOfInterval, day: workingDay, minutes: e.target.value}));
         //
       } else {
         setTimeTo((prevState: { hours: string; minutes: string }): { hours: string; minutes: string } => ({
@@ -69,7 +78,8 @@ function TimeInterval({ from, to, indexOfInterval, workingDay }: TimeIntervalPro
           minutes: e.target.value,
         }));
         // temporary - later fetch PUT
-        dispatch(setMinutesTo({intervalIndex: indexOfInterval, day: workingDay, minutes: e.target.value}));
+        if(isModal) dispatch(setForAllMinutesTo({minute: e.target.value, intervalIndex: indexOfInterval}));
+        else dispatch(setMinutesTo({intervalIndex: indexOfInterval, day: workingDay, minutes: e.target.value}));
 
         //
       }

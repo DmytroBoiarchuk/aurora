@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './ReviewInput.module.scss';
-import { loggedInUserData } from '../../../../../../database/usersData';
+import { loggedInUserData } from '../../../../../../database/usersDatats';
 import MediumButton from '../../../../../../UI/M-Button/MediumButton';
 import { ReviewProps } from '../../../../../../assets/interfaces/interfaces';
 import Rating from '../../../Rating/Rating';

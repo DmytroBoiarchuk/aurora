@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useQueryClient } from '@tanstack/react-query';
 import Block from '../../../../UI/Block/Block';
 import Procedure from './components/Procedure/Procedure';
 import classes from './Procedures.module.scss';
 import Booking from './components/Booking/Booking';
 import BookingConfirmed from './components/BookingConfirmed/BookingConfirmed';
-import { useAppSelector } from '../../../../hooks/reduxHooks';
+import { UsersDataInterface } from '../../../../assets/interfaces/interfaces';
 
 function ProceduresBlock(): JSX.Element {
+  const queryClient = useQueryClient();
+  const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
   const [isBookingProcess, setIsBookingProcess] = useState<boolean>(false);
   const [isBookingConfirmed, setIsBookingConfirmed] = useState<boolean>(false);
   const [droppedProcedure, setDroppedProcedure] = useState<string>('');
-  const treatmentsData = useAppSelector((state)=> state.treatmentsReducer.treatments);
   function getAnimation(): { opacity: number; x: string; visibility: string } {
     if (isBookingProcess && !isBookingConfirmed) return { opacity: 1, x: '-25%', visibility: 'visible'};
     if (!isBookingProcess && isBookingConfirmed) return { opacity: 0, x: '-100%', visibility: 'hidden' };
@@ -30,7 +32,7 @@ function ProceduresBlock(): JSX.Element {
         transition={{ duration: 0.5 }}
         className={classes.proceduresContainer}
       >
-        {treatmentsData.map((treatment) => (
+        {mastersData?.treatments.map((treatment) => (
           <Procedure
             droppedProcedure={droppedProcedure}
             setDroppedProcedure={setDroppedProcedure}

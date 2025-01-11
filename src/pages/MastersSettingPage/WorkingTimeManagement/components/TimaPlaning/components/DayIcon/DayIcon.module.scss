@@ -20,6 +20,7 @@
   height: 120px;
 }
 .addNewIntervalButton{
+  margin-top: 4px;
   align-self: center;
   display: flex;
   justify-content: center;
@@ -27,4 +28,7 @@
     margin-left: 2px;
     padding-top: 1px;
   }
+}
+.modalConfirmButton{
+  margin: 4px 0 4px 0;
 }

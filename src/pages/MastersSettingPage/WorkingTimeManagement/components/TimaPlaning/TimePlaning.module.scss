@@ -3,19 +3,27 @@
 
 
 .choosingMonth{
-  margin: 20px 0 5px 20px;
+  margin: 15px 0 5px 20px;
   display: flex;
   flex-direction: row;
+  select{
+    margin-left: 10px;;
+  }
 }
 .timePlaningBlock{
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  width: 800px;
+  width: 645px;
   margin: 0 20px 0 20px;
   height: 356px;
   border-radius: 6px;
   padding: 10px 15px 10px 10px;
   background: $background-color-dark;
   overflow: auto;
+}
+.setForAllButton{
+  margin-left: 10px;
+  width: auto;
+  height: 25px;
 }

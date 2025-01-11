@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Block from '../../../UI/Block/Block';
 import Procedure from '../../MastersPage/components/ProceduresBlock/components/Procedure/Procedure';
 import classes from './ProcedureBlockSetting.module.scss';
 import CreateProcedureForm from './components/CreateProcedureForm/CreateProcedureForm';
 import { useAppSelector } from '../../../hooks/reduxHooks';
+import MyModal from '../../../UI/Modal/MyModal';
 
 function ProcedureBlockSetting(): JSX.Element {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [formIsShown, setFormIsShown] = useState<boolean>(false);
   const [droppedProcedure, setDroppedProcedure] = useState<string>('');
-  const treatmentsData = useAppSelector(state => state.treatmentsReducer.treatments);
+  const treatmentsData = useAppSelector((state) => state.treatmentsReducer.treatments);
   function openFormHandler(): void {
     setFormIsShown(true);
   }
+
   return (
     <Block>
       <div className={classes.block}>
@@ -38,7 +40,9 @@ function ProcedureBlockSetting(): JSX.Element {
           </motion.div>
         </button>
       </div>
-      <AnimatePresence>{formIsShown && <CreateProcedureForm setFormIsShown={setFormIsShown} />}</AnimatePresence>
+      <MyModal onClose={setFormIsShown} modalIsShown={formIsShown}>
+        <CreateProcedureForm setFormIsShown={setFormIsShown} />
+      </MyModal>
     </Block>
   );
 }

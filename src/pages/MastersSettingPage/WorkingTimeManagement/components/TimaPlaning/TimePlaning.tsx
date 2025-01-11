@@ -5,7 +5,9 @@ import classes from './TimePlaning.module.scss';
 import DayIcon from './components/DayIcon/DayIcon';
 import { ScheduleInterface } from '../../../../../assets/interfaces/interfaces';
 import { formatDate } from '../../../../../assets/functions/functions';
-import { allMonths, weekDays } from '../../../../../assets/constants/constants';
+import { allMonths, availableHours, availableMinutes, weekDays } from '../../../../../assets/constants/constants';
+import MediumButton from '../../../../../UI/M-Button/MediumButton';
+import MyModal from '../../../../../UI/Modal/MyModal';
 
 // calc which month options must be rendered and in which order
 function calcCurrentSetOfMonth(monthsPlanning: number): string[] {
@@ -23,27 +25,31 @@ interface TimePlaningProps {
 }
 
 function TimePlaning({ howManyMonthsIsPlaning }: TimePlaningProps): JSX.Element {
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const workingSchedule: ScheduleInterface[] = useAppSelector(
     (state): ScheduleInterface[] => state.workingScheduleReducer.chosenDays
   );
+  function setForAllModalHandler(): void {
+    setModalIsOpen((prevState) => !prevState);
+  }
   const months: string[] = calcCurrentSetOfMonth(howManyMonthsIsPlaning + 1);
   const [selectedMonth, setSelectedMonth] = useState<number>(0);
   return (
     <div>
       <div className={classes.choosingMonth}>
         <label>Show month</label>
-        <select
-          onChange={(e: ChangeEvent<HTMLSelectElement>): void =>
-            setSelectedMonth(+e.currentTarget.value)
-          }
-        >
+        <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => setSelectedMonth(+e.currentTarget.value)}>
           {months.map((month) => (
             <option key={month} value={allMonths.indexOf(month)}>
               {month}
             </option>
           ))}
         </select>
+        <MediumButton onClick={setForAllModalHandler} classNames={classes.setForAllButton}>
+          Set for all days
+        </MediumButton>
       </div>
+
       <div className={classes.timePlaningBlock}>
         <AnimatePresence>
           {[...workingSchedule]
@@ -62,6 +68,9 @@ function TimePlaning({ howManyMonthsIsPlaning }: TimePlaningProps): JSX.Element 
             )}
         </AnimatePresence>
       </div>
+      <MyModal modalIsShown={modalIsOpen} onClose={setModalIsOpen}>
+        <DayIcon isModal setIsOpen={setModalIsOpen}/>
+      </MyModal>
     </div>
   );
 }
