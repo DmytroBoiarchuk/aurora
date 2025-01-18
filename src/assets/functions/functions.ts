@@ -10,7 +10,7 @@ export function formatTime(timeToFormat: number | string): string {
 export function formatDuration(timeToFormat:number | string): string {
     const hours: number = Math.floor(+timeToFormat);
     const minutes: number = (+timeToFormat - hours) * 60;
-    return `${hours? `${hours} ${hours>1? 'hours' : 'hour'}`:''} ${minutes === 0? '' : `${minutes} minutes` } `;
+    return `${hours? ` ${hours} ${hours>1? 'hours' : 'hour'}`:''} ${minutes === 0? '' : `${minutes} minutes` } `;
 }
 
 export function formatDate (dateString: string): string {

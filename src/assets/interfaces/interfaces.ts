@@ -1,6 +1,5 @@
-
 export interface TreatmentsProps {
-  img: string ;
+  img: string;
   procedureName: string;
   description: string;
   id: number;
@@ -15,29 +14,38 @@ export interface ReviewProps {
   id: number;
   photo: string;
   name: string;
-  comment: {header:string, text: string};
+  comment: { header: string; text: string };
   rate: number;
   date: string;
   isVerified: boolean | undefined;
 }
 
 export interface BookingProcedureProps {
-  procedureName:string,
-  duration: number | undefined
+  procedureName: string;
+  duration: number | undefined;
 }
 
 export interface BookingCustomerDetailsProps {
-  name:string,
-  surname: string,
-  telephoneNumber: string,
-  email:string,
+  name: string;
+  surname: string;
+  telephoneNumber: string;
+  email: string;
 }
-export interface ScheduleInterface{
-  day: string,
-  timeFrom: number[],
-  timeTo: number[],
+export interface ScheduleInterface {
+  day: string;
+  timeFrom: number[];
+  timeTo: number[];
 }
-
+export interface BookingsInterface {
+  name: string;
+  surname: string;
+  email: string;
+  date: string;
+  time: number;
+  procedureName: string;
+  duration: number;
+  telephoneNumber: string;
+}
 export interface UsersDataInterface {
   id: number;
   photo: string;
@@ -49,4 +57,5 @@ export interface UsersDataInterface {
   clientsId: number[];
   workingDates: ScheduleInterface[];
   currency: string;
+  booked: BookingsInterface[];
 }

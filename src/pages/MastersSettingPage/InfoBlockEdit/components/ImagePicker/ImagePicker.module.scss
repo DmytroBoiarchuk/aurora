@@ -1,0 +1,40 @@
+@use '../../../../../UI/variables' as *;
+@use '../../../../../assets/fonts/fonts' as *;
+
+.originInput {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 400px;
+  input {
+    display: none;
+  }
+  img {
+    border-radius: 6px;
+    margin: 0 auto 5px;
+    object-fit: contain;
+    max-width: 400px;
+    max-height: 400px;
+    height: auto;
+    width: auto;
+  }
+  button {
+    margin: 10px 10px 0 0;
+    box-shadow: -2px 2px 5px black;
+    max-width: 200px;
+    width: auto;
+    height: 25px;
+    background-color: $background-color-light;
+    border: 0;
+    border-radius: 6px;
+    font-family: 'PoppinsRegular', sans-serif;
+    cursor: pointer;
+  }
+}
+.buttonContainer{
+  display: flex;
+  flex-direction: row;
+}
+.cancelAndConfirmButtons {
+  display: flex;
+}

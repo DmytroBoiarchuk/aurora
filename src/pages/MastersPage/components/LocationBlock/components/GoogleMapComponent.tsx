@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { useLocation } from 'react-router';
 import classes from './GoogleMapComponent.module.scss';
-import { UsersCoordsProps } from '../../../../../assets/interfaces/interfaces';
-import { useAppSelector } from '../../../../../hooks/reduxHooks';
-
-const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+import { UsersCoordsProps, UsersDataInterface } from '../../../../../assets/interfaces/interfaces';
+import {VITE_GOOGLE_MAPS_API_KEY} from '../../../../../constants/keys';
+import { queryClient } from '../../../../../query';
+import AddressPicker from '../../../../MastersSettingPage/InfoBlockEdit/components/AddressPicker/AddressPicker';
 
 function GoogleMapComponent(): JSX.Element {
-  const address = useAppSelector(state => state.userDataReducer.address);
+  const isSetting = useLocation().pathname === '/setting';
+  const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
+  const address = mastersData?.address;
   const [userCoords, setUserCoords] = useState<UsersCoordsProps>({ lat: 0, lng: 0 });
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: apiKey,
+    googleMapsApiKey: VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
   });
 
   useEffect(() => {
@@ -29,7 +33,8 @@ function GoogleMapComponent(): JSX.Element {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className={classes.mapStyle}>
+    <div className={`${classes.mapStyle} ${isSetting? classes.editingStyle : classes.notEditing}`}>
+      {isSetting && <AddressPicker/>}
       <GoogleMap zoom={17} center={userCoords} mapContainerStyle={{ width: '500px', height: '500px' }}>
         <MarkerF position={userCoords} onClick={(): WindowProxy | null => window.open(googleMapsUrl, '_blank')} />
       </GoogleMap>

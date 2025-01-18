@@ -33,10 +33,13 @@ const userDataSlice = createSlice({
     },
     setClientsId(state, action:PayloadAction<number>) {
       state.clientsId?.push(action.payload);
+    },
+    setAddress(state, action:PayloadAction<string>) {
+      state.address = action.payload;
     }
   },
 });
 
-export const { setPhoto, setName } = userDataSlice.actions;
+export const { setPhoto, setName,setAddress } = userDataSlice.actions;
 
 export default userDataSlice.reducer;

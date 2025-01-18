@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import classes from './CreateProcedureForm.module.scss';
-import ImagePicker from '../../../InfoBlockEdit/components/ImagePicker';
+import ImagePicker from '../../../InfoBlockEdit/components/ImagePicker/ImagePicker';
 import { TreatmentsProps } from '../../../../../assets/interfaces/interfaces';
 import DurationInput from './DurationInput/DurationInput';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/reduxHooks';

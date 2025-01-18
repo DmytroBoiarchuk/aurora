@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {  ReactNode } from 'react';
 import classes from './Block.module.scss';
 
-function Block({children, classNames=''}): JSX.Element {
+interface BlockInterface {
+    children: ReactNode;
+    classNames?: string;
+}
+function Block({children, classNames=''}:BlockInterface): JSX.Element {
     return (
         <div className={`${classes.blockStyle} ${classNames}`}>
             {children}

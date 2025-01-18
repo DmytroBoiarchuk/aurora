@@ -4,7 +4,6 @@
   align-items: start;
 }
 .imgRatingContainer {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +19,7 @@
   }
 }
 .description {
-  padding: 10px 0 0 25px;
+  padding-left: 25px;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { motion } from 'framer-motion';
+import { useQueryClient } from '@tanstack/react-query';
 import classes from './Booking.module.scss';
 import PhoneInputComponent from '../../../../../../components/PhoneInput/PhoneInputComponent';
 import MyDatePicker from '../../../../../../components/DatePicker/MyDatePicker';
@@ -10,7 +11,6 @@ import Input from '../../../../../../UI/Input/Input';
 import TimePicker from '../../../../../../components/TimePicker/TimePicker';
 import { formatDuration } from '../../../../../../assets/functions/functions';
 import { setBooking } from '../../../../../../store/modules/bookingReducer/reducer';
-import { useQueryClient } from '@tanstack/react-query';
 import { UsersDataInterface } from '../../../../../../assets/interfaces/interfaces';
 
 interface BookingProps {

@@ -6,6 +6,8 @@ import Logo from '../../assets/logo.svg';
 import classes from './NavBar.module.scss';
 import SmallButton from '../../UI/S-Button/SmallButton';
 import SearchInput from '../SearchInput/SearchInput';
+import { GrBook } from "react-icons/gr";
+
 //comment
 function NavBar(): JSX.Element {
   const navigate = useNavigate();
@@ -25,7 +27,11 @@ function NavBar(): JSX.Element {
             <CgProfile size={35} />
           </SmallButton>
         </Link>
-
+        <Link to='/bookings'>
+          <SmallButton>
+            <GrBook size={35}/>
+          </SmallButton>
+        </Link>
         <SmallButton>
           <p>Log In</p>
         </SmallButton>

@@ -1,0 +1,19 @@
+@use '../../../../UI/variables' as *;
+@use '../../../../assets/fonts/fonts' as *;
+
+.cardContainer {
+  display: flex;
+  background-color: $background-color-light;
+  border-radius: 6px;
+  box-shadow: $primal-box-shadow;
+  padding: 10px;
+  margin: 5px;
+  p{
+    margin: 10px;
+  }
+}
+.contactDetails{
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+}

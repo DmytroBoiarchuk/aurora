@@ -89,7 +89,7 @@ function MyDatePicker({
     );
   }
 
-  // cals disabled days before today and after chosen range of months
+  // cals disabled days before today and after chosen range of months ( CHENGE TO TENSTACK REQUEST INSTEAD TAKING FROM REDUX )
   function disableOutdatedDaysIntervals(date: Date): boolean {
     const today = new Date();
     const dateOfLastDay = today.setMonth(today.getMonth() + howManyMonthsIsPlaning!);

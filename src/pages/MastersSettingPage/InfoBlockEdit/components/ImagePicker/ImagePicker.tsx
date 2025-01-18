@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import classes from './ImagePicker.module.scss';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks';
-import { setPhoto } from '../../../../store/modules/userDataReducer/reducer';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/reduxHooks';
+import { setPhoto } from '../../../../../store/modules/userDataReducer/reducer';
 
 function ImagePicker({
   label,
@@ -18,7 +18,7 @@ function ImagePicker({
   defaultValue?: string | null;
 }): JSX.Element {
   const dispatch = useAppDispatch();
-  const {photo} = useAppSelector(state => state.userDataReducer);
+  const { photo } = useAppSelector((state) => state.userDataReducer);
   const [pickedImage, setPickedImage] = useState<string | null>(defaultValue);
   const currentAvatar = isProcedurePhotoPicking ? (pickedImage ?? '/no-photo-img.jpg') : photo;
   const [inputKey, setInputKey] = useState<number>(0);
@@ -38,7 +38,7 @@ function ImagePicker({
     setPickedImage(null);
   }
   function onSelectPhotoHandler(event: React.ChangeEvent<HTMLInputElement>): void {
-    if(event.target.files) {
+    if (event.target.files) {
       const file = event.target?.files[0];
       if (!file) return;
       const fileReader = new FileReader();
@@ -52,9 +52,7 @@ function ImagePicker({
   return (
     <div className={classes.originInput}>
       <label>{label}</label>
-      <div>
-        <img src={pickedImage ?? currentAvatar} alt="Picked avatar" />
-      </div>
+      <img src={pickedImage ?? currentAvatar} alt="Picked avatar" />
       <input
         key={inputKey}
         ref={inputRef}
@@ -64,7 +62,7 @@ function ImagePicker({
         type="file"
         onChange={onSelectPhotoHandler}
       />
-      <div>
+      <div className={classes.buttonContainer}>
         <button onClick={(event): void => onClickPickHandler(event)}>{children}</button>
         {!isProcedurePhotoPicking && (
           <motion.div

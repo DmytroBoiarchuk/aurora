@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["ES2023", "DOM", "dom.iterable"],
     "target": "ES2019",
-    "module": "ES6",
+    "module": "es2022",
     "jsx": "react",
     "strict": true,
     "moduleResolution": "node",

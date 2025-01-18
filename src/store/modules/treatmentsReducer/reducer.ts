@@ -1,5 +1,5 @@
-import { TreatmentsReducerInterface } from '../../../assets/interfaces/reduxInterfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TreatmentsReducerInterface } from '../../../assets/interfaces/reduxInterfaces';
 import { TreatmentsProps } from '../../../assets/interfaces/interfaces';
 
 const initialState:TreatmentsReducerInterface = {

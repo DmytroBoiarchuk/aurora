@@ -2,13 +2,11 @@
   "id": 9999999999,
   "photo": "/valeriia_profile_photo.jpg",
   "name": "Valeriia Voitenko",
-  "description":
-  "Valeriia is a highly skilled beauty professional specializing in lash and brow lamination, meticulous eyebrow shaping, and advanced electrolysis hair removal. With a dedication to precision and an eye for detail, Valeriia delivers exceptional, personalized beauty treatments that enhance natural features and ensure client satisfaction.",
+  "description": "Valeriia is a highly skilled beauty professional specializing in lash and brow lamination, meticulous eyebrow shaping, and advanced electrolysis hair removal. With a dedication to precision and an eye for detail, Valeriia delivers exceptional, personalized beauty treatments that enhance natural features and ensure client satisfaction.",
   "treatments": [
     {
       "img": "/lash-lift.jpg",
-      "description":
-      "Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla , Lash bla bla bla bla , bla. Lash bla bla bla bla blaLush bla bla bla bla bla",
+      "description": "Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla Lash bla bla bla bla bla , Lash bla bla bla bla , bla. Lush bla bla bla bla Lash bla bla bla bla bla ush bla bla bla bla bla , Lash bla bla bla bla , bla. Lash bla bla bla bla blaLush bla bla bla bla bla",
       "id": 1,
       "procedureName": "Lush Lift",
       "price": "30",
@@ -16,8 +14,7 @@
     },
     {
       "img": "/brow_lami.jpg",
-      "description":
-      "Brow bla bla bla bla bla , Brow bla bla bla bla , bla. Brow bla bla bla bla Brow bla bla bla bla bla",
+      "description": "Brow bla bla bla bla bla , Brow bla bla bla bla , bla. Brow bla bla bla bla Brow bla bla bla bla bla",
       "id": 2,
       "procedureName": "Brow Lami",
       "price": "30",
@@ -56,8 +53,7 @@
       "name": "Dmytro Boiarchuk",
       "comment": {
         "header": "Awsome",
-        "text":
-        "Fusce nibh dolor, sollicitudin eget rhoncus ut, elementum at turpis. Nullam vel purus ligula. Nullam vitae vulputate nibh. In sit amet urna ac arcu semper accumsan. Etiam dictum libero in cursus rhoncus. Duis eget ultricies arcu. Donec at ullamcorper elit. Fusce nec interdum justo, vel iaculis justo. Donec in felis ut turpis elementum commodo. Nunc eleifend ante a porttitor maximus. Proin tempus lectus at augue lacinia, ut tristique leo laoreet. Morbi sed sem urna. Aliquam ut odio congue, rhoncus orci a, pretium urna. In hac habitasse platea dictumst. Maecenas nec massa ex Nam dignissim tempus faucibus. Duis sed lectus viverra metus dignissim pretium. Sed tincidunt vestibulum justo, quis tristique metus congue vitae. Nullam sed malesuada dolor, ut tempor felis. Curabitur turpis arcu, tempor vel mattis ut, laoreet ac dolor. Aenean ut tincidunt eros, ac rhoncus elit. Donec pellentesque fringilla est, sit amet scelerisque elit bibendum a. Fusce varius hendrerit dictum. Cras non urna vel erat mattis feugiat at eu mi. Phasellus vitae neque lobortis, vulputate felis et, gravida sem.Vivamus sit amet metus sed diam volutpat pulvinar a eu magna. Pellentesque varius dignissim porta. In vel magna id velit auctor porta. In hac habitasse platea dictumst. Aenean sed congue arcu. Ut at condimentum nibh. Sed tincidunt nec mauris eu lobortis. Aliquam nibh orci, viverra congue congue molestie, accumsan sed tortor. Aliquam non justo eget metus finibus facilisis quis vitae sem. Vivamus vestibulum ullamcorper dui a feugiat. Cras consequat mauris dolor, ut efficitur tellus ultrices vitae. Donec eros nibh, congue vel sapien ac, viverra dictum mauris. Mauris quis urna nunc. Sed commodo tortor at fringilla eleifend. Nam congue, nibh vitae auctor iaculis, nibh purus pretium massa, vel vulputate lectus nisi sed arcu."
+        "text": "Fusce nibh dolor, sollicitudin eget rhoncus ut, elementum at turpis. Nullam vel purus ligula. Nullam vitae vulputate nibh. In sit amet urna ac arcu semper accumsan. Etiam dictum libero in cursus rhoncus. Duis eget ultricies arcu. Donec at ullamcorper elit. Fusce nec interdum justo, vel iaculis justo. Donec in felis ut turpis elementum commodo. Nunc eleifend ante a porttitor maximus. Proin tempus lectus at augue lacinia, ut tristique leo laoreet. Morbi sed sem urna. Aliquam ut odio congue, rhoncus orci a, pretium urna. In hac habitasse platea dictumst. Maecenas nec massa ex Nam dignissim tempus faucibus. Duis sed lectus viverra metus dignissim pretium. Sed tincidunt vestibulum justo, quis tristique metus congue vitae. Nullam sed malesuada dolor, ut tempor felis. Curabitur turpis arcu, tempor vel mattis ut, laoreet ac dolor. Aenean ut tincidunt eros, ac rhoncus elit. Donec pellentesque fringilla est, sit amet scelerisque elit bibendum a. Fusce varius hendrerit dictum. Cras non urna vel erat mattis feugiat at eu mi. Phasellus vitae neque lobortis, vulputate felis et, gravida sem.Vivamus sit amet metus sed diam volutpat pulvinar a eu magna. Pellentesque varius dignissim porta. In vel magna id velit auctor porta. In hac habitasse platea dictumst. Aenean sed congue arcu. Ut at condimentum nibh. Sed tincidunt nec mauris eu lobortis. Aliquam nibh orci, viverra congue congue molestie, accumsan sed tortor. Aliquam non justo eget metus finibus facilisis quis vitae sem. Vivamus vestibulum ullamcorper dui a feugiat. Cras consequat mauris dolor, ut efficitur tellus ultrices vitae. Donec eros nibh, congue vel sapien ac, viverra dictum mauris. Mauris quis urna nunc. Sed commodo tortor at fringilla eleifend. Nam congue, nibh vitae auctor iaculis, nibh purus pretium massa, vel vulputate lectus nisi sed arcu."
       },
       "rate": 5,
       "date": "2024-11-16T14:40:23.000Z",
@@ -89,6 +85,40 @@
     }
   ],
   "clientsId": [87455122154, 9979446655, 64546546465, 100000000],
+  "booked": [
+    {
+      "name": "Hui",
+      "surname": "S gory",
+      "email": "dimabwhitNIGGWRe98@gmail.com",
+      "date": "2025-01-29",
+      "time": 12.5,
+      "procedureName": "SUICIDE",
+      "duration": 0.5,
+      "telephoneNumber": "+872137312122"
+
+    },
+    {
+      "name": "Dmytro",
+      "surname": "Boiarchuk",
+      "email": "dimabwhite98@gmail.com",
+      "date": "2025-01-29",
+      "time": 12.25,
+      "procedureName": "Electrolysis",
+      "duration": 1.5,
+      "telephoneNumber": "+343423432234"
+    },
+    {
+      "name": "Gey",
+      "surname": "Ebaniy",
+      "email": "dimabwhitNIGGWDASDASDRe98@gmail.com",
+      "date": "2025-01-29",
+      "time": 22.5,
+      "procedureName": "SUICIDE",
+      "duration": 2,
+      "telephoneNumber": "+132987127893"
+
+    }
+  ],
   "workingDates": [
     { "day": "2025-01-11", "timeFrom": [14], "timeTo": [22] },
     { "day": "2025-01-28", "timeFrom": [14, 15.5, 18, 20], "timeTo": [15, 17, 19, 22] },

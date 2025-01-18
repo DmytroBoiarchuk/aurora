@@ -1,9 +1,11 @@
 @use '../../../UI/variables' as *;
 
 .block{
+  width: 1050px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 0 auto;
 }
 .addNewProcedureButton{
   z-index: 0;
@@ -13,7 +15,7 @@
   align-items: center;
   position: relative;
   border: 10px inset $background-color-dark;
-  margin: 20px 5px 0 5px;
+  margin: 0 5px 0 5px;
   width: 250px;
   height: 385px;
   border-radius: 6px;
