@@ -14,6 +14,7 @@ import { setProcedureDetails } from '../../../../../../store/modules/bookingRedu
 import { formatDuration } from '../../../../../../assets/functions/functions';
 import CreateProcedureForm from '../../../../../MastersSettingPage/ProceduresBlockSetting/components/CreateProcedureForm/CreateProcedureForm';
 import SlideDownButton from '../../../../../../UI/SlideDownButton/SlideDownButton';
+import MyModal from '../../../../../../UI/Modal/MyModal';
 
 function Procedure({
   procedure: { img, procedureName, description, price, options, id },
@@ -33,7 +34,7 @@ function Procedure({
   const queryClient = useQueryClient();
   const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
   const [isDropped, setIsDropped] = useState<boolean>(false);
-  const [formIsShown, setFormIsShown] = useState<boolean>(false);
+  const [modalIsShown, setModalIsShown] = useState<boolean>(false);
   const selectionRef = useRef<HTMLSelectElement | null>(null);
   useEffect(() => {
     if (droppedProcedure !== id.toString()) {
@@ -66,7 +67,7 @@ function Procedure({
       <div ref={blockRef} className={classes.procedureBlock}>
         <div className={classes.topLevel}>
           {isSettingPage && (
-            <button className={classes.editButton} onClick={(): void => setFormIsShown(true)}>
+            <button className={classes.editButton} onClick={(): void => setModalIsShown(true)}>
               <MdEdit size={20} />
             </button>
           )}
@@ -103,15 +104,13 @@ function Procedure({
           </SlideDownButton>
         </div>
       </div>
-      <AnimatePresence>
-        {formIsShown && (
+      <MyModal modalIsShown={modalIsShown} setModalIsShown={setModalIsShown}>
           <CreateProcedureForm
             isEditing
             procedure={{ img, procedureName, description, price, options, id }}
-            setFormIsShown={setFormIsShown}
+            setFormIsShown={setModalIsShown}
           />
-        )}
-      </AnimatePresence>
+      </MyModal>
     </>
   );
 }

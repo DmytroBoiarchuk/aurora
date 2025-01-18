@@ -2,18 +2,93 @@
 @use '../../../../assets/fonts/fonts' as *;
 
 .cardContainer {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: $background-color-light;
   border-radius: 6px;
   box-shadow: $primal-box-shadow;
   padding: 10px;
   margin: 5px;
-  p{
+  th {
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+  td {
+    border-left: 1px solid black;
+    width: 240px;
+    span {
+      padding: 3px;
+      margin-left: 3px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      a {
+        padding-top: 5px;
+      }
+      svg:hover {
+        scale: 1.2;
+      }
+    }
+  }
+  p {
     margin: 10px;
   }
+  button {
+    padding: 0;
+  }
 }
-.contactDetails{
+.contactDetails {
   display: flex;
   flex-direction: column;
   padding: 3px;
+}
+#nameCol {
+  border-left: none;
+}
+#contactCol {
+  width: 372px;
+}
+.time {
+  font-weight: 700;
+}
+#confirmed {
+  color: green;
+}
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-radius: 6px;
+  background-color: $background-color-light;
+  box-shadow: $primal-box-shadow;
+}
+.modalButtonsGroup{
+  display: flex;
+  button{
+    margin: 5px;
+  }
+}
+.cancelButton{
+  border: none;
+  background: rgba(0, 0, 0, 0);
+  &:hover{
+    color: blue;
+    text-decoration: underline;
+  }
+}
+.bookingButtonsContainer{
+  display: flex;
+  flex-direction: column;
+  button{
+    margin-bottom: 20px;
+  }
+}
+.messageTextarea{
+  resize: none;
+  width: 250px;
+  height: 150px;
 }

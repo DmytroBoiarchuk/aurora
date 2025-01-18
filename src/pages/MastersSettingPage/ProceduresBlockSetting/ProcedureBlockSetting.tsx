@@ -40,7 +40,7 @@ function ProcedureBlockSetting(): JSX.Element {
           </motion.div>
         </button>
       </div>
-      <MyModal onClose={setFormIsShown} modalIsShown={formIsShown}>
+      <MyModal setModalIsShown={setFormIsShown} modalIsShown={formIsShown}>
         <CreateProcedureForm setFormIsShown={setFormIsShown} />
       </MyModal>
     </Block>

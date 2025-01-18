@@ -10,7 +10,8 @@ import { VITE_GOOGLE_MAPS_API_KEY } from '../../../../../constants/keys';
 import MediumButton from '../../../../../UI/M-Button/MediumButton';
 import { useAppDispatch } from '../../../../../hooks/reduxHooks';
 import { setAddress } from '../../../../../store/modules/userDataReducer/reducer';
-
+import { queryClient } from '../../../../../query';
+import { UsersDataInterface } from '../../../../../assets/interfaces/interfaces';
 
 async function sendNewAddress(newAddress: string): Promise<void> {
   // const response = await fetch() ...
@@ -24,21 +25,26 @@ async function sendNewAddress(newAddress: string): Promise<void> {
 function AddressPicker(): JSX.Element {
   const [isDataPickerOn, setIsDataPickerOn] = useState<boolean>(false);
   const [usersAddress, setUsersAddress] = useState<SingleValue<Option>>(null);
-  const dispatch = useAppDispatch(); //temporary (useMutation react Query instead);
   const { mutate } = useMutation({
     // data, isError, error, isPending
     mutationFn: sendNewAddress,
-    onSuccess: (): void => {},
+    onMutate: (newAddress: string): UsersDataInterface | undefined => {
+      const savedOldData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersPage']);
+
+      queryClient.setQueryData(['MastersData'], (oldData: UsersDataInterface) => ({ ...oldData, address: newAddress }));
+      return savedOldData;
+    },
+    onError: (err: Error, variables, context) => {
+      queryClient.setQueryData(['MastersData'], context);
+    },
+    // onSuccess: (): void => {
+    //   queryClient.invalidateQueries({ queryKey: ['MastersData'] });
+    // },
   });
   function handleSubmitAddress(): void {
     setIsDataPickerOn((prevState) => !prevState);
-    if(usersAddress )
-    dispatch(setAddress(usersAddress.label));
-
+    if (usersAddress) mutate(usersAddress.label);
   }
-  useEffect(() => {
-    if (usersAddress !== null) mutate(usersAddress.label);
-  }, [usersAddress]);
 
   return (
     <motion.div className={classes.addressPickerContainer}>
@@ -46,9 +52,9 @@ function AddressPicker(): JSX.Element {
         {isDataPickerOn && (
           <motion.div
             className={classes.inputWrapper}
-            animate={{ opacity: 1, width: '350px'}}
+            animate={{ opacity: 1, width: '350px' }}
             transition={{ duration: 0.2 }}
-            exit={{ opacity: 0, width: 0}}
+            exit={{ opacity: 0, width: 0 }}
           >
             <GooglePlacesAutocomplete
               selectProps={{
@@ -60,7 +66,10 @@ function AddressPicker(): JSX.Element {
           </motion.div>
         )}
       </AnimatePresence>
-      <MediumButton onClick={handleSubmitAddress}>Set address</MediumButton>
+      <div className={classes.addressPickerButtonContainer}>
+        <MediumButton onClick={handleSubmitAddress}>Set address</MediumButton>
+        {isDataPickerOn && <MediumButton onClick={(): void => setIsDataPickerOn(false)}>Cancel</MediumButton>}
+      </div>
     </motion.div>
   );
 }

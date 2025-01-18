@@ -5,14 +5,14 @@ import classes from './MyModal.module.scss';
 interface MyModalProps {
   modalIsShown: boolean;
   children: React.ReactElement;
-  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalIsShown: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function MyModal({ children, modalIsShown, onClose }: MyModalProps): JSX.Element {
+function MyModal({ children, modalIsShown, setModalIsShown }: MyModalProps): JSX.Element {
   const backdropRef = useRef<HTMLDivElement>(null);
   function handleClickOutside(e: React.MouseEvent<HTMLDivElement>): void {
     e.stopPropagation();
     if (backdropRef.current && !backdropRef.current.contains(e.target as Element)) {
-      onClose(false);
+      setModalIsShown(false);
     }
   }
   useEffect(() => {

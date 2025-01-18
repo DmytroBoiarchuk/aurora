@@ -19,6 +19,19 @@
     width: auto;
   }
 }
+.nameContainer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  h2 {
+    text-align: center;
+    margin: 0 0 10px 0;
+    min-width: 300px;
+    width: auto;
+    color: black;
+    font-size: 30px;
+  }
+}
 .description {
   padding-left: 25px;
   display: flex;
@@ -27,14 +40,6 @@
   align-items: flex-start;
   position: relative;
   margin-bottom: 50px;
-  h2 {
-    margin: 0 0 10px 0;
-    min-width: 300px;
-    width: auto;
-    text-align: start;
-    color: black;
-    font-size: 30px;
-  }
   h3 {
     font-weight: normal;
     margin: 0;

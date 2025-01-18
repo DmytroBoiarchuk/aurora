@@ -1,28 +1,150 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { motion } from 'framer-motion';
-import { BookingsInterface } from '../../../../assets/interfaces/interfaces';
+import { IoCallOutline, IoMailOutline } from 'react-icons/io5';
+import { GiConfirmed } from 'react-icons/gi';
+import { useMutation } from '@tanstack/react-query';
+import { BookingsInterface, UsersDataInterface } from '../../../../assets/interfaces/interfaces';
 import classes from './BookingCard.module.scss';
 import { formatDate, formatDuration, formatTime } from '../../../../assets/functions/functions';
 import { weekDays } from '../../../../assets/constants/constants';
+import SmallButton from '../../../../UI/S-Button/SmallButton';
+import MyModal from '../../../../UI/Modal/MyModal';
+import MediumButton from '../../../../UI/M-Button/MediumButton';
+import { queryClient } from '../../../../query';
 
-interface BookingCardProps {
-  booking: BookingsInterface
+interface BookingFetchInterface {
+  bookingId: string;
+  isDeleting: boolean;
 }
-function BookingCard({booking}:BookingCardProps): JSX.Element {
+async function bookingFetch({ bookingId, isDeleting }: BookingFetchInterface): Promise<void> {
+  // initiate deleting if is deletion or set confirmation if is not deleting
+  return new Promise((resolve, reject): void => {
+    setTimeout(() => {
+      resolve();
+    }, 500);
+  });
+}
+interface BookingCardProps {
+  booking: BookingsInterface;
+}
+function BookingCard({ booking }: BookingCardProps): JSX.Element {
+  const [isConfirmed, setIsConfirmed] = useState<boolean>(booking.isConfirmed);
+  const [modalIsShown, setModalIsShown] = useState<boolean>(false);
+  const [modalState, setModalState] = useState<'confirm' | 'cancel' | ''>('');
+
+  const { mutate } = useMutation({
+    mutationFn: bookingFetch,
+    onMutate: ({ bookingId, isDeleting }: BookingFetchInterface): UsersDataInterface | undefined => {
+      const previousItems: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
+      if (isDeleting) {
+        queryClient.setQueryData(['MastersData'], (oldData: UsersDataInterface) => ({
+          ...oldData,
+          booked: oldData.booked.filter((b: BookingsInterface) => b.email !== bookingId),
+        }));
+      } else {
+        queryClient.setQueryData(['MastersData'], (oldData: UsersDataInterface) => ({
+          ...oldData,
+          booked: oldData.booked.map((b: BookingsInterface) =>
+            b.email === bookingId ? { ...b, isConfirmed: true } : b
+          ),
+        }));
+      }
+      return previousItems;
+    },
+    onError: (err: ErrorEvent, variables, context): void => {
+       queryClient.setQueryData(['MastersData'], context);
+       if(!variables.isDeleting) setIsConfirmed(false);
+       // show Error
+    },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({ queryKey: ['MastersData'] }); // maybe not needed ?
+    // },
+  });
+
+  function handleConfirm(): void {
+    setModalIsShown(false);
+    if (modalState === 'cancel') {
+      setTimeout(() => mutate({ bookingId: booking.email, isDeleting: true }), 300);
+    } else if (modalState === 'confirm') {
+      setTimeout(() => mutate({ bookingId: booking.email, isDeleting: false }), 300);
+      setIsConfirmed(true);
+    }
+    // send email to customer & request to server to set confirmed ( if response is not OK -> set isConfirmed ( false ) )
+  }
+  function handleClickButton(modal: 'confirm' | 'cancel' | ''): void {
+    setModalState(modal);
+    setModalIsShown(true);
+  }
   return (
-    <motion.div className={classes.cardContainer}>
-      <p>{`${booking.name} ${booking.surname}`}</p>
-      <p>{`${booking.procedureName}(${formatDuration(booking.duration)})`}</p>
-      <p>{`${formatDate(booking.date)} (${weekDays[new Date(booking.date).getDay()]})`}</p>
-      <p>{formatTime(booking.time)}</p>
-
-      <div className={classes.contactDetails}>
-        <a href={`mailto:${booking.email}`} >{booking.email}</a>
-        <a href={`tel:${booking.telephoneNumber}`}>{booking.telephoneNumber}</a>
+    <motion.div
+      layout="position"
+      className={classes.cardContainer}
+      exit={{ x: '-2000px' }}
+      transition={{ duration: 0.4 }}
+    >
+      <table>
+        <tbody>
+          <tr>
+            <th id={classes.nameCol}>Name</th>
+            <th>Procedure</th>
+            <th>Time</th>
+            <th id={classes.contactCol}>Contact Details</th>
+          </tr>
+          <tr>
+            <td id={classes.nameCol}>
+              <span>{`${booking.name} ${booking.surname}`}</span>
+            </td>
+            <td>
+              <span>{booking.procedureName}</span>
+              <span>{formatDuration(booking.duration)}</span>
+            </td>
+            <td>
+              <span>{formatDate(booking.date)}</span>
+              <span>{weekDays[new Date(booking.date).getDay()]}</span>
+              <span className={classes.time}>{formatTime(booking.time)}</span>
+            </td>
+            <td id={classes.contactCol} className={classes.contactDetails}>
+              <span>
+                <span>{booking.email}</span>
+                <a href={`mailto:${booking.email}`}>
+                  <IoMailOutline />
+                </a>
+              </span>
+              <span>
+                {' '}
+                <span>{booking.telephoneNumber}</span>
+                <a href={`tel:${booking.telephoneNumber}`}>
+                  <IoCallOutline />
+                </a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div className={classes.bookingButtonsContainer}>
+        <button onClick={(): void => handleClickButton('cancel')} className={classes.cancelButton}>
+          Cancel
+        </button>
+        <SmallButton disabled={isConfirmed} onClick={(): void => handleClickButton('confirm')}>
+          <GiConfirmed id={isConfirmed ? classes.confirmed : ''} size={45} />
+        </SmallButton>
       </div>
-
-
+      <MyModal modalIsShown={modalIsShown} setModalIsShown={setModalIsShown}>
+        <div className={classes.modalBody}>
+          <p>{`Are you sure to ${modalState === 'confirm' ? 'confirm' : 'cancel'}?`}</p>
+          {modalState !== 'confirm' && (
+            <>
+              <label>Tell customer the reason: </label>
+              <textarea className={classes.messageTextarea} placeholder="Your message" />
+            </>
+          )}
+          <div className={classes.modalButtonsGroup}>
+            <MediumButton onClick={handleConfirm}>Confirm</MediumButton>
+            <MediumButton onClick={(): void => setModalIsShown(false)}>Cancel</MediumButton>
+          </div>
+        </div>
+      </MyModal>
     </motion.div>
   );
 }

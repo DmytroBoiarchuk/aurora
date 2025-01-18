@@ -4,7 +4,14 @@
   z-index: 10000;
   margin-bottom: 10px;
 }
-.inputWrapper{
+.inputWrapper {
   height: 36px;
   margin-right: 10px;
+}
+.addressPickerButtonContainer {
+  display: flex;
+  flex-direction: row;
+  button {
+    margin-left: 5px;
+  }
 }

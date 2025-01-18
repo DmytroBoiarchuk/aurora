@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { AnimatePresence } from 'framer-motion';
 import { BookingsInterface, UsersDataInterface } from '../../assets/interfaces/interfaces';
 import { fetchJsonData } from '../../assets/functions/functions';
 import BookingCard from './components/BookingCard/BookingCard';
@@ -17,16 +18,18 @@ function compareDates(booking1: BookingsInterface, booking2: BookingsInterface):
 }
 
 function BookingsPage(): JSX.Element {
-  const { data } = useQuery<UsersDataInterface>({
-    queryKey: ['MastersData'], // add masters ID to keys array to cache loaded master
+  const { data } = useQuery<UsersDataInterface>({  // ->  if was loaded - do not load / if was not loaded - load
+    queryKey: ['MastersData'],
     queryFn: fetchJsonData,
   });
-  console.log(data);
+
   return (
     <Block classNames={classes.bookingsContainer}>
+      <AnimatePresence>
       {data?.booked
         .sort((a, b) => compareDates(a, b))
         .map((booking) => <BookingCard key={booking.email} booking={booking} />)}
+    </AnimatePresence>
     </Block>
   );
 }

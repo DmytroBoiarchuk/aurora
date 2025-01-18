@@ -87,15 +87,15 @@
   "clientsId": [87455122154, 9979446655, 64546546465, 100000000],
   "booked": [
     {
-      "name": "Hui",
+      "name": "Hui dqwd qwd as dasd as das dasd asd asd asd as dasd ",
       "surname": "S gory",
       "email": "dimabwhitNIGGWRe98@gmail.com",
       "date": "2025-01-29",
       "time": 12.5,
       "procedureName": "SUICIDE",
       "duration": 0.5,
-      "telephoneNumber": "+872137312122"
-
+      "telephoneNumber": "+872137312122",
+      "isConfirmed" : true
     },
     {
       "name": "Dmytro",
@@ -105,7 +105,9 @@
       "time": 12.25,
       "procedureName": "Electrolysis",
       "duration": 1.5,
-      "telephoneNumber": "+343423432234"
+      "telephoneNumber": "+343423432234",
+      "isConfirmed" : true
+
     },
     {
       "name": "Gey",
@@ -115,7 +117,8 @@
       "time": 22.5,
       "procedureName": "SUICIDE",
       "duration": 2,
-      "telephoneNumber": "+132987127893"
+      "telephoneNumber": "+132987127893",
+      "isConfirmed" : false
 
     }
   ],

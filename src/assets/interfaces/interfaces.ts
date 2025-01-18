@@ -45,6 +45,7 @@ export interface BookingsInterface {
   procedureName: string;
   duration: number;
   telephoneNumber: string;
+  isConfirmed: boolean;
 }
 export interface UsersDataInterface {
   id: number;

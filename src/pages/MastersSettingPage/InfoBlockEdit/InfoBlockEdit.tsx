@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { debounce } from '../../../assets/functions/functions';
 import { setName } from '../../../store/modules/userDataReducer/reducer';
 import { useMutation } from '@tanstack/react-query';
+import { queryClient } from '../../../query';
 
 async function sendNewDescription(newDescription: string): Promise<void> {
   // const response = await fetch() ...
@@ -27,7 +28,10 @@ function InfoBlockEdit(): JSX.Element {
   const { mutate } = useMutation({
     // data, isError, error, isPending
     mutationFn: sendNewDescription,
-    onSuccess: (): void => {},
+    onSuccess: (): void => {
+      queryClient.invalidateQueries({ queryKey: ['MastersData'] });
+    },
+
   });
   function onDescriptionEditHandler(isEditing: boolean): void {
     setIsDescriptionEditing(isEditing);
@@ -46,9 +50,11 @@ function InfoBlockEdit(): JSX.Element {
           <ImagePicker> Pick an Avatar </ImagePicker>
         </div>
         <div className={classes.description}>
-          <h2 onClick={(): void => onDescriptionEditHandler(false)} onInput={onChangeUserNameHandler} contentEditable>
-            {name}
-          </h2>
+          <div className={classes.nameContainer}>
+            <h2 onClick={(): void => onDescriptionEditHandler(false)} onInput={onChangeUserNameHandler} contentEditable>
+              {name}
+            </h2>
+          </div>
           <ul>
             {treatments.map((treatment) => (
               <li key={treatment.id}>
