@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import classes from './MyModal.module.scss';
 
@@ -27,7 +29,7 @@ function MyModal({ children, modalIsShown, setModalIsShown }: MyModalProps): JSX
       document.body.style.overflow = '';
     };
   }, [modalIsShown]);
-  return (
+  return ReactDOM.createPortal(
     <AnimatePresence>
       {modalIsShown && (
         <motion.div
@@ -51,7 +53,7 @@ function MyModal({ children, modalIsShown, setModalIsShown }: MyModalProps): JSX
         </motion.div>
       )}
     </AnimatePresence>
-  );
+  , document.body);
 }
 
 export default MyModal;

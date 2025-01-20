@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { motion } from 'framer-motion';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import classes from './Booking.module.scss';
 import PhoneInputComponent from '../../../../../../components/PhoneInput/PhoneInputComponent';
 import MyDatePicker from '../../../../../../components/DatePicker/MyDatePicker';
@@ -10,24 +10,59 @@ import { useAppDispatch, useAppSelector } from '../../../../../../hooks/reduxHoo
 import Input from '../../../../../../UI/Input/Input';
 import TimePicker from '../../../../../../components/TimePicker/TimePicker';
 import { formatDuration } from '../../../../../../assets/functions/functions';
-import { setBooking } from '../../../../../../store/modules/bookingReducer/reducer';
+import { clearBooking, setBooking } from '../../../../../../store/modules/bookingReducer/reducer';
 import { UsersDataInterface } from '../../../../../../assets/interfaces/interfaces';
+import { BookingInterface } from '../../../../../../assets/interfaces/reduxInterfaces';
+import { queryClient } from '../../../../../../query';
+import MyModal from '../../../../../../UI/Modal/MyModal';
+import MediumButton from '../../../../../../UI/M-Button/MediumButton';
 
 interface BookingProps {
-  setIsBookingProcess: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsBookingConfirmed: React.Dispatch<React.SetStateAction<boolean>>;
+  closeBooking: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsBookingConfirmed?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  isManualBooking?: boolean;
+  closeModal?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }
-function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): JSX.Element {
-  const queryClient = useQueryClient();
+async function sendManualBooking(bookingData: BookingInterface): Promise<void> {
+  // const response = await fetch() ...
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 300);
+  });
+}
+function Booking({
+  closeBooking,
+  setIsBookingConfirmed,
+  isManualBooking = false,
+  closeModal,
+}: BookingProps): JSX.Element {
+  const { mutate } = useMutation({
+    mutationFn: sendManualBooking,
+    onMutate: (bookingData) => {
+      const prevData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
+      if (prevData)
+        queryClient.setQueryData(['MastersData'], {
+          ...prevData,
+          booked: [...prevData!.booked, bookingData],
+          isConfirmed: true,
+        });
+    },
+    onError: (error, __, context) => {
+      queryClient.setQueryData(['MastersData'], context);
+    },
+  });
+  const [areYouSureModal, setAreYouSureModal] = useState(false);
   const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
   const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
   const bookingInfo = useAppSelector((state) => state.bookingReducer);
   const isMultipleOptions =
-    mastersData?.treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length > 1;
+    mastersData?.treatments.find((treatment) => treatment.procedureName === bookingInfo.procedureName)?.options.length >
+    1;
   const dispatch = useAppDispatch();
   function backButtonHandler(e): void {
     e.preventDefault();
-    setIsBookingProcess(false);
+    closeBooking(false);
   }
 
   function submitFormHandler(e: FormEvent<HTMLFormElement>): void {
@@ -35,8 +70,19 @@ function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): 
     const formData = new FormData(e.currentTarget);
     const formObject = Object.fromEntries(formData);
     dispatch(setBooking(formObject));
-    setIsBookingProcess(false);
-    setIsBookingConfirmed(true);
+    setAreYouSureModal(true);
+  }
+  function handleConfirmAreYouSureModal(): void {
+    if (!isManualBooking && setIsBookingConfirmed) {
+      setIsBookingConfirmed(true);
+    } else if (closeModal) {
+      closeModal(false);
+    }
+    closeBooking(false);
+    console.log(bookingInfo);
+    mutate(bookingInfo);
+    setAreYouSureModal(false);
+    //  dispatch(clearBooking());
   }
   return (
     <div className={classes.bookingContainer}>
@@ -52,15 +98,33 @@ function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): 
           </h1>
 
           <div className={classes.nameBlock}>
-            <Input required placeholder="Enter your name" id="customerName" type="text" name="name" />
-            <Input required placeholder="Enter your surname" id="customerSurname" type="text" name="surname" />
+            <Input
+              required={!isManualBooking}
+              placeholder="Enter your name"
+              id="customerName"
+              type="text"
+              name="name"
+            />
+            <Input
+              required={!isManualBooking}
+              placeholder="Enter your surname"
+              id="customerSurname"
+              type="text"
+              name="surname"
+            />
           </div>
 
           <div className={classes.inputStyle}>
             <label>Phone number</label>
             <PhoneInputComponent />
           </div>
-          <Input required placeholder="Enter your email" id="customerEmail" type="email" name="email" />
+          <Input
+            required={!isManualBooking}
+            placeholder="Enter your email"
+            id="customerEmail"
+            type="email"
+            name="email"
+          />
         </div>
         <motion.div
           animate={
@@ -86,6 +150,15 @@ function Booking({ setIsBookingProcess, setIsBookingConfirmed }: BookingProps): 
           <TimePicker setIsDatePicked={setIsDatePicked} />
         </motion.div>
       </form>
+      <MyModal modalIsShown={areYouSureModal} setModalIsShown={setAreYouSureModal}>
+        <div className={classes.areYouSureModalBody}>
+          <p>Are you sure to ?</p>
+          <div className={classes.modalButtonsContainer}>
+            <MediumButton onClick={handleConfirmAreYouSureModal}>Confirm</MediumButton>
+            <MediumButton onClick={(): void => setAreYouSureModal(false)}>Cancel</MediumButton>
+          </div>
+        </div>
+      </MyModal>
     </div>
   );
 }

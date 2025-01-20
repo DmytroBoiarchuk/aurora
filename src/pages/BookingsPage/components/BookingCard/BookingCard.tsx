@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { motion } from 'framer-motion';
-import { IoCallOutline, IoMailOutline } from 'react-icons/io5';
 import { GiConfirmed } from 'react-icons/gi';
 import { useMutation } from '@tanstack/react-query';
 import { BookingsInterface, UsersDataInterface } from '../../../../assets/interfaces/interfaces';
 import classes from './BookingCard.module.scss';
-import { formatDate, formatDuration, formatTime } from '../../../../assets/functions/functions';
-import { weekDays } from '../../../../assets/constants/constants';
 import SmallButton from '../../../../UI/S-Button/SmallButton';
 import MyModal from '../../../../UI/Modal/MyModal';
 import MediumButton from '../../../../UI/M-Button/MediumButton';
 import { queryClient } from '../../../../query';
+import BookingCardTable from './components/BookingCardTable';
 
 interface BookingFetchInterface {
   bookingId: string;
@@ -83,45 +81,7 @@ function BookingCard({ booking }: BookingCardProps): JSX.Element {
       exit={{ x: '-2000px' }}
       transition={{ duration: 0.4 }}
     >
-      <table>
-        <tbody>
-          <tr>
-            <th id={classes.nameCol}>Name</th>
-            <th>Procedure</th>
-            <th>Time</th>
-            <th id={classes.contactCol}>Contact Details</th>
-          </tr>
-          <tr>
-            <td id={classes.nameCol}>
-              <span>{`${booking.name} ${booking.surname}`}</span>
-            </td>
-            <td>
-              <span>{booking.procedureName}</span>
-              <span>{formatDuration(booking.duration)}</span>
-            </td>
-            <td>
-              <span>{formatDate(booking.date)}</span>
-              <span>{weekDays[new Date(booking.date).getDay()]}</span>
-              <span className={classes.time}>{formatTime(booking.time)}</span>
-            </td>
-            <td id={classes.contactCol} className={classes.contactDetails}>
-              <span>
-                <span>{booking.email}</span>
-                <a href={`mailto:${booking.email}`}>
-                  <IoMailOutline />
-                </a>
-              </span>
-              <span>
-                {' '}
-                <span>{booking.telephoneNumber}</span>
-                <a href={`tel:${booking.telephoneNumber}`}>
-                  <IoCallOutline />
-                </a>
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <BookingCardTable booking={booking}/>
       <div className={classes.bookingButtonsContainer}>
         <button onClick={(): void => handleClickButton('cancel')} className={classes.cancelButton}>
           Cancel
@@ -136,10 +96,10 @@ function BookingCard({ booking }: BookingCardProps): JSX.Element {
           {modalState !== 'confirm' && (
             <>
               <label>Tell customer the reason: </label>
-              <textarea className={classes.messageTextarea} placeholder="Your message" />
+              <textarea className={classes.messageTextarea} placeholder="Your message" defaultValue='Sorry, I have to cancel our appointment due to unexpected issues, thank you for understanding...❣️' />
             </>
           )}
-          <div className={classes.modalButtonsGroup}>
+          <div className={classes.modalButtonsContainer}>
             <MediumButton onClick={handleConfirm}>Confirm</MediumButton>
             <MediumButton onClick={(): void => setModalIsShown(false)}>Cancel</MediumButton>
           </div>

@@ -48,8 +48,7 @@ function ProceduresBlock(): JSX.Element {
         transition={{ duration: 0.5 }}
       >
         <Booking
-          setIsBookingProcess={setIsBookingProcess}
-          isBookingConfirmed={isBookingConfirmed}
+          closeBooking={setIsBookingProcess}
           setIsBookingConfirmed={setIsBookingConfirmed}
         />
       </motion.div>

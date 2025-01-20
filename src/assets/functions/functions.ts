@@ -1,4 +1,4 @@
-import { BookingReducerInterface } from '../interfaces/reduxInterfaces';
+import { BookingInterface } from '../interfaces/reduxInterfaces';
 import { ScheduleInterface, UsersDataInterface } from '../interfaces/interfaces';
 
 export function formatTime(timeToFormat: number | string): string {
@@ -23,7 +23,7 @@ export function formatDate (dateString: string): string {
     }).format(date);
 };
 
-export function findAvailableTime(bookingData: BookingReducerInterface, date: string, workingDates: ScheduleInterface[]): number[] {
+export function findAvailableTime(bookingData: BookingInterface, date: string, workingDates: ScheduleInterface[]): number[] {
   const availableTime = workingDates.find((day) => day.day === date);
   const timesArray: number[] = [];
   if (availableTime)

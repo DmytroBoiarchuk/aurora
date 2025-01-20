@@ -13,7 +13,7 @@ function Input({ required, placeholder, id, type, name } : InputProps): JSX.Elem
   return (
     <div>
       <div className={classes.inputStyle}>
-        <label>Name</label>
+        <label>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
         <input required={required} placeholder={placeholder} id={id} type={type} name={name} />
       </div>
     </div>

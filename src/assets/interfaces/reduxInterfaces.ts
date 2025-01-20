@@ -2,7 +2,7 @@ import { ReviewProps, ScheduleInterface, TreatmentsProps } from './interfaces';
 
 export interface StateInterface {
   ratingReducer: RatingReducerInterface;
-  bookingReducer: BookingReducerInterface;
+  bookingReducer: BookingInterface;
   workingScheduleReducer: WorkingScheduleReducerInterface;
 }
 
@@ -10,7 +10,7 @@ export interface RatingReducerInterface {
   rating: number
 }
 
-export interface BookingReducerInterface {
+export interface BookingInterface {
   name: string;
   surname: string;
   telephoneNumber: string;

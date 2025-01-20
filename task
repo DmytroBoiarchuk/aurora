@@ -1,6 +1,9 @@
 - day -> date
-
-
+- mark booking as manually created
+- animate page changing
+- login/register page
+- refactor big components
+- implement search
 // AFTER BACKEND IS READY
 - get rid of treatmentReducer, userDataReducer, reviewsReducer - use data from ReactQuery instead:
     - send ReactQuery mutation request while leaving review, creating new treatment or editing old, editing name or description
@@ -9,9 +12,20 @@
 
 
 // user can leave review only once
-// leave review can only registered and verified customer of master which he leaves review or by link sent after booking treatment ( after procedure )
+// leave review can only registered and verified customer of master which he leaves review or by link sent after booking treatment
+ ( after procedure )
 
 
 
 //General
 
+// bugs
+ treatments Card :
+   - behaviour is wrong, description lay under the location block ( need to make space for it )
+   - height is too big if many treatments in the list and it is not changes if we click the "Book" button and Booking form appears,
+    height at this time the same and a lot of black space after ( because treatments list still exist in DOM )
+
+
+// maybe add :
+ - chat between master and customer in bookings
+ -
