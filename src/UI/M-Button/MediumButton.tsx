@@ -2,9 +2,9 @@ import React from 'react';
 import classes from './MediumButton.module.scss';
 import { CustomButtonProps } from '../../assets/interfaces/types';
 
-function MediumButton({ children, classNames = '', ...props }: CustomButtonProps): JSX.Element {
+function MediumButton({ children, className, ...props }: CustomButtonProps): JSX.Element {
   return (
-    <button className={`${classNames} ${classes.button}`} {...props}>
+    <button className={`${className} ${classes.button}`} {...props}>
       {children}
     </button>
   );

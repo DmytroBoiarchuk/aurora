@@ -13,7 +13,6 @@ function MastersPage(): JSX.Element {
     queryKey: ['MastersData'], // add masters ID to keys array to cache loaded master
     queryFn: fetchJsonData,
   });
-  console.log(data);
   return (
     <div className={classes.pageContainer}>
       <InfoBlock />

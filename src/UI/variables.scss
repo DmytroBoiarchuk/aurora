@@ -8,7 +8,8 @@ $background-color-light: #fffefa;
 $primary-golden: #ceaf0f;
 $background-color-dark-low-opacity: rgba(232, 222, 212, 0.2);
 $primal-box-shadow: -2px 2px 5px black;
-
+$transparent-font-color: rgba(106, 107, 113, 0.5);
+$disabled-background-color: #aca2a2;
 @mixin custom-scrollbar {
   &::-webkit-scrollbar {
     width: 10px;

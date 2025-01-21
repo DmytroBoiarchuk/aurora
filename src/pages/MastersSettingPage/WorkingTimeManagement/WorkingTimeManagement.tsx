@@ -27,6 +27,7 @@ function WorkingTimeManagement(): JSX.Element {
           howManyMonthsIsPlaning={howManyMonthsIsPlaning}
           chosenOption={chosenOption}
           setChosenOption={setChosenOption}
+          showButton={false}
         />
         <div className={classes.timePickingBlock}>
           <TimePlaning howManyMonthsIsPlaning={howManyMonthsIsPlaning} />

@@ -135,7 +135,9 @@
       "procedureName": "SUICIDE",
       "duration": 0.5,
       "telephoneNumber": "+872137312122",
-      "isConfirmed" : true
+      "isConfirmed" : true,
+      "manual": true
+
     },
     {
       "name": "Dmytro",
@@ -146,7 +148,8 @@
       "procedureName": "Electrolysis",
       "duration": 1.5,
       "telephoneNumber": "+343423432234",
-      "isConfirmed" : true
+      "isConfirmed" : true,
+      "manual": false
 
     },
     {
@@ -158,8 +161,20 @@
       "procedureName": "SUICIDE",
       "duration": 2,
       "telephoneNumber": "+132987127893",
-      "isConfirmed" : false
-
+      "isConfirmed" : false,
+      "manual": false
+    },
+    {
+      "name": "suka",
+      "surname": "EbaniyLoh",
+      "email": "dimabwhitNIGasdGWDASDASDRe98@gmail.com",
+      "date": "2025-01-11",
+      "time": 22.5,
+      "procedureName": "SUICIDE",
+      "duration": 2,
+      "telephoneNumber": "+132987127893",
+      "isConfirmed" : false,
+      "manual": false
     }
   ],
   "workingDates": [

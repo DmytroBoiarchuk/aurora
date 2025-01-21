@@ -7,6 +7,7 @@ import classes from './NavBar.module.scss';
 import SmallButton from '../../UI/S-Button/SmallButton';
 import SearchInput from '../SearchInput/SearchInput';
 import { GrBook } from "react-icons/gr";
+import MediumButton from '../../UI/M-Button/MediumButton';
 
 //comment
 function NavBar(): JSX.Element {
@@ -20,16 +21,21 @@ function NavBar(): JSX.Element {
         <Logo width={100} height={100} />
         <h1>AURORA</h1>
       </div>
-      <SearchInput />
+      <div className={classes.inputContainer}>
+        <SearchInput className={classes.searchStyle} />
+        <MediumButton>
+          <p>Find Your Master</p>
+        </MediumButton>
+      </div>
       <menu className={classes.menuContainer}>
         <Link to="/setting">
           <SmallButton>
             <CgProfile size={35} />
           </SmallButton>
         </Link>
-        <Link to='/bookings'>
+        <Link to="/bookings">
           <SmallButton>
-            <GrBook size={35}/>
+            <GrBook size={35} />
           </SmallButton>
         </Link>
         <SmallButton>

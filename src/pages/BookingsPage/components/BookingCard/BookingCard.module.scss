@@ -2,11 +2,11 @@
 @use '../../../../assets/fonts/fonts' as *;
 
 .cardContainer {
-  width: 100%;
+  position: relative;
+  width: calc(100% - 30px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $background-color-light;
   border-radius: 6px;
   box-shadow: $primal-box-shadow;
   padding: 10px;
@@ -91,4 +91,18 @@
   resize: none;
   width: 250px;
   height: 150px;
+}
+
+.manualMark{
+  position: absolute;
+  font-size: 15px;
+  color: $transparent-font-color;
+  right: 10px;
+  top: 0;
+}
+.expiredBooking{
+  background-color: $disabled-background-color;
+  button{
+    background-color: $disabled-background-color;
+  }
 }

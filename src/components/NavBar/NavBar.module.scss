@@ -26,3 +26,15 @@
     margin: 0 5px 0 5px;
   }
 }
+.searchStyle{
+  height: 50px;
+  width: 450px;
+}
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin-left: 20px;
+  }
+}

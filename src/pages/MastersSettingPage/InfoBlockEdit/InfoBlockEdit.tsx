@@ -9,6 +9,7 @@ import { debounce } from '../../../assets/functions/functions';
 import { setName } from '../../../store/modules/userDataReducer/reducer';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../../../query';
+import { UsersDataInterface } from '../../../assets/interfaces/interfaces';
 
 async function sendNewDescription(newDescription: string): Promise<void> {
   // const response = await fetch() ...
@@ -20,9 +21,10 @@ async function sendNewDescription(newDescription: string): Promise<void> {
 }
 
 function InfoBlockEdit(): JSX.Element {
+  const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
+
   const [isDescriptionEditing, setIsDescriptionEditing] = useState<boolean>(false);
   const { name, description } = useAppSelector((state) => state.userDataReducer);
-  const treatments = useAppSelector((state) => state.treatmentsReducer.treatments);
   const descriptionRef = useRef<HTMLHeadingElement>(null);
   const dispatch = useAppDispatch();
   const { mutate } = useMutation({
@@ -56,7 +58,7 @@ function InfoBlockEdit(): JSX.Element {
             </h2>
           </div>
           <ul>
-            {treatments.map((treatment) => (
+            {mastersData?.treatments.map((treatment) => (
               <li key={treatment.id}>
                 <ProcedurePlate>{treatment.procedureName}</ProcedurePlate>
               </li>

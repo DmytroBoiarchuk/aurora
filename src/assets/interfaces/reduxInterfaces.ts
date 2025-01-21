@@ -7,7 +7,7 @@ export interface StateInterface {
 }
 
 export interface RatingReducerInterface {
-  rating: number
+  rating: number;
 }
 
 export interface BookingInterface {
@@ -23,11 +23,11 @@ export interface BookingInterface {
 
 export interface WorkingScheduleReducerInterface {
   customWorkingDaysSchedule: boolean[];
-  chosenDays: ScheduleInterface[]
+  chosenDays: ScheduleInterface[];
 }
 
 export interface ReviewsReducerInterface {
-  reviews: ReviewProps[]
+  reviews: ReviewProps[];
 }
 
 export interface UserDataReducerInterface {
@@ -41,4 +41,7 @@ export interface UserDataReducerInterface {
 }
 export interface TreatmentsReducerInterface {
   treatments: TreatmentsProps[];
+}
+export interface BookingsReducerInterface {
+  pickedDate: string;
 }

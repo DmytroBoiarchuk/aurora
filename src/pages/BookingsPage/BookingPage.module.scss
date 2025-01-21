@@ -38,3 +38,21 @@
   width: 550px;
   display: flex;
 }
+.topMenu{
+  padding-left: 10px;
+  width: calc(100% - 10px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.openCalendarButton{
+
+}
+.calendarWrapper{
+  z-index: 10000;
+  position: absolute;
+}
+.dateFilterContainer{
+  position: relative;
+}

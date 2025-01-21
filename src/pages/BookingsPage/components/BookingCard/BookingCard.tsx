@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { motion } from 'framer-motion';
 import { GiConfirmed } from 'react-icons/gi';
@@ -26,11 +26,18 @@ async function bookingFetch({ bookingId, isDeleting }: BookingFetchInterface): P
 interface BookingCardProps {
   booking: BookingsInterface;
 }
+function calcIsExpired(date: string, time: number): boolean {
+  const now = new Date();
+  const checkingTime = new Date(date);
+  checkingTime.setHours(Math.abs(time));
+  checkingTime.setMinutes((time % 1) * 60);
+  return now.getTime() > checkingTime.getTime();
+}
 function BookingCard({ booking }: BookingCardProps): JSX.Element {
   const [isConfirmed, setIsConfirmed] = useState<boolean>(booking.isConfirmed);
   const [modalIsShown, setModalIsShown] = useState<boolean>(false);
-  const [modalState, setModalState] = useState<'confirm' | 'cancel' | ''>('');
-
+  const isExpired: boolean = useMemo((): boolean => calcIsExpired(booking.date, booking.time), [booking]);
+  const [modalState, setModalState] = useState<'confirm' | 'cancel' | 'delete' | ''>(isExpired ? 'delete' : '');
   const { mutate } = useMutation({
     mutationFn: bookingFetch,
     onMutate: ({ bookingId, isDeleting }: BookingFetchInterface): UsersDataInterface | undefined => {
@@ -51,52 +58,69 @@ function BookingCard({ booking }: BookingCardProps): JSX.Element {
       return previousItems;
     },
     onError: (err: ErrorEvent, variables, context): void => {
-       queryClient.setQueryData(['MastersData'], context);
-       if(!variables.isDeleting) setIsConfirmed(false);
-       // show Error
+      queryClient.setQueryData(['MastersData'], context);
+      if (!variables.isDeleting) setIsConfirmed(false);
+      // show Error
     },
     // onSettled: () => {
     //   queryClient.invalidateQueries({ queryKey: ['MastersData'] }); // maybe not needed ?
     // },
   });
-
+  function handleDeleteManualBooking(): void {
+    mutate({ bookingId: booking.email, isDeleting: true });
+  }
   function handleConfirm(): void {
     setModalIsShown(false);
     if (modalState === 'cancel') {
-      setTimeout(() => mutate({ bookingId: booking.email, isDeleting: true }), 300);
+      mutate({ bookingId: booking.email, isDeleting: true });
     } else if (modalState === 'confirm') {
-      setTimeout(() => mutate({ bookingId: booking.email, isDeleting: false }), 300);
+      mutate({ bookingId: booking.email, isDeleting: false });
       setIsConfirmed(true);
     }
     // send email to customer & request to server to set confirmed ( if response is not OK -> set isConfirmed ( false ) )
   }
-  function handleClickButton(modal: 'confirm' | 'cancel' | ''): void {
+  function handleClickCardButton(modal: 'confirm' | 'cancel' | 'delete' | ''): void {
     setModalState(modal);
     setModalIsShown(true);
   }
   return (
     <motion.div
       layout="position"
-      className={classes.cardContainer}
+      className={`${classes.cardContainer} ${isExpired ? classes.expiredBooking : ''}`}
+      initial={{ x: '-2000px' }}
+      animate={{ x: 0 }}
       exit={{ x: '-2000px' }}
       transition={{ duration: 0.4 }}
     >
-      <BookingCardTable booking={booking}/>
+      {booking.manual && <span className={classes.manualMark}>manually created</span>}
+
+      <BookingCardTable booking={booking} />
       <div className={classes.bookingButtonsContainer}>
-        <button onClick={(): void => handleClickButton('cancel')} className={classes.cancelButton}>
-          Cancel
+        <button
+          onClick={
+            booking.manual
+              ? handleDeleteManualBooking
+              : (): void => handleClickCardButton(isExpired ? 'delete' : 'cancel')
+          }
+          className={classes.cancelButton}
+        >
+          {isExpired ? 'Delete' : 'Cancel'}
         </button>
-        <SmallButton disabled={isConfirmed} onClick={(): void => handleClickButton('confirm')}>
+        <SmallButton disabled={isConfirmed || isExpired} onClick={(): void => handleClickCardButton('confirm')}>
           <GiConfirmed id={isConfirmed ? classes.confirmed : ''} size={45} />
         </SmallButton>
       </div>
       <MyModal modalIsShown={modalIsShown} setModalIsShown={setModalIsShown}>
         <div className={classes.modalBody}>
-          <p>{`Are you sure to ${modalState === 'confirm' ? 'confirm' : 'cancel'}?`}</p>
-          {modalState !== 'confirm' && (
+          <p>{`Are you sure to ${modalState}?`}</p>
+          {!isExpired && (
             <>
               <label>Tell customer the reason: </label>
-              <textarea className={classes.messageTextarea} placeholder="Your message" defaultValue='Sorry, I have to cancel our appointment due to unexpected issues, thank you for understanding...❣️' />
+              <textarea
+                className={classes.messageTextarea}
+                placeholder="Your message"
+                defaultValue="Sorry, I have to cancel our appointment due to unexpected issues, thank you for understanding...❣️"
+              />
             </>
           )}
           <div className={classes.modalButtonsContainer}>

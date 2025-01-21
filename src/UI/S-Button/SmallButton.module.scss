@@ -1,5 +1,5 @@
 @use '../variables' as *;
-.button {
+.button{
   justify-content: center;
   align-items: center;
   width: 50px;
@@ -9,16 +9,15 @@
   background-color: $background-color;
   color: $primary-color;
   font-weight: 500;
+}
+.notDisabled{
   transition:
-    background-color 0.5s ease,
-    transform 0.5s ease;
+          background-color 0.5s ease,
+          transform 0.5s ease;
 
   &:hover {
     background-color: $background-color-dark;
     transform: scale(1.1);
   }
-
-  * {
-
-  }
 }
+

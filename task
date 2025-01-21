@@ -1,9 +1,9 @@
 - day -> date
-- mark booking as manually created
-- animate page changing
+- fix styles in BookingsPage / hide Expired !!!!!! :(
 - login/register page
 - refactor big components
 - implement search
+- on bookingsPage change "email" as id to "id" as id
 // AFTER BACKEND IS READY
 - get rid of treatmentReducer, userDataReducer, reviewsReducer - use data from ReactQuery instead:
     - send ReactQuery mutation request while leaving review, creating new treatment or editing old, editing name or description

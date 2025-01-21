@@ -46,6 +46,8 @@ export interface BookingsInterface {
   duration: number;
   telephoneNumber: string;
   isConfirmed: boolean;
+  manual: boolean;
+
 }
 export interface UsersDataInterface {
   id: number;

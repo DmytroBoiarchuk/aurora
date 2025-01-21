@@ -11,7 +11,9 @@ import SmallButton from '../../UI/S-Button/SmallButton';
 import MyModal from '../../UI/Modal/MyModal';
 import Booking from '../MastersPage/components/ProceduresBlock/components/Booking/Booking';
 import { setProcedureDetails } from '../../store/modules/bookingReducer/reducer';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import BookingsSearchFilter from './components/BookingsSearchFilter/BookingsSearchFilter';
+import MyDatePicker from '../../components/DatePicker/MyDatePicker';
 
 function compareDates(booking1: BookingsInterface, booking2: BookingsInterface): number {
   const date1 = new Date(booking1.date).getTime();
@@ -26,12 +28,20 @@ function compareDates(booking1: BookingsInterface, booking2: BookingsInterface):
 function BookingsPage(): JSX.Element {
   const [modalIsShown, setModalIsShown] = useState<boolean>(false);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
+  const [isSortByDate, setIsSortByDate] = useState<boolean>(false);
+  const [bookingsList, setBookingsList] = useState<BookingsInterface[] | undefined>();
   const dispatch = useAppDispatch();
+  const pickedDate: string = useAppSelector((state) => state.bookingsListReducer.pickedDate);
+  function handleToggleCalendar(): void {
+    setIsSortByDate((prevState) => !prevState);
+  }
   function manuallySetProcedureName(procedureName: string): void {
-    dispatch(setProcedureDetails({
-      procedureName,
-      duration: 1, //temporary
-    }));
+    dispatch(
+      setProcedureDetails({
+        procedureName,
+        duration: 1, //temporary
+      })
+    );
     setIsBookingFormOpen(true);
   }
   const { data } = useQuery<UsersDataInterface>({
@@ -39,24 +49,60 @@ function BookingsPage(): JSX.Element {
     queryKey: ['MastersData'],
     queryFn: fetchJsonData,
   });
+
+  // sort by date
   useEffect(() => {
-    if(!modalIsShown){
+    const filteredList: BookingsInterface[] | undefined = data?.booked.filter((booking) =>
+      booking.date.includes(pickedDate)
+    );
+    setBookingsList(filteredList);
+  }, [pickedDate]);
+
+  // store bookings from query
+  useEffect(() => {
+    setBookingsList(data?.booked);
+  }, [data]);
+
+  // show modal
+  useEffect(() => {
+    if (!modalIsShown) {
       setIsBookingFormOpen(false);
     }
   }, [modalIsShown]);
   return (
     <Block classNames={classes.bookingsContainer}>
-      <SmallButton onClick={(): void => setModalIsShown(true)}>
-        <FaPlus size={45} />
-      </SmallButton>
+      <menu className={classes.topMenu}>
+        <BookingsSearchFilter setBookingsList={setBookingsList} />
+        <div className={classes.dateFilterContainer}>
+          <button className={classes.openCalendarButton} onClick={handleToggleCalendar}>
+            Sort By Date
+          </button>
+          <motion.div
+            animate={isSortByDate ? { y: 0, opacity: 1} : { y: '-1500px', opacity: 0 }}
+            exit={{ y: '-500px' }}
+            transition={{ duration: 0.2 }}
+            className={classes.calendarWrapper}
+          >
+            <MyDatePicker showButton={false} isBookingsPage />
+          </motion.div>
+        </div>
+        <SmallButton onClick={(): void => setModalIsShown(true)}>
+          <FaPlus size={45} />
+        </SmallButton>
+      </menu>
       <AnimatePresence>
-        {data?.booked
-          .sort((a, b) => compareDates(a, b))
+        {bookingsList
+          ?.sort((a, b) => compareDates(a, b))
           .map((booking) => <BookingCard key={booking.email} booking={booking} />)}
       </AnimatePresence>
       <MyModal modalIsShown={modalIsShown} setModalIsShown={setModalIsShown}>
         <div className={classes.modalContainer}>
-          <motion.div  initial={{ x: 0 }} animate={!isBookingFormOpen ? { x: 0 } : { x: '-2000px' }}  transition={{duration: 0.5}} className={classes.modalButtons}>
+          <motion.div
+            initial={{ x: 0 }}
+            animate={!isBookingFormOpen ? { x: 0 } : { x: '-2000px' }}
+            transition={{ duration: 0.5 }}
+            className={classes.modalButtons}
+          >
             {data?.treatments.map((treatment: TreatmentsProps) => (
               <button
                 className={classes.treatmentNameButton}
@@ -67,7 +113,11 @@ function BookingsPage(): JSX.Element {
               </button>
             ))}
           </motion.div>
-          <motion.div initial={{ x: '2000px' }} animate={!isBookingFormOpen ? { x: '2000px' } : { x: '-75%' }} transition={{duration: 0.5}}>
+          <motion.div
+            initial={{ x: '2000px' }}
+            animate={!isBookingFormOpen ? { x: '2000px' } : { x: '-75%' }}
+            transition={{ duration: 0.5 }}
+          >
             <Booking closeModal={setModalIsShown} closeBooking={setIsBookingFormOpen} isManualBooking />
           </motion.div>
         </div>

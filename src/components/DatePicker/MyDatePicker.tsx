@@ -5,28 +5,36 @@ import './MyDatePicker.scss';
 import MediumButton from '../../UI/M-Button/MediumButton';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setDate } from '../../store/modules/bookingReducer/reducer';
-import { ScheduleInterface } from '../../assets/interfaces/interfaces';
+import { ScheduleInterface, UsersDataInterface } from '../../assets/interfaces/interfaces';
 import { setWorkingDays } from '../../store/modules/workingScheduleReducer/reducer';
 import { WorkingScheduleReducerInterface } from '../../assets/interfaces/reduxInterfaces';
 import { modes } from '../../assets/constants/constants';
 import { findAvailableTime } from '../../assets/functions/functions';
+import { setPickedDate } from '../../store/modules/bookingsListReducer/reducer';
+import { queryClient } from '../../query';
 
+interface MyDatePickerProps {
+  setIsDatePicked?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  chosenOption?: string | undefined;
+  howManyMonthsIsPlaning?: number | undefined;
+  setChosenOption?: React.Dispatch<React.SetStateAction<string>> | undefined;
+  showButton?: boolean;
+  isBookingsPage?: boolean;
+}
 function MyDatePicker({
   setIsDatePicked = undefined,
   chosenOption = undefined,
   howManyMonthsIsPlaning = undefined,
   setChosenOption = undefined,
-}: {
-  setIsDatePicked?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
-  chosenOption?: string | undefined;
-  howManyMonthsIsPlaning?: number | undefined;
-  setChosenOption?: React.Dispatch<React.SetStateAction<string>> | undefined;
-}): JSX.Element {
+  showButton = true,
+  isBookingsPage = false,
+}: MyDatePickerProps): JSX.Element {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const workingScheduleState: WorkingScheduleReducerInterface = useAppSelector(
     (state): WorkingScheduleReducerInterface => state.workingScheduleReducer
   );
   const bookingData = useAppSelector((state) => state.bookingReducer);
+  const mastersData: UsersDataInterface | undefined = queryClient.getQueryData(['MastersData']);
 
   const dispatch = useAppDispatch();
   function defineDayPickerMode(): 'multiple' | 'single' {
@@ -37,10 +45,17 @@ function MyDatePicker({
   }
 
   // Array of selected dates
-  const [selected, setSelected] = useState<Date[] | undefined>(
-    chosenOption ? [...workingScheduleState.chosenDays.map((date) => new Date(date.day))] : undefined
+  const [selected, setSelected] = useState<Date[]>(
+    chosenOption ? [...workingScheduleState.chosenDays.map((date) => new Date(date.day))] : []
   );
 
+  // if used in bookings - send to redux picked date
+  useEffect(() => {
+    if (isBookingsPage) {
+      const pickedDate = selected.length === 0 ? '' : selected[0].toISOString().split('T')[0];
+      dispatch(setPickedDate(pickedDate));
+    }
+  }, [selected]);
   // set selected date on calendar according to redux store
   useEffect(() => {
     if (chosenOption) {
@@ -50,7 +65,6 @@ function MyDatePicker({
   // prefilled working days
   useEffect(() => {
     if (howManyMonthsIsPlaning && !isFirstRender) {
-      console.log('WHAT');
       const from = new Date();
       const to = new Date();
       const dates: Date[] = [];
@@ -81,7 +95,8 @@ function MyDatePicker({
         ? new Date(workingDate.day)
         : undefined
     );
-    return !availableDates.some(
+    const comparingDates: undefined | (Date | undefined)[] = isBookingsPage? mastersData?.booked.map(b => new Date(b.date)) : availableDates;
+    return !comparingDates?.some(
       (availableDate) =>
         availableDate?.getDate() === date.getDate() &&
         availableDate.getMonth() === date.getMonth() &&
@@ -93,7 +108,7 @@ function MyDatePicker({
   function disableOutdatedDaysIntervals(date: Date): boolean {
     const today = new Date();
     const dateOfLastDay = today.setMonth(today.getMonth() + howManyMonthsIsPlaning!);
-    return date.getTime() < (new Date().getTime() - 1000 * 60 * 60 * 24) || date.getTime() > dateOfLastDay;
+    return !isBookingsPage? date.getTime() < new Date().getTime() - 1000 * 60 * 60 * 24 || date.getTime() > dateOfLastDay : true;
   }
 
   function confirmHandler(): void {
@@ -104,24 +119,22 @@ function MyDatePicker({
         .split('T')[0];
       dispatch(setDate(summerTimeRefactoring));
     }
-
     if (setIsDatePicked) setIsDatePicked(true);
   }
 
   function onSelectDateHandler(date: Date | Date[] | undefined): void {
-    let newSelected: Date[] | undefined;
-    if (date)
+    let newSelected: Date[] = [];
+    if (date) {
       if (setChosenOption) {
         setChosenOption('custom');
-        let newDates: Date[] = [];
-        if (Array.isArray(date)) {
-          newDates = date;
-        } else if (date) {
-          newDates = [date];
-        }
+        const newDates: Date[] = Array.isArray(date) ? date : [date];
         newSelected = [...(selected?.filter((p) => p === date) || []), ...newDates];
-      } else if (Array.isArray(date)) newSelected = [...date];
-      else newSelected = [date];
+      } else if (Array.isArray(date)) {
+        newSelected = [...date];
+      } else if(selected.length !== 0) {
+        newSelected = selected[0].getDate() === date.getDate() ? [] : [date];
+      } else newSelected = [date];
+    }
     setSelected(newSelected);
 
     //  confirm choosing working days
@@ -154,7 +167,7 @@ function MyDatePicker({
         weekStartsOn={1}
       />
 
-      {!chosenOption && (
+      {showButton && (
         <MediumButton
           disabled={typeof selected === 'undefined'}
           type="button"
