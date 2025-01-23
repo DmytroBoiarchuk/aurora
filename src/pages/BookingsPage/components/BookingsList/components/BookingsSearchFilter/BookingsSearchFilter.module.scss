@@ -1,0 +1,38 @@
+@use '../../../../../../UI/variables' as *;
+@use '../../../../../../assets/fonts/fonts' as *;
+
+.searchInput{
+  width: 250px;
+  font-size: 24px;
+  height: 34px;
+  border-radius: 6px;
+}
+.filterContainer{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.calendarWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10000;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.closeButton{
+  background-color: whitesmoke;
+  border: none;
+  width: 342px;
+  font-size: 30px;
+  border-radius: 0 0 6px 6px;
+  margin-top: -5px;
+}
+.openCalendarButton{
+  margin: 0 10px 0 10px;
+}

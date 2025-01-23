@@ -14,7 +14,7 @@ function TimeSlot({ time, active, setActive }: { time: number, active:number, se
   }
 
   return (
-    <MediumButton onClick={onClickHandler} classNames={`${classes.timeButton} ${active === time ? classes.active : ''}`}>
+    <MediumButton onClick={onClickHandler} className={`${classes.timeButton} ${active === time ? classes.active : ''}`}>
       {formatTime(time)}
     </MediumButton>
   );

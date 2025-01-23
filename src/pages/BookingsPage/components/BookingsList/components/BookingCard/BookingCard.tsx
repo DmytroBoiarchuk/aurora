@@ -3,13 +3,14 @@ import { JSX } from 'react/jsx-runtime';
 import { motion } from 'framer-motion';
 import { GiConfirmed } from 'react-icons/gi';
 import { useMutation } from '@tanstack/react-query';
-import { BookingsInterface, UsersDataInterface } from '../../../../assets/interfaces/interfaces';
+import { BookingsInterface, UsersDataInterface } from '../../../../../../assets/interfaces/interfaces';
 import classes from './BookingCard.module.scss';
-import SmallButton from '../../../../UI/S-Button/SmallButton';
-import MyModal from '../../../../UI/Modal/MyModal';
-import MediumButton from '../../../../UI/M-Button/MediumButton';
-import { queryClient } from '../../../../query';
+import SmallButton from '../../../../../../UI/S-Button/SmallButton';
+import MyModal from '../../../../../../UI/Modal/MyModal';
+import MediumButton from '../../../../../../UI/M-Button/MediumButton';
+import { queryClient } from '../../../../../../query';
 import BookingCardTable from './components/BookingCardTable';
+import { calcIsExpired } from '../../../../../../assets/functions/functions';
 
 interface BookingFetchInterface {
   bookingId: string;
@@ -26,13 +27,7 @@ async function bookingFetch({ bookingId, isDeleting }: BookingFetchInterface): P
 interface BookingCardProps {
   booking: BookingsInterface;
 }
-function calcIsExpired(date: string, time: number): boolean {
-  const now = new Date();
-  const checkingTime = new Date(date);
-  checkingTime.setHours(Math.abs(time));
-  checkingTime.setMinutes((time % 1) * 60);
-  return now.getTime() > checkingTime.getTime();
-}
+
 function BookingCard({ booking }: BookingCardProps): JSX.Element {
   const [isConfirmed, setIsConfirmed] = useState<boolean>(booking.isConfirmed);
   const [modalIsShown, setModalIsShown] = useState<boolean>(false);

@@ -34,7 +34,7 @@ function TimePicker({
           <TimeSlot key={slot} active={active} setActive={setActive} time={slot} />
         ))}
       </div>
-      <MediumButton disabled={active === 0} classNames={classes.formSubmitButton}>
+      <MediumButton disabled={active === 0} className={classes.formSubmitButton}>
         Submit
       </MediumButton>
     </>

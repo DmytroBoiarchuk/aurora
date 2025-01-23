@@ -1,20 +1,16 @@
 import React from 'react';
 import classes from './Input.module.scss';
 
-interface InputProps {
-  required: boolean;
-  placeholder: string;
-  id: string;
-  type: string;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
 }
 
-function Input({ required, placeholder, id, type, name } : InputProps): JSX.Element {
+function Input({name, ...props } : InputProps): JSX.Element {
   return (
     <div>
       <div className={classes.inputStyle}>
         <label>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
-        <input required={required} placeholder={placeholder} id={id} type={type} name={name} />
+        <input {...props} />
       </div>
     </div>
   );

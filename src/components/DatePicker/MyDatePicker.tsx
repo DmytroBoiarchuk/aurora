@@ -13,6 +13,12 @@ import { findAvailableTime } from '../../assets/functions/functions';
 import { setPickedDate } from '../../store/modules/bookingsListReducer/reducer';
 import { queryClient } from '../../query';
 
+function calcClendarStartDate(): Date {
+  const date = new Date();
+  date.setMonth(date.getMonth() - 12);
+  return date;
+}
+
 interface MyDatePickerProps {
   setIsDatePicked?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   chosenOption?: string | undefined;
@@ -153,13 +159,13 @@ function MyDatePicker({
     }
   }
   return (
-    <div>
+    <div onClick={isBookingsPage? (e): void => e.stopPropagation() : undefined}>
       <DayPicker
         mode={defineDayPickerMode() as typeof chosenOption extends undefined ? 'single' : 'multiple'}
         selected={selected}
         onSelect={onSelectDateHandler}
         disabled={!chosenOption ? calcDisabledDaysIntervals : disableOutdatedDaysIntervals}
-        startMonth={new Date()}
+        startMonth={isBookingsPage ? calcClendarStartDate() : new Date()}
         min={1}
         max={chosenOption ? Infinity : undefined}
         fixedWeeks
@@ -171,7 +177,7 @@ function MyDatePicker({
         <MediumButton
           disabled={typeof selected === 'undefined'}
           type="button"
-          classNames="confirm-date-button"
+          className="confirm-date-button" //?
           onClick={confirmHandler}
         >
           Confirm Date

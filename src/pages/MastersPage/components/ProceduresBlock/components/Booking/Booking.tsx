@@ -79,7 +79,6 @@ function Booking({
       closeModal(false);
     }
     closeBooking(false);
-    console.log(bookingInfo);
     mutate(bookingInfo);
     setAreYouSureModal(false);
     //  dispatch(clearBooking());
@@ -87,7 +86,7 @@ function Booking({
   return (
     <div className={classes.bookingContainer}>
       <form onSubmit={submitFormHandler}>
-        <SmallButton classNames={classes.backButtonStyles} onClick={backButtonHandler}>
+        <SmallButton className={classes.backButtonStyles} onClick={backButtonHandler}>
           <MdArrowBackIosNew />
         </SmallButton>
         <div className={classes.leftSide}>

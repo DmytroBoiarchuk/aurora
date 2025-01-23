@@ -74,7 +74,7 @@ function InfoBlockEdit(): JSX.Element {
             {description}
           </h3>
           {isDescriptionEditing && (
-            <MediumButton classNames={classes.saveButton} onClick={(): void => onDescriptionEditHandler(false)}>
+            <MediumButton className={classes.saveButton} onClick={(): void => onDescriptionEditHandler(false)}>
               Save
             </MediumButton>
           )}

@@ -31,7 +31,7 @@ function WorkingTimeManagement(): JSX.Element {
         />
         <div className={classes.timePickingBlock}>
           <TimePlaning howManyMonthsIsPlaning={howManyMonthsIsPlaning} />
-          <MediumButton classNames={classes.confirmButton} onClick={confirmWorkingTimeHandler}>Confirm Schedule</MediumButton>
+          <MediumButton className={classes.confirmButton} onClick={confirmWorkingTimeHandler}>Confirm Schedule</MediumButton>
         </div>
       </div>
     </Block>

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { IoCallOutline, IoMailOutline } from 'react-icons/io5';
 import classes from '../BookingCard.module.scss';
-import { formatDate, formatDuration, formatTime } from '../../../../../assets/functions/functions';
-import { weekDays } from '../../../../../assets/constants/constants';
-import { BookingsInterface } from '../../../../../assets/interfaces/interfaces';
+import { formatDate, formatDuration, formatTime } from '../../../../../../../assets/functions/functions';
+import { weekDays } from '../../../../../../../assets/constants/constants';
+import { BookingsInterface } from '../../../../../../../assets/interfaces/interfaces';
 
 function BookingCardTable({booking} : {booking: BookingsInterface}): JSX.Element {
   const timeTo: number = useMemo(()=> booking.time+booking.duration, [booking.time, booking.duration]);

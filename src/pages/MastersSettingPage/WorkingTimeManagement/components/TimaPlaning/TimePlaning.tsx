@@ -45,7 +45,7 @@ function TimePlaning({ howManyMonthsIsPlaning }: TimePlaningProps): JSX.Element 
             </option>
           ))}
         </select>
-        <MediumButton onClick={setForAllModalHandler} classNames={classes.setForAllButton}>
+        <MediumButton onClick={setForAllModalHandler} className={classes.setForAllButton}>
           Set for all days
         </MediumButton>
       </div>

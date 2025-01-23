@@ -1,0 +1,18 @@
+@use '../../../../../../UI/variables' as *;
+@use '../../../../../../assets/fonts/fonts' as *;
+
+
+.treatmentNameButton{
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 0;
+  box-shadow: $primal-box-shadow;
+  background: $background-color-light;
+  margin-top: 5px;
+  &:hover{
+    background: $background-color-dark;
+  }
+}

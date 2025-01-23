@@ -52,3 +52,10 @@ export const fetchJsonData = async (): Promise<UsersDataInterface> => {
   }
   return response.json();
 };
+export const calcIsExpired = (date: string, time: number): boolean  => {
+  const now = new Date();
+  const checkingTime = new Date(date);
+  checkingTime.setHours(Math.abs(time));
+  checkingTime.setMinutes((time % 1) * 60);
+  return now.getTime() > checkingTime.getTime();
+}

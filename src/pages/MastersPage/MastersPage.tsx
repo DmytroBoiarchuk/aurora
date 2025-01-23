@@ -14,12 +14,12 @@ function MastersPage(): JSX.Element {
     queryFn: fetchJsonData,
   });
   return (
-    <div className={classes.pageContainer}>
+    <main>
       <InfoBlock />
       <ProceduresBlock />
       <LocationBlock />
       <ReviewsBlock />
-    </div>
+    </main>
   );
 }
 

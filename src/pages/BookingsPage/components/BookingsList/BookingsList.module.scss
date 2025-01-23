@@ -1,0 +1,44 @@
+@use '../../../../UI/variables' as *;
+@use '../../../../assets/fonts/fonts' as *;
+
+.bookingsContainer {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  button{
+    padding: 3px 0 0 0;
+  }
+}
+.modalButtons{
+  display: flex;
+  flex-direction: column;
+  background: $background-color-light;
+  box-shadow: $primal-box-shadow;
+  padding: 10px;
+  border-radius: 6px;
+  min-width: 500px;
+  overflow: auto;
+}
+.modalContainer{
+  width: 550px;
+  display: flex;
+}
+.topMenu{
+  padding-left: 10px;
+  width: calc(100% - 10px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  label{
+    display: flex;
+    text-align: center;
+    p{
+      margin: 0;
+    }
+  }
+}
+.openCalendarButton{
+    margin: 0 10px 0 10px;
+}
+

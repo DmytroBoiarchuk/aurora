@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { useLocation } from 'react-router';
+import type { Libraries } from '@googlemaps/js-api-loader';
 import classes from './GoogleMapComponent.module.scss';
 import { UsersCoordsProps, UsersDataInterface } from '../../../../../assets/interfaces/interfaces';
 import {VITE_GOOGLE_MAPS_API_KEY} from '../../../../../constants/keys';
 import { queryClient } from '../../../../../query';
 import AddressPicker from '../../../../MastersSettingPage/InfoBlockEdit/components/AddressPicker/AddressPicker';
+
+const libraries: Libraries = ['places'];
 
 function GoogleMapComponent(): JSX.Element {
   const isSetting = useLocation().pathname === '/setting';
@@ -14,7 +17,7 @@ function GoogleMapComponent(): JSX.Element {
   const [userCoords, setUserCoords] = useState<UsersCoordsProps>({ lat: 0, lng: 0 });
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
+    libraries,
   });
 
   useEffect(() => {
